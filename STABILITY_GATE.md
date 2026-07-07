@@ -74,6 +74,55 @@ Honest RED is the goal, not a pass. Thresholds will not be adjusted after result
 
 ---
 
-## Results
+## Results (2026-07-07, K=8 runs — see stability-gate/results_stability.json)
 
-*(empty at pre-registration; filled by stability-gate/run_gate.py output after K runs)*
+**VERDICT: FAIL — by the attribution guard, not the headline number.** The nominal
+stability is high, but the controls show it is not the navigator's.
+
+| quantity | value |
+|---|---|
+| cross-seed ARI (trained channels) | **0.948** ± 0.05 |
+| **untrained-channel control ARI** | **0.987** (HIGHER than trained) |
+| raw-geometry control ARI (gpt2/qwen/minilm) | 0.919 / 0.945 / 0.888 |
+| channel functional agreement across seeds | **0.005–0.026** (≈ zero) |
+| anti-collapse guards (eff. rank 137–200, std 0.64–0.71, NN-Jaccard 0.60–0.69) | pass |
+| post-hoc ARI vs source labels (diagnostic) | 0.76 |
+
+Reading, in one line: **what is stable is not enacted, and what is enacted is not stable.**
+
+- The eval-set partitions reproduce almost perfectly across seeds (0.948) — but untrained
+  random channels reproduce them *better* (0.987), and each raw frozen space alone gives
+  0.89–0.95. The stability belongs to the corpus geometry inside the frozen encoders
+  (partitions track the 9 sources at ARI 0.76), which the fused representation exposes with
+  or without training.
+- The channels themselves — the only thing training creates, the candidate "enacted
+  boundaries" — agree across seeds at cosine ≈ 0.01. Every run learns a functionally
+  different routing that satisfies the same objectives. Cycle loss plateaus ~0.70 while
+  structure loss goes to ~0.007: the objectives constrain the channels only up to a large
+  symmetry group, and the seeds land at arbitrary points of it.
+- No collapse and no pass-through cheating (guards pass; neighborhoods genuinely preserved
+  at Jaccard ~0.67): the runs are healthy. The instability is intrinsic to the setup, not
+  an optimization pathology.
+
+The verdict line originally printed by run_gate.py said PASS because the code implemented
+only the collapse guards; the attribution clause ("trained ARI must exceed the control ARI
+to attribute stability to training") was in the pre-registration from the start and is
+decisive. The pre-registration is the authority; the code was corrected to match it.
+
+### Caveats
+- CPU-scale: three text-family encoders (no true cross-modal pair), 4.2k snippets, 400 Adam
+  steps, K=8. A larger run could tighten the numbers, but the channel-agreement figure
+  (~0.01 against a threshold-free comparison) is not a marginal miss — the objectives as
+  specified simply do not pin down a canonical routing.
+- The corpus has strong intrinsic cluster structure; a harder corpus would LOWER all ARIs,
+  which cannot rescue the attribution gap.
+
+### Decision (per the frozen rule)
+FAIL → **the emergent-typing architecture ("navigator enacts types, stability promotes
+them, crystallize into Rzk") is unfounded on this evidence.** The boundaries worth
+crystallizing already live in the frozen encoders; the navigator adds nothing stable of its
+own. Recommendation: ship the seeded structure-preserving merge as the sole deliverable and
+close the directed-type thread. If it is ever reopened, the objective must include a
+canonicalization pressure (something that collapses the symmetry group of solutions —
+e.g. anchor-based relative representations or explicit gauge fixing) before stability of
+enacted structure is even a well-posed target.

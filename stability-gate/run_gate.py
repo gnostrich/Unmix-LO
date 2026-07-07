@@ -192,10 +192,15 @@ def main():
            "guards_last_run": guard_reports[-1],
            "final_losses_per_run": run_logs,
            "posthoc_ARI_vs_source_labels": round(label_ari, 3)}
-    ok_guards = all(g["eff_rank"] >= 10 and g["std"] >= 0.1
-                    for rep in guard_reports for g in rep.values())
-    res["guards_pass"] = bool(ok_guards)
-    res["gate"] = "PASS" if (ari >= 0.8 and ok_guards) else "FAIL"
+    ok_collapse = all(g["eff_rank"] >= 10 and g["std"] >= 0.1
+                      for rep in guard_reports for g in rep.values())
+    # pre-registered guard 2 (attribution): stability only counts as ENACTED if the trained
+    # pipeline beats the untrained-channel control; otherwise it is the data's own geometry
+    ok_attrib = ari > ari_untr
+    res["guards_pass"] = bool(ok_collapse and ok_attrib)
+    res["guard_detail"] = {"no_collapse": bool(ok_collapse),
+                           "attribution_trained_beats_untrained": bool(ok_attrib)}
+    res["gate"] = "PASS" if (ari >= 0.8 and ok_collapse and ok_attrib) else "FAIL"
     json.dump(res, open(os.path.join(HERE, "results_stability.json"), "w"), indent=1)
     print(json.dumps(res, indent=1))
     print(f"\nGATE: {res['gate']}  (pre-registered: PASS iff ARI>=0.8 AND guards hold)")
