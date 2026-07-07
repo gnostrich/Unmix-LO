@@ -1,0 +1,79 @@
+{
+  "n_tasks": 9,
+  "labels": [
+    [
+      "code",
+      "numpy"
+    ],
+    [
+      "code",
+      "scipy"
+    ],
+    [
+      "code",
+      "sklearn"
+    ],
+    [
+      "math",
+      "algebra"
+    ],
+    [
+      "math",
+      "arithmetic"
+    ],
+    [
+      "math",
+      "sequences"
+    ],
+    [
+      "prose",
+      "aurelius_philosophy"
+    ],
+    [
+      "prose",
+      "austen_fiction"
+    ],
+    [
+      "prose",
+      "melville_narrative"
+    ]
+  ],
+  "r": 100,
+  "K": 50,
+  "generic_axes_removed": [],
+  "generic_variance_share": 0.0,
+  "stable_matched_cosine": 0.718609631061554,
+  "max_pairwise_overlap": 0.8991327881813049,
+  "median_pairwise_overlap": 0.05805855244398117,
+  "median_loading_kurtosis": 3.2523155212402344,
+  "mean_tasks_per_component": 4.08,
+  "frac_smeared_components": 0.12,
+  "heldout_tasks": [
+    [
+      "code",
+      "sklearn"
+    ],
+    [
+      "math",
+      "sequences"
+    ],
+    [
+      "prose",
+      "melville_narrative"
+    ]
+  ],
+  "heldout_recon_residual": 0.482981413602829,
+  "active_components_per_heldout_task": 18.666666666666668,
+  "frac_components_crossgenre": 0.54,
+  "diversity_stability_curve": {
+    "1": 0.531,
+    "2": 0.632,
+    "3": 0.73
+  },
+  "pass": {
+    "stable": false,
+    "individual": false,
+    "reused": false
+  },
+  "verdict": "RED \u2014 fall back to the robustness reframe (non-destructive learned merge)"
+}
