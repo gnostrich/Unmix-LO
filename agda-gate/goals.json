@@ -3,6 +3,11 @@
   "path": {
    "imports": [
     "Cubical.Foundations.GroupoidLaws"
+   ],
+   "variables": [
+    "ℓ : Level",
+    "A : Type ℓ",
+    "x y z w v : A"
    ]
   },
   "nat": {
@@ -10,6 +15,9 @@
     "Cubical.Data.Nat",
     "Cubical.Data.Nat.Properties",
     "Cubical.Data.Sigma"
+   ],
+   "variables": [
+    "l m n : ℕ"
    ]
   },
   "int": {
@@ -17,7 +25,8 @@
     "Cubical.Data.Int",
     "Cubical.Data.Int.Properties",
     "Cubical.Data.Nat"
-   ]
+   ],
+   "variables": []
   },
   "bool": {
    "imports": [
@@ -25,6 +34,10 @@
     "Cubical.Data.Bool.Properties",
     "Cubical.Foundations.Isomorphism",
     "Cubical.Relation.Nullary"
+   ],
+   "variables": [
+    "ℓ : Level",
+    "A : Type ℓ"
    ]
   },
   "list": {
@@ -33,6 +46,10 @@
     "Cubical.Data.List.Properties",
     "Cubical.Data.Nat",
     "Cubical.Data.Sigma"
+   ],
+   "variables": [
+    "ℓ : Level",
+    "A : Type ℓ"
    ]
   },
   "sigma": {
@@ -42,6 +59,12 @@
     "Cubical.Foundations.Isomorphism",
     "Cubical.Foundations.Equiv",
     "Cubical.Foundations.Function"
+   ],
+   "variables": [
+    "ℓ ℓ' ℓ'' : Level",
+    "A A' : Type ℓ",
+    "B B' : (a : A) → Type ℓ",
+    "C : (a : A) (b : B a) → Type ℓ"
    ]
   }
  },

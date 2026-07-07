@@ -19,7 +19,8 @@ Checks on the DISCRETE library:
 
 Run:  python agda-gate/run_loop.py [--slice N] [--seeds 3]
 """
-import os, re, json, time, argparse, random, subprocess, select, math
+import os, re, json, time, argparse, random, subprocess, select, math, functools
+print = functools.partial(print, flush=True)
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -83,25 +84,33 @@ class Agda:
 
 
 # ---------------------------------------------------------------- goal files
-def goal_file(domain, imports, goals):
+def goal_file(domain, imports, variables, goals):
     mod = f"Goals{domain.capitalize()}"
     lines = ["{-# OPTIONS --cubical --allow-unsolved-metas #-}", f"module {mod} where"]
     for imp in PRELUDE_IMPORTS + imports:
         lines.append(f"open import {imp}")
+    if variables:
+        lines.append("private")
+        lines.append(" variable")
+        for v in variables:
+            lines.append(f"  {v}")
+    header_len = len(lines)
     for i, g in enumerate(goals):
         lines.append(f"g{i} : {g['type']}")
         lines.append(f"g{i} = ?")
     path = os.path.join(WORK, mod + ".agda")
     open(path, "w", encoding="utf-8").write("\n".join(lines) + "\n")
-    return path
+    return path, header_len
 
 
-def validated_load(domain, imports, goals):
+def validated_load(domain, dominfo, goals, log=print):
     """Load the goal file; drop goals the typechecker rejects (scope/type errors) until clean."""
     goals = list(goals)
+    imports, variables = dominfo["imports"], dominfo.get("variables", [])
     while goals:
-        path = goal_file(domain, imports, goals)
+        path, header_len = goal_file(domain, imports, variables, goals)
         a = Agda(path)
+        t0 = time.time()
         ok, res = a.load()
         if ok:
             assert len(res) == len(goals), (len(res), len(goals))
@@ -111,9 +120,10 @@ def validated_load(domain, imports, goals):
         if not m:
             raise RuntimeError(f"{domain}: unparseable load error:\n{res[:800]}")
         bad_line = int(m.group(1))
-        n_head = 2 + len(PRELUDE_IMPORTS) + len(imports)
-        idx = (bad_line - n_head - 1) // 2
+        idx = (bad_line - header_len - 1) // 2
         idx = max(0, min(idx, len(goals) - 1))
+        log(f"    [{domain}] drop {goals[idx]['name']} ({time.time()-t0:.0f}s load): "
+            f"{res.splitlines()[1][:80] if len(res.splitlines())>1 else res[:80]}")
         goals.pop(idx)
     return None, []
 
@@ -169,7 +179,7 @@ def run_pass(data, seed, slice_n=None, log=print):
     sessions, hole_of = {}, {}
     for d in domains:
         gs = train[d] + held[d]
-        a, kept = validated_load(d, data["domains"][d]["imports"], gs)
+        a, kept = validated_load(d, data["domains"][d], gs, log=log)
         kept_names = {g["name"] for g in kept}
         train[d] = [g for g in train[d] if g["name"] in kept_names]
         held[d] = [g for g in held[d] if g["name"] in kept_names]

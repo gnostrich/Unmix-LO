@@ -35,6 +35,25 @@ SKIP_NAME = re.compile(r"^(--|module|open|import|record|data|where|private|infix
                        r"postulate|primitive|variable|mutual|abstract|\{-|syntax|pattern)")
 
 
+def extract_variables(lines):
+    """Collect the module's `variable` block(s) — goal statements reference these
+    generalizable names free, so the goal file must redeclare them verbatim."""
+    decls = []
+    i = 0
+    while i < len(lines):
+        if lines[i].strip() == "variable":
+            base = len(lines[i]) - len(lines[i].lstrip())
+            i += 1
+            while i < len(lines) and (not lines[i].strip()
+                                      or (len(lines[i]) - len(lines[i].lstrip())) > base):
+                if lines[i].strip() and not lines[i].strip().startswith("--"):
+                    decls.append(lines[i].strip())
+                i += 1
+        else:
+            i += 1
+    return decls
+
+
 def extract(path):
     lines = open(path, encoding="utf-8").read().splitlines()
     out, i = [], 0
@@ -65,15 +84,17 @@ def extract(path):
 
 
 def main():
-    goals = []
+    goals, variables = [], {}
     for dom, (rel, imports) in DOMAINS.items():
         path = os.path.join(CUBICAL, rel)
         got = extract(path)
+        variables[dom] = extract_variables(open(path, encoding="utf-8").read().splitlines())
         for g in got:
             g["domain"] = dom
         goals.extend(got)
-        print(f"{dom:6s}: {len(got):3d} goals from {rel}")
-    json.dump({"domains": {d: {"imports": imps} for d, (_, imps) in DOMAINS.items()},
+        print(f"{dom:6s}: {len(got):3d} goals from {rel}  (variables: {variables[dom]})")
+    json.dump({"domains": {d: {"imports": imps, "variables": variables[d]}
+                           for d, (_, imps) in DOMAINS.items()},
                "goals": goals},
               open(os.path.join(HERE, "goals.json"), "w"), indent=1, ensure_ascii=False)
     print(f"total {len(goals)} -> agda-gate/goals.json")
