@@ -14,6 +14,18 @@ from scipy.optimize import linear_sum_assignment
 def whiten_project(X, r):
     """Center + PCA-project to r dims (conditions ICA; mirrors low-rank operator assumption)."""
     Xc = X - X.mean(0, keepdims=True)
+    n, P = Xc.shape
+    if P > 4 * n:
+        # tall case (real gradient clouds, P ~ 10^5): full SVD workspace OOMs — get the same
+        # top-r right singular vectors from the n x n Gram matrix instead
+        G = (Xc @ Xc.T).astype(np.float64)
+        ev, U = np.linalg.eigh(G)
+        order = np.argsort(ev)[::-1][:min(r, n)]
+        ev, U = ev[order], U[:, order]
+        pos = ev > 1e-10 * ev[0]
+        ev, U = ev[pos], U[:, pos]
+        Vt = ((Xc.T @ (U / np.sqrt(ev))).T).astype(Xc.dtype)
+        return Xc @ Vt.T, Vt
     U, S, Vt = np.linalg.svd(Xc, full_matrices=False)
     r = min(r, Vt.shape[0])
     return Xc @ Vt[:r].T, Vt[:r]           # projected data, projection basis (r x P)
@@ -106,7 +118,17 @@ def load_real_gradients(path):
     for f in sorted(glob.glob(os.path.join(path, "*", "*.npy"))):
         genre = os.path.basename(os.path.dirname(f))
         task = os.path.splitext(os.path.basename(f))[0]
-        clouds.append(np.load(f).astype(np.float64))
+        X = np.load(f).astype(np.float32)  # float32: the pooled matrix is GBs; ample for the gate
+        # hygiene: occasional minibatches explode (loss spikes -> huge/NaN grads); they are
+        # numerical accidents, not sources — drop non-finite rows and >10x-median-norm outliers
+        finite = np.isfinite(X).all(axis=1)
+        X = X[finite]
+        norms = np.linalg.norm(X, axis=1)
+        keep = norms < 10 * np.median(norms)
+        if (~finite).any() or (~keep).any():
+            print(f"  hygiene: {genre}/{task} dropped {int((~finite).sum())} non-finite "
+                  f"+ {int((~keep).sum())} outlier-norm rows of {len(finite)}")
+        clouds.append(X[keep])
         labels.append((genre, task))
     if not clouds:
         raise FileNotFoundError(f"no gradient clouds under {path} — run gate/collect_grads.py first")
