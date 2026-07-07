@@ -1,5 +1,6 @@
-import numpy as np
-exec(open('gate0.py').read().split("all_codes=")[0])   # reuse H_of, learn_library, precond_from_library, iters, ov, active_subspace
+import numpy as np, os
+_here = os.path.dirname(os.path.abspath(__file__))
+exec(open(os.path.join(_here, '01_saturation_and_transfer.py')).read().split("all_codes=")[0])   # reuse H_of, learn_library, precond_from_library, iters, ov, active_subspace
 rng=np.random.default_rng(1)
 # SPARSE regime: many primitives, few active per task -> routing SHOULD matter (monolithic over-damps)
 Pbig=16

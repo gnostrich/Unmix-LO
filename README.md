@@ -70,8 +70,9 @@ README.md      - this file
 CONTEXT.md     - compressed theory arc + honest epistemic ledger (read this second)
 GATE.md        - precise one-day spec for the real-gradient gate (the job to run)
 requirements.txt
-experiments/   - the toys that establish the mechanism and the negative prior
+experiments/   - the toys that establish the mechanism and the negative prior (RESULTS.md = reproduced numbers)
 src/           - the extractor spine (runs on synthetic now; hook for real gradients)
+gate/          - implementation of GATE.md: real-gradient collection + the three-check decision
 ```
 
 ## Quickstart
@@ -81,5 +82,7 @@ pip install -r requirements.txt
 python experiments/05_diversity_restores_identifiability.py   # the encouraging one
 python experiments/04_ica_extraction_gate.py                  # the conditional positive
 python src/extractor.py                                       # the spine, on synthetic data
-# then: implement GATE.md (real LoRA gradients) — that's the whole decision.
+# the real-gradient gate (GATE.md) is implemented in gate/:
+pip install torch transformers peft
+sh gate/fetch_data.sh && python gate/collect_grads.py && python gate/run_gate.py
 ```

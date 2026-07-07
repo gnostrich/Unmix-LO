@@ -1,5 +1,6 @@
-import numpy as np
-exec(open('toy.py').read().split("print(")[0])
+import numpy as np, os
+_here = os.path.dirname(os.path.abspath(__file__))
+exec(open(os.path.join(_here, '_shared_neural_mlp.py')).read().split("print(")[0])
 NF,TPF=6,6
 fam_U=[make_family_subspace(100+f) for f in range(NF)]
 teach=[[make_teacher(fam_U[f],1000*f+t) for t in range(TPF)] for f in range(NF)]

@@ -100,8 +100,17 @@ def synthetic_pool(n_prim=8, n_domains=6, D=32, M=400, seed=0, fused_everywhere=
 
 
 def load_real_gradients(path):
-    """TODO (GATE.md step 2): load grads/{genre}/{task}.npy -> list of (n, P) arrays + labels."""
-    raise NotImplementedError("Point this at real LoRA gradient clouds to run the gate.")
+    """GATE.md step 2: load grads/{genre}/{task}.npy -> (list of (n, P) arrays, list of (genre, task))."""
+    import os, glob
+    clouds, labels = [], []
+    for f in sorted(glob.glob(os.path.join(path, "*", "*.npy"))):
+        genre = os.path.basename(os.path.dirname(f))
+        task = os.path.splitext(os.path.basename(f))[0]
+        clouds.append(np.load(f).astype(np.float64))
+        labels.append((genre, task))
+    if not clouds:
+        raise FileNotFoundError(f"no gradient clouds under {path} — run gate/collect_grads.py first")
+    return clouds, labels
 
 
 # ---------------------------------------------------------------- demo / self-test
