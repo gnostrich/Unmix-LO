@@ -1,0 +1,34 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "P": 393216,
+  "n_grads": 2,
+  "batch": 4,
+  "seq": 256,
+  "seed": 0,
+  "tasks": {
+    "code/sklearn": {
+      "n_tokens": 364558,
+      "mean_grad_norm": 0.7946077585220337
+    },
+    "code/numpy": {
+      "n_tokens": 404101,
+      "mean_grad_norm": 1.0535672903060913
+    },
+    "math/arithmetic": {
+      "n_tokens": 94622,
+      "mean_grad_norm": 4.475542068481445
+    },
+    "math/algebra": {
+      "n_tokens": 120985,
+      "mean_grad_norm": 0.7384321093559265
+    },
+    "prose/austen_fiction": {
+      "n_tokens": 171751,
+      "mean_grad_norm": 0.939572274684906
+    },
+    "prose/aurelius_philosophy": {
+      "n_tokens": 97978,
+      "mean_grad_norm": 0.8411217331886292
+    }
+  }
+}

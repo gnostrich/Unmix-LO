@@ -1,46 +1,46 @@
 {
   "model": "gpt2",
   "P": 221184,
-  "n_grads": 2,
+  "n_grads": 120,
   "batch": 4,
   "seq": 256,
   "seed": 0,
   "tasks": {
     "code/sklearn": {
       "n_tokens": 642512,
-      "mean_grad_norm": 0.3772982656955719
+      "mean_grad_norm": 0.44870737195014954
     },
     "code/numpy": {
       "n_tokens": 661500,
-      "mean_grad_norm": 0.4862098693847656
+      "mean_grad_norm": 0.4786359965801239
     },
     "code/scipy": {
       "n_tokens": 776440,
-      "mean_grad_norm": 0.4209005832672119
+      "mean_grad_norm": 0.41406524181365967
     },
     "math/arithmetic": {
       "n_tokens": 66043,
-      "mean_grad_norm": 0.8474565744400024
+      "mean_grad_norm": 0.8299065828323364
     },
     "math/algebra": {
       "n_tokens": 106310,
-      "mean_grad_norm": 0.5412593483924866
+      "mean_grad_norm": 0.5189677476882935
     },
     "math/sequences": {
       "n_tokens": 80570,
-      "mean_grad_norm": 0.9356300830841064
+      "mean_grad_norm": 0.7821672558784485
     },
     "prose/austen_fiction": {
       "n_tokens": 191640,
-      "mean_grad_norm": 0.4579477906227112
+      "mean_grad_norm": 0.48772844672203064
     },
     "prose/aurelius_philosophy": {
       "n_tokens": 100063,
-      "mean_grad_norm": 0.5797975659370422
+      "mean_grad_norm": 0.48852235078811646
     },
     "prose/melville_narrative": {
       "n_tokens": 327097,
-      "mean_grad_norm": 0.4986576437950134
+      "mean_grad_norm": 0.497453898191452
     }
   }
 }
