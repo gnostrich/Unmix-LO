@@ -70,16 +70,28 @@ def extract(path):
             ty += " " + lines[j].strip(); j += 1
         # definition must follow (same name at column 0) => it's a proven lemma, not a field
         has_def = j < len(lines) and re.match(rf"^{re.escape(name)}[\s(]", lines[j])
-        i = j
         if not has_def:
+            i = j
             continue
+        # capture the proof body (all clauses until the next column-0 declaration) — used for
+        # the composability-ceiling control (oracle hints = atoms the human proof references)
+        body = []
+        while j < len(lines) and (not lines[j] or lines[j][0].isspace()
+                                  or re.match(rf"^{re.escape(name)}[\s(]", lines[j])):
+            body.append(lines[j]); j += 1
+        i = j
         if "≡" not in ty:                      # keep equational goals (what composition targets)
             continue
         if len(ty) > 240 or "{-" in ty or "?" in ty:
             continue
         if any(tok in ty for tok in ("Path ", "PathP", "Square", "≃", "Iso")) and "≡" not in ty:
             continue
-        out.append({"name": name, "type": ty})
+        out.append({"name": name, "type": ty, "body": " ".join(l.strip() for l in body)})
+    # oracle hints: body identifiers that are themselves lemmas declared in this module
+    decl_names = {g["name"] for g in out}
+    for g in out:
+        toks = set(re.findall(r"[^\s(){};.]+", g.pop("body")))
+        g["proof_atoms"] = sorted((toks & decl_names) - {g["name"]})
     return out
 
 

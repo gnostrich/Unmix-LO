@@ -26,8 +26,8 @@ from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 WORK = os.environ.get("AGDA_WORK", os.path.join(HERE, "work"))
-AUTO_TIMEOUT = int(os.environ.get("AGDA_AUTO_T", 2))     # Agsy per-attempt seconds
-TOP_K = 6                                                # hints per attempt
+AUTO_TIMEOUT = int(os.environ.get("AGDA_AUTO_T", 4))     # Agsy per-attempt seconds
+TOP_K = 8                                                # hints per attempt
 SEED_ATOMS = ["sym", "cong", "_∙_", "transport", "subst", "funExt"]
 HELD_FRAC = 0.25
 
@@ -240,17 +240,25 @@ def run_pass(data, seed, slice_n=None, log=print):
         f"library grew to {len(library)} atoms ({len(library)-len(SEED_ATOMS)} acquired)")
 
     # held-out evaluation with the final library
+    # ceiling = same composer, ORACLE hints (atoms the human proof used): separates
+    # router failure from composer floor. ok requires only router hints; ceiling_ok
+    # is the validity bound on what Agsy could ever deliver here.
     held_ev = []
     for d in domains:
         for g in held[d]:
             hints = pick_hints(g, library, score)
             term = sessions[d].auto(hole_of[d][g["name"]], hints)
             used = atoms_used(term, hints) if term else []
+            oracle = [h for h in g.get("proof_atoms", []) if h != g["name"]][:TOP_K]
+            ceil_term = term or (sessions[d].auto(hole_of[d][g["name"]], oracle)
+                                 if oracle else None)
             held_ev.append({"domain": d, "goal": g["name"], "ok": bool(term), "used": used,
+                            "ceiling_ok": bool(ceil_term),
                             "used_domains": [next(a["domain"] for a in library
                                                   if a["name"] == u) for u in used]})
         checkpoint(seed=seed, phase="held-out", done_domain=d,
-                   held_ok=sum(e["ok"] for e in held_ev), held_n=len(held_ev))
+                   held_ok=sum(e["ok"] for e in held_ev),
+                   ceiling_ok=sum(e["ceiling_ok"] for e in held_ev), held_n=len(held_ev))
 
     # diversity curve: held-out success using only atoms acquired from first n domains pooled
     # (seed 0 only — the curve is a property of the pooling, not the ordering)
@@ -303,6 +311,8 @@ def analyze(passes):
 
     res = {
         "held_total": n_held,
+        "composability_ceiling": round(sum(e.get("ceiling_ok", False) for e in held)
+                                       / max(n_held, 1), 3),
         "held_success": round(len(ok) / max(n_held, 1), 3),
         "held_reuse_rate": round(len(reuse) / max(n_held, 1), 3),
         "reuse_given_success": round(len(reuse) / max(len(ok), 1), 3),
