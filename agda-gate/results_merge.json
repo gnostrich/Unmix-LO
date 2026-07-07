@@ -1,0 +1,12 @@
+{
+ "candidate_pairs": [
+  [
+   "≡ℕ≃Codeℕ",
+   "≡ℕ≃Codeℕ'",
+   "nat"
+  ]
+ ],
+ "paths_exhibited": [],
+ "library_before": 142,
+ "library_after_merge": 142
+}

@@ -1,16 +1,9 @@
 {
  "seed": 2,
- "phase": "train",
- "step": "141/149",
- "composed": 5,
- "library": 142,
- "last": {
-  "goal": "rCancel'",
-  "domain": "path",
-  "ok": true,
-  "used": [
-   "rCancel"
-  ]
- },
- "at": "15:18:53"
+ "phase": "held-out",
+ "done_domain": "sigma",
+ "held_ok": 1,
+ "ceiling_ok": 4,
+ "held_n": 46,
+ "at": "15:20:54"
 }
