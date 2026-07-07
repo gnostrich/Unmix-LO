@@ -1,0 +1,420 @@
+{
+ "config": {
+  "auto_timeout": 2,
+  "top_k": 6,
+  "seeds": 1,
+  "slice": 5,
+  "seed_atoms": [
+   "sym",
+   "cong",
+   "_∙_",
+   "transport",
+   "subst",
+   "funExt"
+  ]
+ },
+ "metrics": {
+  "held_total": 4,
+  "held_success": 0.0,
+  "held_reuse_rate": 0.0,
+  "reuse_given_success": 0.0,
+  "crossdomain_rate_given_success": 0.0,
+  "mean_atoms_per_proof": 0.0,
+  "n_smeared_atoms": 0,
+  "top_atoms": [],
+  "library_size": 26,
+  "stability_jaccard": null,
+  "diversity_curve": {
+   "1": 0.0,
+   "2": 0.0,
+   "3": 0.0,
+   "4": 0.0,
+   "5": 0.0,
+   "6": 0.0
+  },
+  "pass": {
+   "reused": false,
+   "individual": true,
+   "stable": false
+  }
+ },
+ "passes": [
+  {
+   "seed": 0,
+   "events": [
+    {
+     "phase": "train",
+     "step": 0,
+     "domain": "bool",
+     "goal": "notnot",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 1,
+     "domain": "sigma",
+     "goal": "Σ-cong-fst",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 2,
+     "domain": "sigma",
+     "goal": "≡-×",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 3,
+     "domain": "list",
+     "goal": "cons-inj₁",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 4,
+     "domain": "path",
+     "goal": "symInvo",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 5,
+     "domain": "sigma",
+     "goal": "×≡Prop",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 6,
+     "domain": "bool",
+     "goal": "notEq",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 7,
+     "domain": "path",
+     "goal": "lUnit-filler",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 8,
+     "domain": "path",
+     "goal": "lUnit",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 9,
+     "domain": "int",
+     "goal": "injNegsuc",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 10,
+     "domain": "nat",
+     "goal": "maxComm",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 11,
+     "domain": "int",
+     "goal": "predSuc",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 12,
+     "domain": "nat",
+     "goal": "minComm",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 13,
+     "domain": "sigma",
+     "goal": "Σ-cong-snd",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 14,
+     "domain": "int",
+     "goal": "sucPred",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 15,
+     "domain": "list",
+     "goal": "cons-inj₂",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 16,
+     "domain": "int",
+     "goal": "injPos",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 17,
+     "domain": "path",
+     "goal": "rUnit",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 18,
+     "domain": "bool",
+     "goal": "false≢true",
+     "ok": false,
+     "used": []
+    },
+    {
+     "phase": "train",
+     "step": 19,
+     "domain": "bool",
+     "goal": "true≢false",
+     "ok": false,
+     "used": []
+    }
+   ],
+   "held": [
+    {
+     "domain": "path",
+     "goal": "symRefl",
+     "ok": false,
+     "used": [],
+     "used_domains": []
+    },
+    {
+     "domain": "nat",
+     "goal": "injSuc",
+     "ok": false,
+     "used": [],
+     "used_domains": []
+    },
+    {
+     "domain": "bool",
+     "goal": "¬true→false",
+     "ok": false,
+     "used": [],
+     "used_domains": []
+    },
+    {
+     "domain": "sigma",
+     "goal": "Σ-cong'",
+     "ok": false,
+     "used": [],
+     "used_domains": []
+    }
+   ],
+   "curve": {
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0
+   },
+   "train_counts": {
+    "path": 4,
+    "nat": 2,
+    "int": 4,
+    "bool": 4,
+    "list": 2,
+    "sigma": 4
+   },
+   "held_counts": {
+    "path": 1,
+    "nat": 1,
+    "int": 0,
+    "bool": 1,
+    "list": 0,
+    "sigma": 1
+   }
+  }
+ ],
+ "final_library": [
+  {
+   "name": "sym",
+   "type": "sym",
+   "domain": "seed",
+   "src": "seed"
+  },
+  {
+   "name": "cong",
+   "type": "cong",
+   "domain": "seed",
+   "src": "seed"
+  },
+  {
+   "name": "_∙_",
+   "type": "_∙_",
+   "domain": "seed",
+   "src": "seed"
+  },
+  {
+   "name": "transport",
+   "type": "transport",
+   "domain": "seed",
+   "src": "seed"
+  },
+  {
+   "name": "subst",
+   "type": "subst",
+   "domain": "seed",
+   "src": "seed"
+  },
+  {
+   "name": "funExt",
+   "type": "funExt",
+   "domain": "seed",
+   "src": "seed"
+  },
+  {
+   "name": "notnot",
+   "type": "∀ x → not (not x) ≡ x",
+   "domain": "bool",
+   "src": "acquired"
+  },
+  {
+   "name": "Σ-cong-fst",
+   "type": "(p : A ≡ A') → Σ A (B ∘ transport p) ≡ Σ A' B",
+   "domain": "sigma",
+   "src": "acquired"
+  },
+  {
+   "name": "≡-×",
+   "type": "{A : Type ℓ} {B : Type ℓ'} {x y : A × B} → fst x ≡ fst y → snd x ≡ snd y → x ≡ y",
+   "domain": "sigma",
+   "src": "acquired"
+  },
+  {
+   "name": "cons-inj₁",
+   "type": "∀ {x y : A} {xs ys} → x ∷ xs ≡ y ∷ ys → x ≡ y",
+   "domain": "list",
+   "src": "acquired"
+  },
+  {
+   "name": "symInvo",
+   "type": "(p : x ≡ y) → p ≡ p ⁻¹ ⁻¹",
+   "domain": "path",
+   "src": "acquired"
+  },
+  {
+   "name": "×≡Prop",
+   "type": "isProp A' → {u v : A × A'} → u .fst ≡ v .fst → u ≡ v",
+   "domain": "sigma",
+   "src": "acquired"
+  },
+  {
+   "name": "notEq",
+   "type": "Bool ≡ Bool",
+   "domain": "bool",
+   "src": "acquired"
+  },
+  {
+   "name": "lUnit-filler",
+   "type": "{x y : A} (p : x ≡ y) → I → I → I → A",
+   "domain": "path",
+   "src": "acquired"
+  },
+  {
+   "name": "lUnit",
+   "type": "(p : x ≡ y) → p ≡ refl ∙ p",
+   "domain": "path",
+   "src": "acquired"
+  },
+  {
+   "name": "injNegsuc",
+   "type": "∀ {a b : ℕ} → negsuc a ≡ negsuc b → a ≡ b",
+   "domain": "int",
+   "src": "acquired"
+  },
+  {
+   "name": "maxComm",
+   "type": "(n m : ℕ) → max n m ≡ max m n",
+   "domain": "nat",
+   "src": "acquired"
+  },
+  {
+   "name": "predSuc",
+   "type": "∀ i → predℤ (sucℤ i) ≡ i",
+   "domain": "int",
+   "src": "acquired"
+  },
+  {
+   "name": "minComm",
+   "type": "(n m : ℕ) → min n m ≡ min m n",
+   "domain": "nat",
+   "src": "acquired"
+  },
+  {
+   "name": "Σ-cong-snd",
+   "type": "((x : A) → B x ≡ B' x) → Σ A B ≡ Σ A B'",
+   "domain": "sigma",
+   "src": "acquired"
+  },
+  {
+   "name": "sucPred",
+   "type": "∀ i → sucℤ (predℤ i) ≡ i",
+   "domain": "int",
+   "src": "acquired"
+  },
+  {
+   "name": "cons-inj₂",
+   "type": "∀ {x y : A} {xs ys} → x ∷ xs ≡ y ∷ ys → xs ≡ ys",
+   "domain": "list",
+   "src": "acquired"
+  },
+  {
+   "name": "injPos",
+   "type": "∀ {a b : ℕ} → pos a ≡ pos b → a ≡ b",
+   "domain": "int",
+   "src": "acquired"
+  },
+  {
+   "name": "rUnit",
+   "type": "(p : x ≡ y) → p ≡ p ∙ refl",
+   "domain": "path",
+   "src": "acquired"
+  },
+  {
+   "name": "false≢true",
+   "type": "¬ false ≡ true",
+   "domain": "bool",
+   "src": "acquired"
+  },
+  {
+   "name": "true≢false",
+   "type": "¬ true ≡ false",
+   "domain": "bool",
+   "src": "acquired"
+  }
+ ]
+}

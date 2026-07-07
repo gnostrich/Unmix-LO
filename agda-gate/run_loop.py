@@ -19,7 +19,8 @@ Checks on the DISCRETE library:
 
 Run:  python agda-gate/run_loop.py [--slice N] [--seeds 3]
 """
-import os, re, json, time, argparse, random, subprocess, select, math, functools
+import os, re, json, time, argparse, random, subprocess, math, functools
+import threading, queue
 print = functools.partial(print, flush=True)
 from collections import defaultdict
 
@@ -39,26 +40,34 @@ class Agda:
         self.path = path
         self.p = subprocess.Popen(["agda", "--interaction"], cwd=os.path.dirname(path),
                                   stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                  stderr=subprocess.DEVNULL, text=True, bufsize=1,
+                                  stderr=subprocess.DEVNULL, text=True,
                                   env={**os.environ, "LC_ALL": "C.UTF-8"})
+        # NB: never select() on a buffered text stream — readline() slurps ahead of the fd
+        # and select then blocks on lines already sitting in the buffer. Pump via a thread.
+        self.q = queue.Queue()
+        threading.Thread(target=self._pump, daemon=True).start()
+
+    def _pump(self):
+        for line in self.p.stdout:
+            self.q.put(line)
 
     def _cmd(self, s, timeout):
         self.p.stdin.write(f'IOTCM "{self.path}" NonInteractive Indirect ({s})\n')
         self.p.stdin.flush()
         buf, t0 = "", time.time()
         while time.time() - t0 < timeout:
-            r, _, _ = select.select([self.p.stdout], [], [], 0.2)
-            if not r:
+            try:
+                line = self.q.get(timeout=0.2)
+            except queue.Empty:
                 continue
-            line = self.p.stdout.readline()
-            if not line:
-                break
             buf += line
             if ("agda2-give-action" in line or "*Error*" in line
                     or '"*Auto*"' in line or "agda2-goals-action" in line):
-                # drain briefly so trailing actions don't pollute the next command
-                while select.select([self.p.stdout], [], [], 0.1)[0]:
-                    buf += self.p.stdout.readline()
+                try:            # drain trailing actions so they don't pollute the next command
+                    while True:
+                        buf += self.q.get(timeout=0.15)
+                except queue.Empty:
+                    pass
                 break
         return buf
 
@@ -160,6 +169,14 @@ def atoms_used(term, hints):
     return [h for h in hints if h in words]
 
 
+# ---------------------------------------------------------------- live checkpointing
+def checkpoint(**kw):
+    """Feeler for the humans: agda-gate/progress.json reflects live state at every phase."""
+    kw["at"] = time.strftime("%H:%M:%S")
+    json.dump(kw, open(os.path.join(HERE, "progress.json"), "w"),
+              indent=1, ensure_ascii=False, default=str)
+
+
 # ---------------------------------------------------------------- the loop
 def run_pass(data, seed, slice_n=None, log=print):
     rng = random.Random(seed)
@@ -186,6 +203,9 @@ def run_pass(data, seed, slice_n=None, log=print):
         sessions[d] = a
         hole_of[d] = {g["name"]: i for i, g in enumerate(kept)}
         log(f"  [{d}] {len(train[d])} train + {len(held[d])} held goals loaded")
+        checkpoint(seed=seed, phase="loading", domain=d,
+                   loaded={dd: len(train.get(dd, [])) + len(held.get(dd, []))
+                           for dd in domains if dd in sessions or dd == d})
 
     library = [{"name": n, "type": n, "domain": "seed", "src": "seed"} for n in SEED_ATOMS]
     type_of_atom = {}   # for router scoring: seeds score by name only
@@ -209,6 +229,12 @@ def run_pass(data, seed, slice_n=None, log=print):
             library.append({"name": g["name"], "type": g["type"], "domain": d, "src": "acquired"})
             events.append({"phase": "train", "step": step, "domain": d, "goal": g["name"],
                            "ok": False, "used": []})
+        if step % 5 == 0 or step == len(order) - 1:
+            n_ok_so_far = sum(e["ok"] for e in events)
+            checkpoint(seed=seed, phase="train", step=f"{step+1}/{len(order)}",
+                       composed=n_ok_so_far, library=len(library),
+                       last={"goal": g["name"], "domain": d, "ok": events[-1]["ok"],
+                             "used": events[-1]["used"]})
     n_ok = sum(e["ok"] for e in events)
     log(f"  train pass: {n_ok}/{len(order)} composed from library; "
         f"library grew to {len(library)} atoms ({len(library)-len(SEED_ATOMS)} acquired)")
@@ -223,12 +249,14 @@ def run_pass(data, seed, slice_n=None, log=print):
             held_ev.append({"domain": d, "goal": g["name"], "ok": bool(term), "used": used,
                             "used_domains": [next(a["domain"] for a in library
                                                   if a["name"] == u) for u in used]})
+        checkpoint(seed=seed, phase="held-out", done_domain=d,
+                   held_ok=sum(e["ok"] for e in held_ev), held_n=len(held_ev))
 
     # diversity curve: held-out success using only atoms acquired from first n domains pooled
+    # (seed 0 only — the curve is a property of the pooling, not the ordering)
     curve = {}
     dom_order = domains[:]
-    rng.Random = None  # (no-op; keep rng)
-    for nd in range(1, len(domains) + 1):
+    for nd in (range(1, len(domains) + 1) if seed == 0 else []):
         allowed = set(SEED_ATOMS) | {a["name"] for a in library
                                      if a["domain"] in dom_order[:nd]}
         sub = [a for a in library if a["name"] in allowed]
@@ -240,6 +268,7 @@ def run_pass(data, seed, slice_n=None, log=print):
                 ok += bool(term); tot += 1
         curve[nd] = round(ok / max(tot, 1), 3)
         log(f"  diversity: library from {nd} domain(s) -> held-out success {curve[nd]}")
+        checkpoint(seed=seed, phase="diversity-curve", curve=curve)
 
     for a in sessions.values():
         a.close()
