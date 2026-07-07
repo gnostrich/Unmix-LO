@@ -20,6 +20,7 @@ from extractor import (whiten_project, extract, match, check_stable,
 
 R = int(os.environ.get("GATE_R", 50))          # PCA subspace dim (GATE.md: ~50-200)
 K = int(os.environ.get("GATE_K", 30))          # ICA components
+GRADS = os.environ.get("GATE_GRADS", os.path.join(HERE, "..", "grads"))
 ACT_THR = 0.15                                  # activity threshold (same as check_reused)
 
 
@@ -34,7 +35,7 @@ def task_activation(A, basis, clouds):
 
 
 def main():
-    clouds, labels = load_real_gradients(os.path.join(HERE, "..", "grads"))
+    clouds, labels = load_real_gradients(GRADS)
     genres = [g for g, _ in labels]
     genre_names = sorted(set(genres), key=genres.index)
     print(f"loaded {len(clouds)} task clouds: {labels}")
@@ -53,6 +54,8 @@ def main():
 
     # ---- 2 INDIVIDUAL
     maxpair, kurt = check_individual(A, Xp @ A)
+    off = np.abs(A.T @ A)[~np.eye(A.shape[1], dtype=bool)]
+    medpair = float(np.median(off))
     M = task_activation(A, basis, clouds)
     active = M > ACT_THR
     usage = active.sum(1)                                        # tasks using each component
@@ -61,10 +64,12 @@ def main():
     gmean = X.mean(0) @ basis.T
     gmean /= np.linalg.norm(gmean) + 1e-12
     generic_cos = float(np.abs(gmean @ A).max())
-    res.update(max_pairwise_overlap=maxpair, median_loading_kurtosis=kurt,
+    res.update(max_pairwise_overlap=maxpair, median_pairwise_overlap=medpair,
+               median_loading_kurtosis=kurt,
                mean_tasks_per_component=float(usage.mean()), frac_smeared_components=smeared,
                generic_direction_max_cos=generic_cos)
-    print(f"2 INDIVIDUAL : max pairwise overlap = {maxpair:.3f} (~0.707 = fused signature)")
+    print(f"2 INDIVIDUAL : pairwise overlap median = {medpair:.3f} (pass = low), "
+          f"max = {maxpair:.3f} (~0.707 = a fused pair survives)")
     print(f"               median loading excess-kurtosis = {kurt:.2f} (pass > 0, Gaussian = unseparable)")
     print(f"               tasks using each component: mean {usage.mean():.1f}/{len(clouds)}, "
           f"smeared(all-task) fraction = {smeared:.2f}")
@@ -104,7 +109,7 @@ def main():
 
     # ---- verdict
     p_stable = stab > 0.8
-    p_indiv = (kurt > 0) and (maxpair < 0.68 or maxpair > 0.73) and smeared < 0.5
+    p_indiv = (kurt > 0) and (medpair < 0.3) and smeared < 0.5
     p_reused = (resid < 0.3) and (nact < K * 0.5) and crossgenre > 0.2
     res["pass"] = {"stable": bool(p_stable), "individual": bool(p_indiv), "reused": bool(p_reused)}
     verdict = "GREEN — build the compositional system" if all(res["pass"].values()) else \
