@@ -20,9 +20,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import LoraConfig, get_peft_model
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-GRADS = os.path.join(HERE, "..", "grads")
+GRADS = os.environ.get("GATE_OUT", os.path.join(HERE, "..", "grads"))
 MODEL = os.environ.get("GATE_MODEL", "gpt2")
 N_GRADS = int(os.environ.get("GATE_N_GRADS", 120))   # minibatch gradients per task
+N_TASKS = int(os.environ.get("GATE_TASKS", 9))       # 9 = 3/genre, 6 = 2/genre (compute-limited)
 BATCH, SEQ = 4, 256
 SEED = 0
 
@@ -98,6 +99,12 @@ def _gutenberg(fname):
 
 def build_tasks():
     rng = random.Random(SEED)
+    per_genre = max(1, N_TASKS // 3)
+    full = _all_tasks(rng)
+    return {g: dict(list(group.items())[:per_genre]) for g, group in full.items()}
+
+
+def _all_tasks(rng):
     return {
         "code": {
             "sklearn": _package_source("sklearn"),
@@ -121,8 +128,12 @@ def build_tasks():
 def make_model():
     torch.manual_seed(SEED)  # fixes lora_A: the shared projection all tasks are measured through
     model = AutoModelForCausalLM.from_pretrained(MODEL)
+    if any("c_attn" in n for n, _ in model.named_modules()):      # gpt2-style fused qkv (Conv1D)
+        targets, fifo = ["c_attn"], True
+    else:                                                          # llama/qwen-style split projections
+        targets, fifo = ["q_proj", "k_proj", "v_proj", "o_proj"], False
     cfg = LoraConfig(task_type="CAUSAL_LM", r=8, lora_alpha=16, lora_dropout=0.0,
-                     target_modules=["c_attn"], fan_in_fan_out=True)
+                     target_modules=targets, fan_in_fan_out=fifo)
     model = get_peft_model(model, cfg)
     model.train()  # need grads; dropout is 0 so this is deterministic given the batch
     return model
