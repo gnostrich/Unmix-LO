@@ -1,0 +1,1025 @@
+{
+ "domains": {
+  "path": {
+   "imports": [
+    "Cubical.Foundations.GroupoidLaws"
+   ]
+  },
+  "nat": {
+   "imports": [
+    "Cubical.Data.Nat",
+    "Cubical.Data.Nat.Properties",
+    "Cubical.Data.Sigma"
+   ]
+  },
+  "int": {
+   "imports": [
+    "Cubical.Data.Int",
+    "Cubical.Data.Int.Properties",
+    "Cubical.Data.Nat"
+   ]
+  },
+  "bool": {
+   "imports": [
+    "Cubical.Data.Bool",
+    "Cubical.Data.Bool.Properties",
+    "Cubical.Foundations.Isomorphism",
+    "Cubical.Relation.Nullary"
+   ]
+  },
+  "list": {
+   "imports": [
+    "Cubical.Data.List",
+    "Cubical.Data.List.Properties",
+    "Cubical.Data.Nat",
+    "Cubical.Data.Sigma"
+   ]
+  },
+  "sigma": {
+   "imports": [
+    "Cubical.Data.Sigma",
+    "Cubical.Data.Sigma.Properties",
+    "Cubical.Foundations.Isomorphism",
+    "Cubical.Foundations.Equiv",
+    "Cubical.Foundations.Function"
+   ]
+  }
+ },
+ "goals": [
+  {
+   "name": "symInvo",
+   "type": "(p : x ≡ y) → p ≡ p ⁻¹ ⁻¹",
+   "domain": "path"
+  },
+  {
+   "name": "rUnit",
+   "type": "(p : x ≡ y) → p ≡ p ∙ refl",
+   "domain": "path"
+  },
+  {
+   "name": "lUnit-filler",
+   "type": "{x y : A} (p : x ≡ y) → I → I → I → A",
+   "domain": "path"
+  },
+  {
+   "name": "lUnit",
+   "type": "(p : x ≡ y) → p ≡ refl ∙ p",
+   "domain": "path"
+  },
+  {
+   "name": "symRefl",
+   "type": "refl {x = x} ≡ refl ⁻¹",
+   "domain": "path"
+  },
+  {
+   "name": "compPathRefl",
+   "type": "refl {x = x} ≡ refl ∙ refl",
+   "domain": "path"
+  },
+  {
+   "name": "rCancel-filler",
+   "type": "∀ {x y : A} (p : x ≡ y) → (k j i : I) → A",
+   "domain": "path"
+  },
+  {
+   "name": "rCancel",
+   "type": "(p : x ≡ y) → p ∙ p ⁻¹ ≡ refl",
+   "domain": "path"
+  },
+  {
+   "name": "rCancel-filler'",
+   "type": "∀ {ℓ} {A : Type ℓ} {x y : A} (p : x ≡ y) → (i j k : I) → A",
+   "domain": "path"
+  },
+  {
+   "name": "rCancel'",
+   "type": "∀ {ℓ} {A : Type ℓ} {x y : A} (p : x ≡ y) → p ∙ p ⁻¹ ≡ refl",
+   "domain": "path"
+  },
+  {
+   "name": "lCancel",
+   "type": "(p : x ≡ y) → p ⁻¹ ∙ p ≡ refl",
+   "domain": "path"
+  },
+  {
+   "name": "assoc",
+   "type": "(p : x ≡ y) (q : y ≡ z) (r : z ≡ w) → p ∙ q ∙ r ≡ (p ∙ q) ∙ r",
+   "domain": "path"
+  },
+  {
+   "name": "invSides-filler",
+   "type": "{x y z : A} (p : x ≡ y) (q : x ≡ z) → Square p (sym q) q (sym p)",
+   "domain": "path"
+  },
+  {
+   "name": "leftright",
+   "type": "{ℓ : Level} {A : Type ℓ} {x y z : A} (p : x ≡ y) (q : y ≡ z) → (refl ∙∙ p ∙∙ q) ≡ (p ∙∙ q ∙∙ refl)",
+   "domain": "path"
+  },
+  {
+   "name": "split-leftright",
+   "type": "{ℓ : Level} {A : Type ℓ} {w x y z : A} (p : w ≡ x) (q : x ≡ y) (r : y ≡ z) → (p ∙∙ q ∙∙ r) ≡ (refl ∙∙ (p ∙∙ q ∙∙ refl) ∙∙ r)",
+   "domain": "path"
+  },
+  {
+   "name": "split-leftright'",
+   "type": "{ℓ : Level} {A : Type ℓ} {w x y z : A} (p : w ≡ x) (q : x ≡ y) (r : y ≡ z) → (p ∙∙ q ∙∙ r) ≡ (p ∙∙ (refl ∙∙ q ∙∙ r) ∙∙ refl)",
+   "domain": "path"
+  },
+  {
+   "name": "doubleCompPath-elim",
+   "type": "{ℓ : Level} {A : Type ℓ} {w x y z : A} (p : w ≡ x) (q : x ≡ y) (r : y ≡ z) → (p ∙∙ q ∙∙ r) ≡ (p ∙ q) ∙ r",
+   "domain": "path"
+  },
+  {
+   "name": "doubleCompPath-elim'",
+   "type": "{ℓ : Level} {A : Type ℓ} {w x y z : A} (p : w ≡ x) (q : x ≡ y) (r : y ≡ z) → (p ∙∙ q ∙∙ r) ≡ p ∙ (q ∙ r)",
+   "domain": "path"
+  },
+  {
+   "name": "cong-∙∙-filler",
+   "type": "∀ {ℓ ℓ'} {A : Type ℓ} {B : Type ℓ'} {x y z w : A} (f : A → B) (p : w ≡ x) (q : x ≡ y) (r : y ≡ z) → I → I → I → B",
+   "domain": "path"
+  },
+  {
+   "name": "cong-∙∙",
+   "type": "∀ {B : Type ℓ} (f : A → B) (p : w ≡ x) (q : x ≡ y) (r : y ≡ z) → cong f (p ∙∙ q ∙∙ r) ≡ (cong f p) ∙∙ (cong f q) ∙∙ (cong f r)",
+   "domain": "path"
+  },
+  {
+   "name": "cong-∙",
+   "type": "∀ {B : Type ℓ} (f : A → B) (p : x ≡ y) (q : y ≡ z) → cong f (p ∙ q) ≡ (cong f p) ∙ (cong f q)",
+   "domain": "path"
+  },
+  {
+   "name": "hcomp-unique",
+   "type": "∀ {ℓ} {A : Type ℓ} {φ} → (u : I → Partial φ A) → (u0 : A [ φ ↦ u i0 ]) → (h2 : ∀ i → A [ (φ ∨ ~ i) ↦ (\\ { (φ = i1) → u i 1=1; (i = i0) → outS u0}) ]) → (hcomp u (outS u0) ≡ outS (h2 i1)) [ φ ↦ (\\ { (φ = i1) → (\\ i → u i1 1=1)}) ]",
+   "domain": "path"
+  },
+  {
+   "name": "hlid-unique",
+   "type": "∀ {ℓ} {A : Type ℓ} {φ} → (u : I → Partial φ A) → (u0 : A [ φ ↦ u i0 ]) → (h1 h2 : ∀ i → A [ (φ ∨ ~ i) ↦ (\\ { (φ = i1) → u i 1=1; (i = i0) → outS u0}) ]) → (outS (h1 i1) ≡ outS (h2 i1)) [ φ ↦ (\\ { (φ = i1) → (\\ i → u i1 1=1)}) ]",
+   "domain": "path"
+  },
+  {
+   "name": "congFunct-filler",
+   "type": "∀ {ℓ ℓ'} {A : Type ℓ} {B : Type ℓ'} {x y z : A} (f : A → B) (p : x ≡ y) (q : y ≡ z) → I → I → I → B",
+   "domain": "path"
+  },
+  {
+   "name": "congFunct",
+   "type": "∀ {ℓ} {B : Type ℓ} (f : A → B) (p : x ≡ y) (q : y ≡ z) → cong f (p ∙ q) ≡ cong f p ∙ cong f q",
+   "domain": "path"
+  },
+  {
+   "name": "congFunct-dep",
+   "type": "∀ {ℓ ℓ'} {A : Type ℓ} {B : A → Type ℓ'} {x y z : A} (f : (a : A) → B a) (p : x ≡ y) (q : y ≡ z) → PathP (λ i → PathP (λ j → B (compPath-filler p q i j)) (f x) (f (q i))) (cong f p) (cong f (p ∙ q))",
+   "domain": "path"
+  },
+  {
+   "name": "cong₂Funct",
+   "type": "∀ {ℓ ℓ'} {A : Type ℓ} {x y : A} {B : Type ℓ'} (f : A → A → B) → (p : x ≡ y) → {u v : A} (q : u ≡ v) → cong₂ f p q ≡ cong (λ x → f x u) p ∙ cong (f y) q",
+   "domain": "path"
+  },
+  {
+   "name": "symDistr-filler",
+   "type": "∀ {ℓ} {A : Type ℓ} {x y z : A} (p : x ≡ y) (q : y ≡ z) → I → I → I → A",
+   "domain": "path"
+  },
+  {
+   "name": "symDistr",
+   "type": "∀ {ℓ} {A : Type ℓ} {x y z : A} (p : x ≡ y) (q : y ≡ z) → sym (p ∙ q) ≡ sym q ∙ sym p",
+   "domain": "path"
+  },
+  {
+   "name": "∙∙lCancel-fill",
+   "type": "∀ {ℓ} {A : Type ℓ} {x y : A} → (p : x ≡ y) → I → I → I → A",
+   "domain": "path"
+  },
+  {
+   "name": "∙∙lCancel",
+   "type": "∀ {ℓ} {A : Type ℓ} {x y : A} → (p : x ≡ y) → sym p ∙∙ refl ∙∙ p ≡ refl",
+   "domain": "path"
+  },
+  {
+   "name": "minComm",
+   "type": "(n m : ℕ) → min n m ≡ min m n",
+   "domain": "nat"
+  },
+  {
+   "name": "maxComm",
+   "type": "(n m : ℕ) → max n m ≡ max m n",
+   "domain": "nat"
+  },
+  {
+   "name": "znots",
+   "type": "¬ (0 ≡ suc n)",
+   "domain": "nat"
+  },
+  {
+   "name": "snotz",
+   "type": "¬ (suc n ≡ 0)",
+   "domain": "nat"
+  },
+  {
+   "name": "injSuc",
+   "type": "suc m ≡ suc n → m ≡ n",
+   "domain": "nat"
+  },
+  {
+   "name": "encodeℕ",
+   "type": "(n m : ℕ) → (n ≡ m) → codeℕ n m",
+   "domain": "nat"
+  },
+  {
+   "name": "compute-eqℕ",
+   "type": "(n m : ℕ) → (n ≡ m ) → codeℕ n m",
+   "domain": "nat"
+  },
+  {
+   "name": "decodeℕ",
+   "type": "(n m : ℕ) → codeℕ n m → (n ≡ m)",
+   "domain": "nat"
+  },
+  {
+   "name": "≡ℕ≃Codeℕ",
+   "type": "(n m : ℕ) → (n ≡ m) ≃ codeℕ n m",
+   "domain": "nat"
+  },
+  {
+   "name": "≡ℕ≃Codeℕ'",
+   "type": "(n m : ℕ) → (n ≡ m) ≃ codeℕ n m",
+   "domain": "nat"
+  },
+  {
+   "name": "suc-predℕ",
+   "type": "∀ n → ¬ n ≡ 0 → n ≡ suc (predℕ n)",
+   "domain": "nat"
+  },
+  {
+   "name": "+-zero",
+   "type": "∀ m → m + 0 ≡ m",
+   "domain": "nat"
+  },
+  {
+   "name": "+-suc",
+   "type": "∀ m n → m + suc n ≡ suc (m + n)",
+   "domain": "nat"
+  },
+  {
+   "name": "+-comm",
+   "type": "∀ m n → m + n ≡ n + m",
+   "domain": "nat"
+  },
+  {
+   "name": "+-assoc",
+   "type": "∀ m n o → m + (n + o) ≡ (m + n) + o",
+   "domain": "nat"
+  },
+  {
+   "name": "inj-m+",
+   "type": "m + l ≡ m + n → l ≡ n",
+   "domain": "nat"
+  },
+  {
+   "name": "inj-+m",
+   "type": "l + m ≡ n + m → l ≡ n",
+   "domain": "nat"
+  },
+  {
+   "name": "m+n≡n→m≡0",
+   "type": "m + n ≡ n → m ≡ 0",
+   "domain": "nat"
+  },
+  {
+   "name": "m+n≡0→m≡0×n≡0",
+   "type": "m + n ≡ 0 → (m ≡ 0) × (n ≡ 0)",
+   "domain": "nat"
+  },
+  {
+   "name": "0≡m·0",
+   "type": "∀ m → 0 ≡ m · 0",
+   "domain": "nat"
+  },
+  {
+   "name": "·-suc",
+   "type": "∀ m n → m · suc n ≡ m + m · n",
+   "domain": "nat"
+  },
+  {
+   "name": "·-comm",
+   "type": "∀ m n → m · n ≡ n · m",
+   "domain": "nat"
+  },
+  {
+   "name": "·-distribʳ",
+   "type": "∀ m n o → (m · o) + (n · o) ≡ (m + n) · o",
+   "domain": "nat"
+  },
+  {
+   "name": "·-distribˡ",
+   "type": "∀ o m n → (o · m) + (o · n) ≡ o · (m + n)",
+   "domain": "nat"
+  },
+  {
+   "name": "·-assoc",
+   "type": "∀ m n o → m · (n · o) ≡ (m · n) · o",
+   "domain": "nat"
+  },
+  {
+   "name": "·-identityˡ",
+   "type": "∀ m → 1 · m ≡ m",
+   "domain": "nat"
+  },
+  {
+   "name": "·-identityʳ",
+   "type": "∀ m → m · 1 ≡ m",
+   "domain": "nat"
+  },
+  {
+   "name": "0≡n·sm→0≡n",
+   "type": "0 ≡ n · suc m → 0 ≡ n",
+   "domain": "nat"
+  },
+  {
+   "name": "inj-·sm",
+   "type": "l · suc m ≡ n · suc m → l ≡ n",
+   "domain": "nat"
+  },
+  {
+   "name": "inj-sm·",
+   "type": "suc m · l ≡ suc m · n → l ≡ n",
+   "domain": "nat"
+  },
+  {
+   "name": "integral-domain-·",
+   "type": "{k l : ℕ} → (k ≡ 0 → ⊥) → (l ≡ 0 → ⊥) → (k · l ≡ 0 → ⊥)",
+   "domain": "nat"
+  },
+  {
+   "name": "zero∸",
+   "type": "∀ n → zero ∸ n ≡ zero",
+   "domain": "nat"
+  },
+  {
+   "name": "n∸n",
+   "type": "(n : ℕ) → n ∸ n ≡ 0",
+   "domain": "nat"
+  },
+  {
+   "name": "∸-cancelˡ",
+   "type": "∀ k m n → (k + m) ∸ (k + n) ≡ m ∸ n",
+   "domain": "nat"
+  },
+  {
+   "name": "+∸",
+   "type": "∀ k n → (k + n) ∸ n ≡ k",
+   "domain": "nat"
+  },
+  {
+   "name": "∸+",
+   "type": "∀ k n → (n + k) ∸ n ≡ k",
+   "domain": "nat"
+  },
+  {
+   "name": "∸-cancelʳ",
+   "type": "∀ m n k → (m + k) ∸ (n + k) ≡ m ∸ n",
+   "domain": "nat"
+  },
+  {
+   "name": "∸-distribʳ",
+   "type": "∀ m n k → (m ∸ n) · k ≡ m · k ∸ n · k",
+   "domain": "nat"
+  },
+  {
+   "name": "compSubstℕ",
+   "type": "∀ {ℓ} {A : ℕ → Type ℓ} {n m l : ℕ} (p : n ≡ m) (q : m ≡ l) (r : n ≡ l) → {x : _} → subst A q (subst A p x) ≡ subst A r x",
+   "domain": "nat"
+  },
+  {
+   "name": "sucPred",
+   "type": "∀ i → sucℤ (predℤ i) ≡ i",
+   "domain": "int"
+  },
+  {
+   "name": "predSuc",
+   "type": "∀ i → predℤ (sucℤ i) ≡ i",
+   "domain": "int"
+  },
+  {
+   "name": "injPos",
+   "type": "∀ {a b : ℕ} → pos a ≡ pos b → a ≡ b",
+   "domain": "int"
+  },
+  {
+   "name": "injNegsuc",
+   "type": "∀ {a b : ℕ} → negsuc a ≡ negsuc b → a ≡ b",
+   "domain": "int"
+  },
+  {
+   "name": "posNotnegsuc",
+   "type": "∀ (a b : ℕ) → ¬ (pos a ≡ negsuc b)",
+   "domain": "int"
+  },
+  {
+   "name": "negsucNotpos",
+   "type": "∀ (a b : ℕ) → ¬ (negsuc a ≡ pos b)",
+   "domain": "int"
+  },
+  {
+   "name": "-pos",
+   "type": "∀ n → - (pos n) ≡ neg n",
+   "domain": "int"
+  },
+  {
+   "name": "-neg",
+   "type": "∀ n → - (neg n) ≡ pos n",
+   "domain": "int"
+  },
+  {
+   "name": "-Involutive",
+   "type": "∀ z → - (- z) ≡ z",
+   "domain": "int"
+  },
+  {
+   "name": "sucℤ+pos",
+   "type": "∀ n m → sucℤ (m +pos n) ≡ (sucℤ m) +pos n",
+   "domain": "int"
+  },
+  {
+   "name": "predℤ+negsuc",
+   "type": "∀ n m → predℤ (m +negsuc n) ≡ (predℤ m) +negsuc n",
+   "domain": "int"
+  },
+  {
+   "name": "sucℤ+negsuc",
+   "type": "∀ n m → sucℤ (m +negsuc n) ≡ (sucℤ m) +negsuc n",
+   "domain": "int"
+  },
+  {
+   "name": "predℤ+pos",
+   "type": "∀ n m → predℤ (m +pos n) ≡ (predℤ m) +pos n",
+   "domain": "int"
+  },
+  {
+   "name": "predℤ-pos",
+   "type": "∀ n → predℤ(- (pos n)) ≡ negsuc n",
+   "domain": "int"
+  },
+  {
+   "name": "predℤ+",
+   "type": "∀ m n → predℤ (m + n) ≡ (predℤ m) + n",
+   "domain": "int"
+  },
+  {
+   "name": "+predℤ",
+   "type": "∀ m n → predℤ (m + n) ≡ m + (predℤ n)",
+   "domain": "int"
+  },
+  {
+   "name": "sucℤ+",
+   "type": "∀ m n → sucℤ (m + n) ≡ (sucℤ m) + n",
+   "domain": "int"
+  },
+  {
+   "name": "+sucℤ",
+   "type": "∀ m n → sucℤ (m + n) ≡  m + (sucℤ n)",
+   "domain": "int"
+  },
+  {
+   "name": "pos0+",
+   "type": "∀ z → z ≡ pos 0 + z",
+   "domain": "int"
+  },
+  {
+   "name": "negsuc0+",
+   "type": "∀ z → predℤ z ≡ negsuc 0 + z",
+   "domain": "int"
+  },
+  {
+   "name": "ind-comm",
+   "type": "{A : Type₀} (_∙_ : A → A → A) (f : ℕ → A) (g : A → A) (p : ∀ {n} → f (suc n) ≡ g (f n)) (g∙ : ∀ a b → g (a ∙ b) ≡ g a ∙ b) (∙g : ∀ a b → g (a ∙ b) ≡ a ∙ g b) (base : ∀ z → z ∙ f 0 ≡ f 0 ∙ z) → ∀ z n → z ∙ f n ≡ f n ∙ z",
+   "domain": "int"
+  },
+  {
+   "name": "ind-assoc",
+   "type": "{A : Type₀} (_·_ : A → A → A) (f : ℕ → A) (g : A → A) (p : ∀ a b → g (a · b) ≡ a · (g b)) (q : ∀ {c} → f (suc c) ≡ g (f c)) (base : ∀ m n → (m · n) · (f 0) ≡ m · (n · (f 0))) (m n : A) (o : ℕ) → m · (n · (f o)) ≡ (m · n) · (f o)",
+   "domain": "int"
+  },
+  {
+   "name": "+Comm",
+   "type": "∀ m n → m + n ≡ n + m",
+   "domain": "int"
+  },
+  {
+   "name": "+Assoc",
+   "type": "∀ m n o → m + (n + o) ≡ (m + n) + o",
+   "domain": "int"
+  },
+  {
+   "name": "sucPathℤ",
+   "type": "ℤ ≡ ℤ",
+   "domain": "int"
+  },
+  {
+   "name": "addEq",
+   "type": "ℕ → ℤ ≡ ℤ",
+   "domain": "int"
+  },
+  {
+   "name": "predPathℤ",
+   "type": "ℤ ≡ ℤ",
+   "domain": "int"
+  },
+  {
+   "name": "subEq",
+   "type": "ℕ → ℤ ≡ ℤ",
+   "domain": "int"
+  },
+  {
+   "name": "+'≡+",
+   "type": "_+'_ ≡ _+_",
+   "domain": "int"
+  },
+  {
+   "name": "minusPlus",
+   "type": "∀ m n → (n - m) + m ≡ n",
+   "domain": "int"
+  },
+  {
+   "name": "-≡0",
+   "type": "(m n : ℤ) → m - n ≡ 0 → m ≡ n",
+   "domain": "int"
+  },
+  {
+   "name": "plusMinus",
+   "type": "∀ m n → (n + m) - m ≡ n",
+   "domain": "int"
+  },
+  {
+   "name": "-Cancel",
+   "type": "∀ z → z - z ≡ 0",
+   "domain": "int"
+  },
+  {
+   "name": "-Cancel'",
+   "type": "∀ z → - z + z ≡ 0",
+   "domain": "int"
+  },
+  {
+   "name": "pos+",
+   "type": "∀ m n → pos (m +ℕ n) ≡ pos m + pos n",
+   "domain": "int"
+  },
+  {
+   "name": "negsuc+",
+   "type": "∀ m n → negsuc (m +ℕ n) ≡ negsuc m - pos n",
+   "domain": "int"
+  },
+  {
+   "name": "neg+",
+   "type": "∀ m n → neg (m +ℕ n) ≡ neg m + neg n",
+   "domain": "int"
+  },
+  {
+   "name": "ℕ-AntiComm",
+   "type": "∀ m n → m ℕ- n ≡ - (n ℕ- m)",
+   "domain": "int"
+  },
+  {
+   "name": "pos-",
+   "type": "∀ m n → m ℕ- n ≡ pos m - pos n",
+   "domain": "int"
+  },
+  {
+   "name": "-AntiComm",
+   "type": "∀ m n → m - n ≡ - (n - m)",
+   "domain": "int"
+  },
+  {
+   "name": "-Dist+",
+   "type": "∀ m n → - (m + n) ≡ (- m) + (- n)",
+   "domain": "int"
+  },
+  {
+   "name": "pos·pos",
+   "type": "(n m : ℕ) → pos (n ·ℕ m) ≡ pos n · pos m",
+   "domain": "int"
+  },
+  {
+   "name": "pos·negsuc",
+   "type": "(n m : ℕ) → pos n · negsuc m ≡ - (pos n · pos (suc m))",
+   "domain": "int"
+  },
+  {
+   "name": "negsuc·pos",
+   "type": "(n m : ℕ) → negsuc n · pos m ≡ - (pos (suc n) · pos m)",
+   "domain": "int"
+  },
+  {
+   "name": "negsuc·negsuc",
+   "type": "(n m : ℕ) → negsuc n · negsuc m ≡ pos (suc n) · pos (suc m)",
+   "domain": "int"
+  },
+  {
+   "name": "·Comm",
+   "type": "(x y : ℤ) → x · y ≡ y · x",
+   "domain": "int"
+  },
+  {
+   "name": "·Rid",
+   "type": "(x : ℤ) → x · 1 ≡ x",
+   "domain": "int"
+  },
+  {
+   "name": "·DistR+",
+   "type": "(x y z : ℤ) → x · (y + z) ≡ x · y + x · z",
+   "domain": "int"
+  },
+  {
+   "name": "·DistL+",
+   "type": "(x y z : ℤ) → (x + y) · z ≡ x · z + y · z",
+   "domain": "int"
+  },
+  {
+   "name": "-DistL·",
+   "type": "(b c : ℤ) → - (b · c) ≡ - b · c",
+   "domain": "int"
+  },
+  {
+   "name": "-DistR·",
+   "type": "(b c : ℤ) → - (b · c) ≡ b · - c",
+   "domain": "int"
+  },
+  {
+   "name": "-DistLR·",
+   "type": "(b c : ℤ) → b · c ≡ - b · - c",
+   "domain": "int"
+  },
+  {
+   "name": "ℤ·negsuc",
+   "type": "(n : ℤ) (m : ℕ) → n · negsuc m ≡ - (n · pos (suc m))",
+   "domain": "int"
+  },
+  {
+   "name": "·Assoc",
+   "type": "(a b c : ℤ) → (a · (b · c)) ≡ ((a · b) · c)",
+   "domain": "int"
+  },
+  {
+   "name": "minus≡0-",
+   "type": "(x : ℤ) → - x ≡ (0 - x)",
+   "domain": "int"
+  },
+  {
+   "name": "abs→⊎",
+   "type": "(x : ℤ) (n : ℕ) → abs x ≡ n → (x ≡ pos n) ⊎ (x ≡ - pos n)",
+   "domain": "int"
+  },
+  {
+   "name": "⊎→abs",
+   "type": "(x : ℤ) (n : ℕ) → (x ≡ pos n) ⊎ (x ≡ - pos n) → abs x ≡ n",
+   "domain": "int"
+  },
+  {
+   "name": "abs≡0",
+   "type": "(x : ℤ) → abs x ≡ 0 → x ≡ 0",
+   "domain": "int"
+  },
+  {
+   "name": "¬x≡0→¬abs≡0",
+   "type": "{x : ℤ} → ¬ x ≡ 0 → ¬ abs x ≡ 0",
+   "domain": "int"
+  },
+  {
+   "name": "abs-",
+   "type": "(x : ℤ) → abs (- x) ≡ abs x",
+   "domain": "int"
+  },
+  {
+   "name": "absPos·Pos",
+   "type": "(m n : ℕ) → abs (pos m · pos n) ≡ abs (pos m) ·ℕ abs (pos n)",
+   "domain": "int"
+  },
+  {
+   "name": "abs·",
+   "type": "(m n : ℤ) → abs (m · n) ≡ abs m ·ℕ abs n",
+   "domain": "int"
+  },
+  {
+   "name": "isIntegralℤPosPos",
+   "type": "(c m : ℕ) → pos c · pos m ≡ 0 → ¬ c ≡ 0 → m ≡ 0",
+   "domain": "int"
+  },
+  {
+   "name": "isIntegralℤ",
+   "type": "(c m : ℤ) → c · m ≡ 0 → ¬ c ≡ 0 → m ≡ 0",
+   "domain": "int"
+  },
+  {
+   "name": "·lCancel",
+   "type": "(c m n : ℤ) → c · m ≡ c · n → ¬ c ≡ 0 → m ≡ n",
+   "domain": "int"
+  },
+  {
+   "name": "·rCancel",
+   "type": "(c m n : ℤ) → m · c ≡ n · c → ¬ c ≡ 0 → m ≡ n",
+   "domain": "int"
+  },
+  {
+   "name": "-Cancel''",
+   "type": "∀ z → z ≡ - z → z ≡ 0",
+   "domain": "int"
+  },
+  {
+   "name": "0≢1-ℤ",
+   "type": "¬ 0 ≡ 1",
+   "domain": "int"
+  },
+  {
+   "name": "notnot",
+   "type": "∀ x → not (not x) ≡ x",
+   "domain": "bool"
+  },
+  {
+   "name": "notEq",
+   "type": "Bool ≡ Bool",
+   "domain": "bool"
+  },
+  {
+   "name": "true≢false",
+   "type": "¬ true ≡ false",
+   "domain": "bool"
+  },
+  {
+   "name": "false≢true",
+   "type": "¬ false ≡ true",
+   "domain": "bool"
+  },
+  {
+   "name": "¬true→false",
+   "type": "(x : Bool) → ¬ x ≡ true → x ≡ false",
+   "domain": "bool"
+  },
+  {
+   "name": "¬false→true",
+   "type": "(x : Bool) → ¬ x ≡ false → x ≡ true",
+   "domain": "bool"
+  },
+  {
+   "name": "not≢const",
+   "type": "∀ x → ¬ not x ≡ x",
+   "domain": "bool"
+  },
+  {
+   "name": "or-zeroˡ",
+   "type": "∀ x → true or x ≡ true",
+   "domain": "bool"
+  },
+  {
+   "name": "or-zeroʳ",
+   "type": "∀ x → x or true ≡ true",
+   "domain": "bool"
+  },
+  {
+   "name": "or-identityˡ",
+   "type": "∀ x → false or x ≡ x",
+   "domain": "bool"
+  },
+  {
+   "name": "or-identityʳ",
+   "type": "∀ x → x or false ≡ x",
+   "domain": "bool"
+  },
+  {
+   "name": "or-comm",
+   "type": "∀ x y → x or y ≡ y or x",
+   "domain": "bool"
+  },
+  {
+   "name": "or-assoc",
+   "type": "∀ x y z → x or (y or z) ≡ (x or y) or z",
+   "domain": "bool"
+  },
+  {
+   "name": "or-idem",
+   "type": "∀ x → x or x ≡ x",
+   "domain": "bool"
+  },
+  {
+   "name": "and-zeroˡ",
+   "type": "∀ x → false and x ≡ false",
+   "domain": "bool"
+  },
+  {
+   "name": "and-zeroʳ",
+   "type": "∀ x → x and false ≡ false",
+   "domain": "bool"
+  },
+  {
+   "name": "and-identityˡ",
+   "type": "∀ x → true and x ≡ x",
+   "domain": "bool"
+  },
+  {
+   "name": "and-identityʳ",
+   "type": "∀ x → x and true ≡ x",
+   "domain": "bool"
+  },
+  {
+   "name": "and-comm",
+   "type": "∀ x y → x and y ≡ y and x",
+   "domain": "bool"
+  },
+  {
+   "name": "and-assoc",
+   "type": "∀ x y z → x and (y and z) ≡ (x and y) and z",
+   "domain": "bool"
+  },
+  {
+   "name": "and-idem",
+   "type": "∀ x → x and x ≡ x",
+   "domain": "bool"
+  },
+  {
+   "name": "⊕-identityʳ",
+   "type": "∀ x → x ⊕ false ≡ x",
+   "domain": "bool"
+  },
+  {
+   "name": "⊕-comm",
+   "type": "∀ x y → x ⊕ y ≡ y ⊕ x",
+   "domain": "bool"
+  },
+  {
+   "name": "⊕-assoc",
+   "type": "∀ x y z → x ⊕ (y ⊕ z) ≡ (x ⊕ y) ⊕ z",
+   "domain": "bool"
+  },
+  {
+   "name": "not-⊕ˡ",
+   "type": "∀ x y → not (x ⊕ y) ≡ not x ⊕ y",
+   "domain": "bool"
+  },
+  {
+   "name": "⊕-invol",
+   "type": "∀ x y → x ⊕ (x ⊕ y) ≡ y",
+   "domain": "bool"
+  },
+  {
+   "name": "⊕-Path",
+   "type": "∀ x → Bool ≡ Bool",
+   "domain": "bool"
+  },
+  {
+   "name": "⊕-Path-refl",
+   "type": "⊕-Path false ≡ refl",
+   "domain": "bool"
+  },
+  {
+   "name": "¬transportNot",
+   "type": "∀(P : Bool ≡ Bool) b → ¬ (transport P (not b) ≡ transport P b)",
+   "domain": "bool"
+  },
+  {
+   "name": "Bool→TypeInj",
+   "type": "(a b : Bool) → Bool→Type a ≃ Bool→Type b → a ≡ b",
+   "domain": "bool"
+  },
+  {
+   "name": "Bool→TypeInj*",
+   "type": "(a b : Bool) → Bool→Type* {ℓ} a ≃ Bool→Type* {ℓ} b → a ≡ b",
+   "domain": "bool"
+  },
+  {
+   "name": "Bool≡BoolDec",
+   "type": "{a : Bool} → a ≡ Dec→Bool (DecBool→Type {a = a})",
+   "domain": "bool"
+  },
+  {
+   "name": "Bool≡BoolDec*",
+   "type": "{a : Bool} → a ≡ Dec→Bool (DecBool→Type* {ℓ} {a = a})",
+   "domain": "bool"
+  },
+  {
+   "name": "Bool≡≃",
+   "type": "(a b : Bool) → (a ≡ b) ≃ Bool→Type (Bool≡ a b)",
+   "domain": "bool"
+  },
+  {
+   "name": "cons-inj₁",
+   "type": "∀ {x y : A} {xs ys} → x ∷ xs ≡ y ∷ ys → x ≡ y",
+   "domain": "list"
+  },
+  {
+   "name": "cons-inj₂",
+   "type": "∀ {x y : A} {xs ys} → x ∷ xs ≡ y ∷ ys → xs ≡ ys",
+   "domain": "list"
+  },
+  {
+   "name": "¬cons≡nil",
+   "type": "∀ {x : A} {xs} → ¬ (x ∷ xs ≡ [])",
+   "domain": "list"
+  },
+  {
+   "name": "¬nil≡cons",
+   "type": "∀ {x : A} {xs} → ¬ ([] ≡ x ∷ xs)",
+   "domain": "list"
+  },
+  {
+   "name": "¬snoc≡nil",
+   "type": "∀ {x : A} {xs} → ¬ (xs ∷ʳ x ≡ [])",
+   "domain": "list"
+  },
+  {
+   "name": "¬nil≡snoc",
+   "type": "∀ {x : A} {xs} → ¬ ([] ≡ xs ∷ʳ x)",
+   "domain": "list"
+  },
+  {
+   "name": "cons≡rev-snoc",
+   "type": "(x : A) → (xs : List A) → x ∷ rev xs ≡ rev (xs ∷ʳ x)",
+   "domain": "list"
+  },
+  {
+   "name": "isPropXs≡[]",
+   "type": "{xs : List A} → isProp (xs ≡ [])",
+   "domain": "list"
+  },
+  {
+   "name": "foldrCons",
+   "type": "(xs : List A) → foldr _∷_ [] xs ≡ xs",
+   "domain": "list"
+  },
+  {
+   "name": "length-map",
+   "type": "∀ {ℓA ℓB} {A : Type ℓA} {B : Type ℓB} → (f : A → B) → (as : List A) → length (map f as) ≡ length as",
+   "domain": "list"
+  },
+  {
+   "name": "≡-×",
+   "type": "{A : Type ℓ} {B : Type ℓ'} {x y : A × B} → fst x ≡ fst y → snd x ≡ snd y → x ≡ y",
+   "domain": "sigma"
+  },
+  {
+   "name": "×≡Prop",
+   "type": "isProp A' → {u v : A × A'} → u .fst ≡ v .fst → u ≡ v",
+   "domain": "sigma"
+  },
+  {
+   "name": "Σ-cong-fst",
+   "type": "(p : A ≡ A') → Σ A (B ∘ transport p) ≡ Σ A' B",
+   "domain": "sigma"
+  },
+  {
+   "name": "Σ-cong-snd",
+   "type": "((x : A) → B x ≡ B' x) → Σ A B ≡ Σ A B'",
+   "domain": "sigma"
+  },
+  {
+   "name": "Σ-cong'",
+   "type": "(p : A ≡ A') → PathP (λ i → p i → Type ℓ') B B' → Σ A B ≡ Σ A' B'",
+   "domain": "sigma"
+  },
+  {
+   "name": "IsoΣPathTransportPathΣ",
+   "type": "(a b : Σ A B) → Iso (ΣPathTransport a b) (a ≡ b)",
+   "domain": "sigma"
+  },
+  {
+   "name": "ΣPathTransport≃PathΣ",
+   "type": "(a b : Σ A B) → ΣPathTransport a b ≃ (a ≡ b)",
+   "domain": "sigma"
+  },
+  {
+   "name": "ΣPathTransport→PathΣ",
+   "type": "(a b : Σ A B) → ΣPathTransport a b → (a ≡ b)",
+   "domain": "sigma"
+  },
+  {
+   "name": "PathΣ→ΣPathTransport",
+   "type": "(a b : Σ A B) → (a ≡ b) → ΣPathTransport a b",
+   "domain": "sigma"
+  },
+  {
+   "name": "ΣPathTransport≡PathΣ",
+   "type": "(a b : Σ A B) → ΣPathTransport a b ≡ (a ≡ b)",
+   "domain": "sigma"
+  },
+  {
+   "name": "isEmbeddingFstΣProp",
+   "type": "((x : A) → isProp (B x)) → {u v : Σ A B} → isEquiv (λ (p : u ≡ v) → cong fst p)",
+   "domain": "sigma"
+  },
+  {
+   "name": "Σ≡PropEquiv",
+   "type": "((x : A) → isProp (B x)) → {u v : Σ A B} → (u .fst ≡ v .fst) ≃ (u ≡ v)",
+   "domain": "sigma"
+  },
+  {
+   "name": "Σ≡Prop",
+   "type": "((x : A) → isProp (B x)) → {u v : Σ A B} → (p : u .fst ≡ v .fst) → u ≡ v",
+   "domain": "sigma"
+  }
+ ]
+}

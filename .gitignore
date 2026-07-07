@@ -5,3 +5,4 @@ gate/data/
 __pycache__/
 theta0.npy
 grads-qwen/**/*.npy
+agda-gate/work/
