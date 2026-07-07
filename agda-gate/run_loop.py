@@ -96,14 +96,16 @@ class Agda:
 def goal_file(domain, imports, variables, goals):
     mod = f"Goals{domain.capitalize()}"
     lines = ["{-# OPTIONS --cubical --allow-unsolved-metas #-}", f"module {mod} where"]
-    for imp in PRELUDE_IMPORTS + imports:
+    for imp in PRELUDE_IMPORTS:
         lines.append(f"open import {imp}")
+    for imp in imports:               # source module's own imports, verbatim
+        lines.extend(imp.splitlines())
     if variables:
         lines.append("private")
         lines.append(" variable")
         for v in variables:
             lines.append(f"  {v}")
-    header_len = len(lines)
+    header_len = len(lines)           # NB: import blocks already counted line-by-line above
     for i, g in enumerate(goals):
         lines.append(f"g{i} : {g['type']}")
         lines.append(f"g{i} = ?")
@@ -287,6 +289,26 @@ def run_pass(data, seed, slice_n=None, log=print):
 
 
 # ---------------------------------------------------------------- metrics + verdict
+def corpus_reuse(data):
+    """Ground truth independent of any composer: the human proofs' own reuse graph.
+    (In-module references only — cross-module reuse is invisible here, so this UNDERCOUNTS.)"""
+    fan_in = defaultdict(int)
+    per_goal = []
+    for g in data["goals"]:
+        pa = g.get("proof_atoms", [])
+        per_goal.append(len(pa))
+        for a in pa:
+            fan_in[a] += 1
+    n = max(len(per_goal), 1)
+    return {
+        "frac_human_proofs_using_other_lemmas": round(sum(1 for k in per_goal if k) / n, 3),
+        "mean_lemmas_per_human_proof": round(sum(per_goal) / n, 2),
+        "atoms_reused_by_2plus_human_proofs": sum(1 for c in fan_in.values() if c >= 2),
+        "max_fan_in": max(fan_in.values(), default=0),
+        "top_human_atoms": sorted(fan_in.items(), key=lambda kv: -kv[1])[:10],
+    }
+
+
 def analyze(passes):
     P0 = passes[0]
     held = P0["held"]
@@ -349,6 +371,7 @@ def main():
         passes.append(run_pass(data, seed=s, slice_n=args.slice))
         print(f"  ({time.time()-t0:.0f}s)")
     res = analyze(passes)
+    res["corpus_ground_truth"] = corpus_reuse(data)
     out = {"config": {"auto_timeout": AUTO_TIMEOUT, "top_k": TOP_K, "seeds": args.seeds,
                       "slice": args.slice, "seed_atoms": SEED_ATOMS},
            "metrics": res,

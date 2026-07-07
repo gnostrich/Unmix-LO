@@ -1,10 +1,14 @@
 {
  "seed": 0,
- "phase": "loading",
- "domain": "nat",
- "loaded": {
-  "path": 31,
-  "nat": 33
+ "phase": "train",
+ "step": "81/149",
+ "composed": 0,
+ "library": 87,
+ "last": {
+  "goal": "sucℤ+negsuc",
+  "domain": "int",
+  "ok": false,
+  "used": []
  },
- "at": "14:48:55"
+ "at": "15:03:13"
 }

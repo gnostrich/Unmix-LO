@@ -10,25 +10,30 @@ import os, re, json, sys
 CUBICAL = os.path.expanduser(os.environ.get("CUBICAL_SRC", "~/agda-libs/cubical"))
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# domain -> (source module for goals, extra imports the goal file needs)
+# domain -> source module for goals (goal files mirror the module's own imports, so
+# statements scope-check in exactly the context they were written in)
 DOMAINS = {
-    "path":  ("Cubical/Foundations/GroupoidLaws.agda",
-              ["Cubical.Foundations.GroupoidLaws"]),
-    "nat":   ("Cubical/Data/Nat/Properties.agda",
-              ["Cubical.Data.Nat", "Cubical.Data.Nat.Properties", "Cubical.Data.Sigma"]),
-    "int":   ("Cubical/Data/Int/Properties.agda",
-              ["Cubical.Data.Int", "Cubical.Data.Int.Properties", "Cubical.Data.Nat"]),
-    "bool":  ("Cubical/Data/Bool/Properties.agda",
-              ["Cubical.Data.Bool", "Cubical.Data.Bool.Properties",
-               "Cubical.Foundations.Isomorphism", "Cubical.Relation.Nullary"]),
-    "list":  ("Cubical/Data/List/Properties.agda",
-              ["Cubical.Data.List", "Cubical.Data.List.Properties",
-               "Cubical.Data.Nat", "Cubical.Data.Sigma"]),
-    "sigma": ("Cubical/Data/Sigma/Properties.agda",
-              ["Cubical.Data.Sigma", "Cubical.Data.Sigma.Properties",
-               "Cubical.Foundations.Isomorphism", "Cubical.Foundations.Equiv",
-               "Cubical.Foundations.Function"]),
+    "path":  "Cubical/Foundations/GroupoidLaws.agda",
+    "nat":   "Cubical/Data/Nat/Properties.agda",
+    "int":   "Cubical/Data/Int/Properties.agda",
+    "bool":  "Cubical/Data/Bool/Properties.agda",
+    "list":  "Cubical/Data/List/Properties.agda",
+    "sigma": "Cubical/Data/Sigma/Properties.agda",
 }
+
+
+def extract_imports(lines):
+    """The module's own `open import` lines, verbatim (with indented continuations)."""
+    out, i = [], 0
+    while i < len(lines):
+        if lines[i].startswith("open import ") or lines[i].startswith("import "):
+            block = lines[i]; i += 1
+            while i < len(lines) and lines[i].strip() and lines[i][0].isspace():
+                block += "\n" + lines[i]; i += 1
+            out.append(block)
+        else:
+            i += 1
+    return out
 
 DECL = re.compile(r"^([^\s(){};@\"]+)\s*:\s*(.*)$")
 SKIP_NAME = re.compile(r"^(--|module|open|import|record|data|where|private|infix|instance|"
@@ -96,18 +101,20 @@ def extract(path):
 
 
 def main():
-    goals, variables = [], {}
-    for dom, (rel, imports) in DOMAINS.items():
+    goals, dominfo = [], {}
+    for dom, rel in DOMAINS.items():
         path = os.path.join(CUBICAL, rel)
+        lines = open(path, encoding="utf-8").read().splitlines()
         got = extract(path)
-        variables[dom] = extract_variables(open(path, encoding="utf-8").read().splitlines())
+        mod = rel[:-5].replace("/", ".")
+        dominfo[dom] = {"module": mod,
+                        "imports": extract_imports(lines) + [f"open import {mod}"],
+                        "variables": extract_variables(lines)}
         for g in got:
             g["domain"] = dom
         goals.extend(got)
-        print(f"{dom:6s}: {len(got):3d} goals from {rel}  (variables: {variables[dom]})")
-    json.dump({"domains": {d: {"imports": imps, "variables": variables[d]}
-                           for d, (_, imps) in DOMAINS.items()},
-               "goals": goals},
+        print(f"{dom:6s}: {len(got):3d} goals from {rel}  ({len(dominfo[dom]['imports'])} imports mirrored)")
+    json.dump({"domains": dominfo, "goals": goals},
               open(os.path.join(HERE, "goals.json"), "w"), indent=1, ensure_ascii=False)
     print(f"total {len(goals)} -> agda-gate/goals.json")
 
