@@ -11,3 +11,4 @@ stability-gate/*.npy
 # LoRA adapter weights from real-model gate training (heavyweight)
 virtualmesh/gates/real/adapters/
 virtualmesh/mvp/edge_person_company/
+biomesh/emb_cache/
