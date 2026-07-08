@@ -75,10 +75,10 @@ def calibrate_threshold(models, tok, world, n=20):
     thr, calib = {}, {}
     for rel in RELS:
         good = [answer(models[rel], tok, QTEMPLATE[rel].format(k=k))[1]
-                for k in rng.sample(key_pool[rel], n)]
+                for k in rng.sample(key_pool[rel], min(n, len(key_pool[rel])))]
         bad = [answer(models[rel], tok, QTEMPLATE[rel].format(k=k))[1]
-               for k in rng.sample(wrong_pool[rel], n)]
-        g, b = sum(good) / n, sum(bad) / n
+               for k in rng.sample(wrong_pool[rel], min(n, len(wrong_pool[rel])))]
+        g, b = sum(good) / len(good), sum(bad) / len(bad)
         thr[rel] = (g + b) / 2
         calib[rel] = {"good_mean": g, "bad_mean": b, "threshold": thr[rel]}
         print(f"  calib {rel}: correct-key conf {g:.3f}  wrong-type conf {b:.3f}  thr {thr[rel]:.3f}", flush=True)
