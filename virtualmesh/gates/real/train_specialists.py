@@ -19,7 +19,8 @@ from peft import LoraConfig, get_peft_model
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.environ.get("VM_BASE", "Qwen/Qwen2.5-0.5B-Instruct")
 STEPS = int(os.environ.get("VM_STEPS", 500))
-LR = 1e-3
+ONLY = [r for r in os.environ.get("VM_ONLY", "").split(",") if r]   # retrain subset
+LR = 5e-4   # 1e-3 exploded to NaN after convergence (loss 0.04 -> nan between steps 100-200)
 BATCH = 8
 SEED = 0
 torch.set_num_threads(os.cpu_count() or 4)
@@ -102,11 +103,20 @@ def train_one(tok, rel, mapping, out_dir):
     opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=LR)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=STEPS)
     t0 = time.time()
+    calm = 0
     for step in range(STEPS):
         enc, labels = batchify(tok, examples, rng)
         loss = model(input_ids=enc["input_ids"], attention_mask=enc["attention_mask"],
                      labels=labels).loss
-        loss.backward(); opt.step(); sched.step(); opt.zero_grad(set_to_none=True)
+        if not torch.isfinite(loss):                    # never let a bad step poison the adapter
+            opt.zero_grad(set_to_none=True); sched.step(); continue
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], 1.0)
+        opt.step(); sched.step(); opt.zero_grad(set_to_none=True)
+        calm = calm + 1 if loss.item() < 0.005 else 0
+        if calm >= 30:                                  # converged; extra steps only invite blowup
+            print(f"    [{rel}] early stop at step {step+1} loss {loss.item():.4f}", flush=True)
+            break
         if (step + 1) % 100 == 0:
             print(f"    [{rel}] step {step+1}/{STEPS} loss {loss.item():.4f} ({time.time()-t0:.0f}s)", flush=True)
     model.save_pretrained(out_dir)
@@ -143,7 +153,12 @@ def main():
     tok = AutoTokenizer.from_pretrained(BASE)
     tok.padding_side = "right"          # answer-token masking assumes prompt starts at position 0
     report = {}
-    for rel, mapping_key in [("p2c", "p2c"), ("c2co", "c2co"), ("co2pr", "co2pr"), ("p2h", "p2h")]:
+    if os.path.exists(os.path.join(HERE, "train_report.json")):
+        report = json.load(open(os.path.join(HERE, "train_report.json")))
+    todo = [("p2c", "p2c"), ("c2co", "c2co"), ("co2pr", "co2pr"), ("p2h", "p2h")]
+    if ONLY:
+        todo = [t for t in todo if t[0] in ONLY]
+    for rel, mapping_key in todo:
         print(f"training M_{rel} ...", flush=True)
         out_dir = os.path.join(HERE, "adapters", rel)
         model = train_one(tok, rel, world[mapping_key], out_dir)
