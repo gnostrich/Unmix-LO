@@ -1,0 +1,77 @@
+{
+ "K": 5,
+ "n_test": 1500,
+ "cost": {
+  "routemesh": 1.4626666666666666,
+  "sota_router": 1.0,
+  "pooling": 5.0
+ },
+ "topo_test": {
+  "atomic": 574,
+  "multi": 474,
+  "cyclic": 450,
+  "atomic_multi_same_spec": 2
+ },
+ "best_single": 0.26,
+ "oracle": 1.0,
+ "pooling": 0.35733333333333334,
+ "sota_router": 0.5773333333333334,
+ "routemesh": 0.9933333333333333,
+ "by_topo": {
+  "atomic": {
+   "routemesh": 1.0,
+   "sota_router": 1.0,
+   "n": 574
+  },
+  "multi": {
+   "routemesh": 0.9831223628691983,
+   "sota_router": 0.0,
+   "n": 474
+  },
+  "cyclic": {
+   "routemesh": 0.9955555555555555,
+   "sota_router": 0.6444444444444445,
+   "n": 450
+  }
+ },
+ "fabrication_guard_abstain_rate": 1.0,
+ "cost_curve": {
+  "2": {
+   "routemesh": 1.186,
+   "sota_router": 1.0,
+   "pooling": 2.0
+  },
+  "3": {
+   "routemesh": 1.376,
+   "sota_router": 1.0,
+   "pooling": 3.0
+  },
+  "4": {
+   "routemesh": 1.422,
+   "sota_router": 1.0,
+   "pooling": 4.0
+  },
+  "5": {
+   "routemesh": 1.4626666666666666,
+   "sota_router": 1.0,
+   "pooling": 5.0
+  },
+  "6": {
+   "routemesh": 1.4326666666666668,
+   "sota_router": 1.0,
+   "pooling": 6.0
+  },
+  "8": {
+   "routemesh": 1.4453333333333334,
+   "sota_router": 1.0,
+   "pooling": 8.0
+  }
+ },
+ "verdict": {
+  "beats_all_three": true,
+  "closes_50pct_gap": true,
+  "abstains": true,
+  "cost_flat_in_N": true,
+  "R2_PASS": true
+ }
+}

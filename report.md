@@ -21,9 +21,12 @@ knowledge — not *intelligence*. This report is the complete ledger.
 | 5 | BIOMESH | naive pooling of biomedical encoders | **RED** | On the confound-controlled cold split, union is *below* best-single (0.63–0.88×). The in-distribution 1.37× gain was marginal-promiscuity memorization; it inverts under cold split. |
 | 6 | indextest | blind indexed connective tissue | **RED** | Even a steelman cross-view bilinear indexer, on complementarity engineered to be maximally favorable, is *worse* than a strong naive readout (0.78–0.93×). |
 | 7 | synergy | task-aware redundancy-penalized aggregator | **RED (at precondition)** | Complementarity doesn't survive the strictest cold split on any real task (DAVIS cold-pair +0.02, PPI +0.05, ≪ 0.15). Marginals dominate. |
+| 8 | ROUTEMESH | union-without-drag routing (drops ">") | **PASS (scoped)** | A *different* thesis: reach the reachable union, ceiling "=". Light critic realizes the oracle from sparse data (99% of gap); beats a SOTA single-hop router structurally via multi-hop/cyclic assembly (atomic +0.00, multi +0.98, cyclic +0.35) at cost flat in N. Scoped to the constructed disjoint-compositional regime. |
 
-**Survives:** G2 (scale-free cost) + G3 (compression of reachable knowledge). **Dead:** every attempt
-to extract *new* capability — pooling, settling, blind indexing, task-aware aggregation.
+**Survives:** G2 (scale-free cost) + G3 (compression of reachable knowledge) + ROUTEMESH (union-without-
+drag routing, a conditional positive). **Dead:** every attempt to extract *new* capability — pooling,
+settling, blind indexing, task-aware aggregation. The line is sharp: composition buys cheaper and more
+complete access to **reachable** knowledge (infrastructure), never **new** knowledge (capability).
 
 ---
 

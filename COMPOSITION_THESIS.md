@@ -34,8 +34,20 @@ signal the readout already has, so it cannot add value the readout couldn't extr
   already-reachable knowledge — never new capability, and the fabrication guard refuses to invent
   edges where none exist.*
 
-Both are **infrastructure**: they make an existing, reachable computation cheaper or flatter in
-cost. Neither creates capability that wasn't already present in the models' reachable composition.
+- **ROUTEMESH R1+R2 [PASS, scoped — a distinct thesis, NOT ">"]** — drops the ">" claim entirely;
+  target is the per-query *union without ignorance-drag*, ceiling "=", never ">". On a real KG
+  (WN18RR) with relation-partitioned specialists: a light critic realizes the oracle from sparse
+  competence data (closes 99% of the gap), and topology-free routing beats a **SOTA learned
+  single-hop router** — structurally, via multi-hop/cyclic union-retrieval (atomic edge +0.00,
+  multi-hop +0.98, cyclic +0.35) — at cost **flat in N** (G2). Scoped: this is the *constructed*
+  disjoint-compositional regime; it shows *when* routing wins (given disjoint compositional
+  competence + assembly-requiring queries), not that real federations have that structure — the flat
+  real-task tests below showed they do not, beyond marginals.
+
+All three are **infrastructure**: they make an existing, *reachable* computation cheaper, flatter in
+cost, or more completely retrieved. None creates capability that wasn't already present in the
+members' reachable composition. ROUTEMESH is the first conditional *positive* of the program, and it
+is a routing/retrieval result — orthogonal to the dead ">" thesis, squarely in the G2/G3 lane.
 
 ## The one-line conclusion
 Frozen-model composition is a cost-and-routing story (G2/G3), not a capability story
@@ -43,8 +55,11 @@ Frozen-model composition is a cost-and-routing story (G2/G3), not a capability s
 by pooling, settling, blind indexing, or task-aware aggregation — failed under confound control:
 where the regime is constructible the composer cannot inhabit it (blind to the task, it cannot beat
 a readout that sees it), and where the task is real the complementarity is not there to begin with
-(marginals dominate under honest cold splits). The honest deliverable is the negative plus the two
-surviving infrastructure results.
+(marginals dominate under honest cold splits). What DOES work is the orthogonal, humbler thing:
+*routing/retrieval* — reaching the union of what members already hold, without ignorance-drag,
+cheaply (G2/G3/ROUTEMESH). The honest deliverable is the four-way negative on new capability, plus
+the surviving infrastructure results: composition buys cheaper and more complete access to reachable
+knowledge, never new knowledge.
 
 ## Discipline record (why these negatives are trustworthy)
 Every threshold was pre-registered and committed before its run; two invalidated runs (NaN-poisoned
