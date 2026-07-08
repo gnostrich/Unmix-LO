@@ -60,3 +60,17 @@ aggregate-accuracy claim) are noted there, each as a NEW pre-registration.
 
 The pacing gate did its job: it stopped a beautiful cheap-composition layer from being built for
 queries that don't need composing.
+
+## OUTCOME (2026-07-08 — GATE ZERO cold-split, confound-controlled re-test)
+
+**GATE ZERO cold-split: FAIL decisively → the negative is now confound-controlled.**
+
+Entity-disjoint splits (no drug/target shared between train and test) remove the marginal-
+promiscuity leakage that inflated the in-distribution single baselines. Result: composition
+doesn't just fail to be *necessary* — it *hurts*. Union AUPRC falls **below** best-single in
+every mode (cold-drug 0.88×, cold-target 0.63×, cold-pair 0.69×), and split-knowledge fraction
+stays ~0. Union AUROC holds at 0.65–0.76 (no encoder collapse — the guard doesn't trip), so the
+verdict is clean. The in-distribution 1.37× "composition helps" gain **inverts** under the fair
+split, showing that gain was itself marginal memorization. This also undercuts the option-3
+re-scope: there is no aggregate-accuracy gain to deliver cheaply. Full analysis in
+`gate0cold/GATE0COLD_RESULTS.md`. **STOP is now decisive.**
