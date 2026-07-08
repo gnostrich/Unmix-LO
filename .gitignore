@@ -12,3 +12,6 @@ stability-gate/*.npy
 virtualmesh/gates/real/adapters/
 virtualmesh/mvp/edge_person_company/
 biomesh/emb_cache/
+
+# synergy PPI raw data (large; regenerate via D-SCRIPT URLs in run_p1.py)
+synergy/data/
