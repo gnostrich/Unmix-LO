@@ -47,7 +47,7 @@ def p1_verdict(name, singleA, singleB, oracle):
 
 # ---------------- DAVIS DTI (cached embeddings, cold split) ----------------
 def davis_p1():
-    D = os.path.join(HERE, "..", "gate0", "data")
+    D = os.path.join(HERE, "..", "biomesh", "gate0", "data")
     lig = json.load(open(os.path.join(D, "ligands_can.txt")))
     pro = json.load(open(os.path.join(D, "proteins.txt")))
     Y = np.array(pickle.load(open(os.path.join(D, "Y"), "rb"), encoding="latin1"), dtype=float)
