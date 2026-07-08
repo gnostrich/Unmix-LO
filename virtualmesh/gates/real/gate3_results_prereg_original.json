@@ -1,0 +1,11 @@
+{
+ "train_n": 28,
+ "held_n": 12,
+ "chain_groundtruth_acc_heldout": 0.8333333333333334,
+ "q1_agreement_with_chain": 0.0,
+ "q2_acc_direct": 0.25,
+ "q2_acc_noedge": 0.0,
+ "q2_acc_randomedge": 0.4166666666666667,
+ "q4_acc_fabricated": 0.16666666666666666,
+ "pass": false
+}
