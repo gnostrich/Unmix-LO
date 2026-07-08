@@ -6,18 +6,23 @@ established by repeated confound-controlled negatives, is **no** — not by pool
 not by indexed connective tissue. What survives is real but modest: composition is *infrastructure*
 (cheaper routing, compression of already-reachable knowledge), not *intelligence* (new capability).
 
-## The three attack surfaces, all dead
+## The four attack surfaces, all dead
 
 | mechanism | where tested | verdict | the killing fact |
 |---|---|---|---|
 | **naive pooling** | BIOMESH gate0 (DAVIS DTI, real encoders) | FAIL | On the confound-controlled cold split, union is *below* best-single (0.63–0.88×). The in-distribution 1.37× "gain" was marginal-promiscuity memorization; it inverts once leakage is removed. |
 | **settling / fact-passing** | VIRTUALMESH G1 (real LoRA specialists) | FAIL | Without calibrated ignorance, recurrent settling amplifies hallucination (fact-precision 0.018 at 5 rounds); it does not average toward truth. Pooling also lost to best-single. |
 | **indexed connective tissue** | indextest (planted, ideal regime) | FAIL | Even a steelman blind cross-view bilinear indexer, on complementarity engineered to be maximally favorable, is *worse* than a strong naive readout (0.78–0.93×). Blind to y, a connective frame cannot surface the task-relevant cross-terms. |
+| **task-aware aggregation** | synergy P1 (DAVIS DTI + D-SCRIPT PPI, cold) | FAIL | Fails at the *precondition*: complementarity does not survive the strictest cold split on either task (DAVIS cold-pair gap +0.02; PPI +0.05, both ≪ 0.15). Even a genuinely combinatorial task (PPI) is marginal-dominated (hub-ness). No complementarity to aggregate, cheaply or otherwise. |
 
-The indextest is the decisive one: it removed every real-world excuse (small models, hard data,
-weak encoders) by *constructing* the ideal regime — genuine complementarity, a reachable oracle, a
-gauge that hides the signal from linear pooling — and indexing *still* could not beat naive. The
-failure is not empirical bad luck; it is informational. The composer is always blind to the task
+Two of these are decisive from opposite ends. The **indextest** removed every real-world excuse by
+*constructing* the ideal regime — genuine complementarity, a reachable oracle, a gauge that hides the
+signal from linear pooling — and indexing *still* could not beat naive; the failure is informational,
+not empirical. The **synergy P1** test comes from the other side: on *real* biomedical tasks under
+honest cold splits, the complementarity the indexer would need does not even exist — entity marginals
+(drug promiscuity, protein hub-ness) dominate, and the joint-beyond-marginal signal is < 0.05 balanced
+accuracy. Constructed-but-uninhabitable and real-but-absent: the band is empty from both directions.
+The composer is always blind to the task
 signal the readout already has, so it cannot add value the readout couldn't extract itself.
 
 ## What survives (validated, unchanged)
@@ -33,11 +38,13 @@ Both are **infrastructure**: they make an existing, reachable computation cheape
 cost. Neither creates capability that wasn't already present in the models' reachable composition.
 
 ## The one-line conclusion
-Frozen-model composition is a cost-and-routing story (G2/G3), not a capability story (G1/BIOMESH/
-indextest). Every attempt to extract *new* joint capability from frozen parts — by pooling,
-settling, or blind indexing — failed under confound control, because a composer blind to the task
-cannot beat a readout that sees it. The honest deliverable is the negative plus the two surviving
-infrastructure results.
+Frozen-model composition is a cost-and-routing story (G2/G3), not a capability story
+(G1/BIOMESH/indextest/synergy). Every attempt to extract *new* joint capability from frozen parts —
+by pooling, settling, blind indexing, or task-aware aggregation — failed under confound control:
+where the regime is constructible the composer cannot inhabit it (blind to the task, it cannot beat
+a readout that sees it), and where the task is real the complementarity is not there to begin with
+(marginals dominate under honest cold splits). The honest deliverable is the negative plus the two
+surviving infrastructure results.
 
 ## Discipline record (why these negatives are trustworthy)
 Every threshold was pre-registered and committed before its run; two invalidated runs (NaN-poisoned
