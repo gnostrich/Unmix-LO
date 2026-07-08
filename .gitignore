@@ -15,3 +15,6 @@ biomesh/emb_cache/
 
 # synergy PPI raw data (large; regenerate via D-SCRIPT URLs in run_p1.py)
 synergy/data/
+
+# WN18RR knowledge-graph data (regenerate via URLs in R1_DESIGN.md)
+routemesh/data/
