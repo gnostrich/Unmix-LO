@@ -21,7 +21,7 @@ from peft import PeftModel, LoraConfig, get_peft_model
 HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.environ.get("VM_BASE", "Qwen/Qwen2.5-0.5B-Instruct")
 STEPS = int(os.environ.get("VM_DISTILL_STEPS", 300))
-BATCH, LR, SEED = 8, 1e-3, 0
+BATCH, LR, SEED = 8, 5e-4, 0
 DIRECT_T = [("Question: Which company is based in the city where {k} lives? Answer:", " {v}."),
             ("Question: {k} lives in a city that hosts which company? Answer:", " {v}."),
             ("Question: Name the company in {k}'s home city. Answer:", " {v}.")]
@@ -65,6 +65,7 @@ def distill(tok, mapping, tag):
     opt = torch.optim.AdamW([p for p in model.parameters() if p.requires_grad], lr=LR)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=STEPS)
     t0 = time.time()
+    calm = 0
     for step in range(STEPS):
         batch = [ex[i] for i in rng.choice(len(ex), BATCH)]
         enc = tok([p + a for p, a in batch], return_tensors="pt", padding=True)
@@ -72,9 +73,22 @@ def distill(tok, mapping, tag):
         for i, (p, _) in enumerate(batch):
             labels[i, :len(tok(p)["input_ids"])] = -100
         loss = model(input_ids=enc["input_ids"], attention_mask=enc["attention_mask"], labels=labels).loss
-        loss.backward(); opt.step(); sched.step(); opt.zero_grad(set_to_none=True)
+        if not torch.isfinite(loss):
+            opt.zero_grad(set_to_none=True); sched.step(); continue
+        loss.backward()
+        gn = torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], 1.0)
+        if not torch.isfinite(gn):          # finite loss, nan grads: stepping would poison weights
+            opt.zero_grad(set_to_none=True); sched.step(); continue
+        opt.step(); sched.step(); opt.zero_grad(set_to_none=True)
+        calm = calm + 1 if loss.item() < 0.005 else 0
+        if calm >= 30:
+            print(f"    [{tag}] early stop at step {step+1} loss {loss.item():.4f}", flush=True)
+            break
         if (step + 1) % 100 == 0:
             print(f"    [{tag}] step {step+1}/{STEPS} loss {loss.item():.4f} ({time.time()-t0:.0f}s)", flush=True)
+    for n, p in model.named_parameters():
+        if p.requires_grad and not torch.isfinite(p).all():
+            raise RuntimeError(f"{tag}: non-finite weights in {n}")
     return model
 
 
