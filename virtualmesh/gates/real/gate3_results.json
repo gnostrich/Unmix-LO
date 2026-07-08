@@ -1,0 +1,24 @@
+{
+ "prereg_amendment": "Original prereg held out PERSONS; for a random relational world the composite on an unseen key is information-theoretically unpredictable (no structure to generalize), so Q1/Q2-as-preregistered were unpassable by construction \u2014 the first valid run showed exactly that (Q1 agreement 0.00; base-rate control 0.42 > direct 0.25). Amended per gates/README.md's actual G3 spec: the held-out unit is a NEW transitively connected MODEL PAIR (city->product via company), the edge is distilled on all keys (a cached compression of the chain), Q1 uses an unseen paraphrase template, and the fabrication guard compares against the base-rate control (shuffled labels preserve the marginal \u2014 the honest 'no information' baseline). Original FAIL kept on record in gate3_results_prereg_original.json.",
+ "pair1_person_company": {
+  "q1_agreement_trained_template": 1.0,
+  "q1_agreement_unseen_template": 1.0,
+  "acc_direct": 0.775,
+  "acc_baserate_control": 0.425,
+  "acc_noedge": 0.0,
+  "acc_chain_ceiling": 0.775,
+  "cost": "1 model call vs 2 (edge is the cheaper path by construction)"
+ },
+ "pair2_city_product": {
+  "q1_agreement_trained_template": 1.0,
+  "q1_agreement_unseen_template": 1.0,
+  "acc_direct": 0.7857142857142857,
+  "acc_baserate_control": 0.2857142857142857,
+  "acc_noedge": 0.0,
+  "acc_chain_ceiling": 0.7857142857142857,
+  "cost": "1 model call vs 2 (edge is the cheaper path by construction)"
+ },
+ "q4_acc_fabricated": 0.15,
+ "q4_baserate": 0.425,
+ "pass": true
+}

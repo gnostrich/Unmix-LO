@@ -53,7 +53,7 @@ def embed_all(model, tok, probes, layers):
         enc = tok(p, return_tensors="pt")
         hs = model(**enc, output_hidden_states=True).hidden_states
         for L in layers:
-            outs[L].append(hs[L][0, -1].numpy())
+            outs[L].append(hs[L][0, -1].float().numpy())
     return {L: np.array(v) for L, v in outs.items()}
 
 
