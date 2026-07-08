@@ -1,12 +1,19 @@
-# VIRTUALMESH: a virtual-model layer over frozen models via memory-kernel settling
+# VIRTUALMESH: thickening a mesh of frozen models — and why settling fails without calibrated ignorance
 
-**Status: SCAFFOLD.** Only result-independent sections are drafted (Sections 1, 2, 5, 6).
-Sections 3 and 4 are stubs awaiting the three pre-registered gates in `gates/`. Per the build
-brief (`virtualmesh/README.md`), no claim enters this paper's spec or evidence sections until
-its gate has passed; a RED gate means the corresponding claim is reported as a characterized
-negative and pruned from the construct's asserted properties. Nothing in this file will be
-retro-fitted to results: thresholds quoted in Section 4 are copied verbatim from
-`gates/README.md`, which was committed before any real-model run.
+**Status: MERGED (2026-07-08).** The three pre-registered real-model gates have run and the
+merge protocol (`virtualmesh/paper/README.md`) has been executed on this document:
+**G1 FAIL** — the core settling/reconciliation claim is refuted at this scale; the mechanism
+(a positive-feedback hallucination cascade under uncalibrated confidence) is characterized and
+reported as a headline result, not a footnote (Section 4.1); **G2 PASS, scoped** — exact
+short-memory MZ closure with federation-size-independent complexity, linear instantiation only
+(Section 4.2); **G3 PASS, amended design** — pathway thickening as exact compression of
+composite structure, bounded by the chain ceiling, amendment on the record (Section 4.3).
+Per the build brief (`virtualmesh/README.md`), only gate-validated claims are promoted to the
+spec (Section 3); the refuted claim is pruned from the construct's asserted properties and
+kept as a characterized negative. Nothing was retro-fitted: thresholds quoted in Section 4 are
+copied verbatim from `gates/README.md`, committed before any real-model run; all design
+corrections and the one pre-registration amendment are documented in the per-gate results
+files and summarized where they matter.
 
 ---
 
@@ -103,8 +110,8 @@ mechanism: distill a frequently-traversed composite path A→B→C into a direct
 A→C, which should match the composite to tolerance while being cheaper, and should generalize
 to held-out transitively-connected pairs. The same machinery underwrites **gap-filling**: a
 capability no single model has, but which is implied by two neighbors' joint structure, should
-be producible by settling across them. Both claims are entirely unmeasured — no sandbox
-prototype exists (G3 is the highest-risk gate) — and both are bounded by interpolability: only
+be producible by settling across them. Both claims entered the program unmeasured (G3 was the
+highest-risk gate; see Section 4.3 for what survived) and both are bounded by interpolability: only
 gaps inside the convex hull of existing shared structure may be filled. Manufacturing an edge
 between models that share nothing is fabrication, and G3's held-out and ground-truth checks
 exist to catch exactly that (Section 5.4). If G3 reds, the "grows toward all-to-all" claim is
@@ -115,10 +122,19 @@ dropped and the construct keeps only the static-federation reconcile result.
 ## 2. Positioning
 
 The layer-over-frozen-models framing is occupied territory; the claim to novelty must be
-placed precisely or not at all. The distinctly-ours core, if the gates validate it, is:
+placed precisely or not at all. The distinctly-ours core, as pre-registered, was:
 **MZ-memory-kernel settling relaxation over frozen models, cost-bounded by kernel atomicity.**
 Not the framing, not the graph, not the frozen experts — the settling dynamics plus the
 memory-kernel scaling law.
+
+**Post-merge note (binding on this section).** The gates validated only part of that core.
+The settling half FAILED on real specialists (G1, Section 4.1): the comparisons below that
+turn on "we settle and reconcile" describe the *construct as designed*, and the design is now
+known to require a precondition — calibrated per-fact ignorance — that the tested scale does
+not provide (Section 5.5). The kernel half passed only in scoped, linear-instantiation form
+(G2, Section 4.2), and thickening passed as compression-not-capability (G3, Section 4.3).
+No positioning claim below may be read as an empirical superiority claim over the adjacent
+fields; the empirical record is Section 4, including its headline negative.
 
 ### 2.1 Adjacent occupied fields (what this is NOT)
 
@@ -188,30 +204,53 @@ memory-kernel scaling law.
 
 ---
 
-## 3. Formal specification [AWAITING GATES]
+## 3. Formal specification [MERGED 2026-07-08]
 
-This section imports from `spec/` (Rzk, spec-level: directed homs for lossy channels, graded
-tolerance composition, path-coherence as graded diagram commutation, the MZ-kernel atomicity
-property, and the externally-valued certification modality) and will contain **only
-gate-validated laws**. The result-independent type skeleton (objects, directed morphisms,
-path-coherence as a definition) may be stated; every structural *law* — additive grade
-composition, kernel low-rank/atomicity, thickening soundness — enters this section if and only
-if the corresponding gate passes, and is otherwise reported in Section 4 as a characterized
-negative and labeled conjectural or removed. Per the build discipline: a beautiful Rzk spec is
-not a substitute for a measured number, and nothing is formalized that is not measured.
-**[AWAITING GATES — see gates/ and spec/].**
+This section imports from `spec/` (Rzk, spec-level) and contains **only gate-validated laws**.
+The result-independent type skeleton stands as drafted: objects, directed non-invertible
+morphisms, graded composition as *definition*, path-coherence as *definition*. The merge
+disposition of the structural laws is:
+
+- **Refuted — NOT in the spec (G1 FAIL).** The settling/reconciliation law (spec Law G1-B:
+  coupled settling reaches a path-coherent fixed point that improves on pooling) and every
+  graded-refinement claim gated on G1 — including the additive grade-composition law, whose
+  planned empirical validation path ran through G1 — are not promoted. They are recorded as
+  the characterized negative of Section 4.1. Grade composition remains in the skeleton as a
+  labeled *conjecture*, not an asserted law.
+- **Promoted, scoped (G2 PASS).** The MZ-closure law, in exactly the scoped form of
+  GATE2_RESULTS.md: settling over frame-aligned real representation spaces *with linear
+  channels* admits an exact short-memory (L=2) closure over the routed subset, with closure
+  complexity independent of federation size (rank flat at 120 across N=4..10). NOT promoted:
+  atomicity-as-compression (rank << K·d was not shown — rank sat at the dimensional cap),
+  the residual-as-repair-trigger clause (did not replicate, r=-0.07), and any claim about
+  nonlinear settling dynamics.
+- **Promoted, amended (G3 PASS).** The thickening-soundness law: a distilled direct edge is a
+  functional cache of the composite path (agreement 1.00 incl. unseen paraphrase), bounded
+  exactly by the chain's ground-truth ceiling, at lower inference cost; and the
+  fabrication-guard law: an edge distilled across models sharing no real path scores below
+  base-rate and is thereby detectable. Promoted under the amended held-out design
+  (held-out unit = transitively-connected model pair, per gates/README.md's own G3 wording),
+  with the amendment and the discarded as-preregistered run on the record in GATE3_RESULTS.md.
+
+The externally-valued certification modality remains formalizable in principle but now lacks
+its intended principal client (G1's settled states); it is retained in spec/ as scaffolding
+for the G3-validated guard semantics only. Per the build discipline: a beautiful Rzk spec is
+not a substitute for a measured number, and nothing is formalized here that was not measured.
 
 ---
 
-## 4. Evidence [PENDING]
+## 4. Evidence
 
 Three pre-registered gates, thresholds committed in `gates/README.md` before any real-model
-run and quoted verbatim below. Results will be reported honestly, including any RED — a
-characterized negative is publishable and protects the integrity of whatever survives.
-Sandbox prototypes are labeled as what they are: synthetic, clean/linear, and **not evidence
-about real models**; they justify running the real gates, nothing more.
+run and quoted verbatim below; real runs 2026-07-08 (GATE1_RESULTS.md, GATE2_RESULTS.md,
+GATE3_RESULTS.md; sandbox record in SANDBOX_RESULTS.md). Scoreboard: **G1 FAIL, G2 PASS
+(scoped), G3 PASS (amended design)**. The G1 negative — with its mechanism — is a headline
+result of this paper, reported at the same prominence as the passes. Sandbox prototypes are
+labeled as what they are: synthetic, clean/linear, and **not evidence about real models**;
+G1's sandbox is doubly instructive because the real gate identified exactly which sandbox
+assumption was load-bearing and false.
 
-### 4.1 G1 — Reconcile beats pooling [PENDING — see gates/]
+### 4.1 G1 — Reconcile beats pooling: **FAIL** (headline negative)
 
 Pre-committed threshold (verbatim from gates/README.md):
 
@@ -227,12 +266,48 @@ Pre-committed threshold (verbatim from gates/README.md):
 
 Sandbox (clean/linear, synthetic split-dimension world — **not a real-model result**):
 passed; settling beat pooling 1.5x when knowledge was split, with most of the gain from
-per-dimension confidence-weighting and some from iteration. The real test must separate these
-two contributions (hence the one-step ablation arm).
+per-dimension confidence-weighting and some from iteration (reproduced 2026-07-08:
+settling 1.50x over pooling, SANDBOX_RESULTS.md).
 
-Real-model result: **[PENDING]**.
+**Real-model result (2026-07-08, GATE1_RESULTS.md): FAIL — all three pre-registered pass
+conditions fail; settling vs. pooling relative gain is -100%.** Federation: four rank-8 LoRA
+specialists on frozen Qwen2.5-0.5B-Instruct, each at 1.00 single-hop accuracy on its own
+relation; 40 split-knowledge multi-hop queries, ground-truth scored.
 
-### 4.2 G2 — MZ kernel is low-rank on real models [PENDING — see gates/]
+| arm | accuracy | fact-precision | facts admitted |
+|---|---|---|---|
+| best single model | **0.15** | — | — |
+| POOLING (confidence-weighted vote) | 0.05 | — | — |
+| ONE-STEP reconciliation | 0.00 | 0.547 | 64 |
+| SETTLING (<=5 rounds to fixed point) | **0.00** | **0.018** | 2,171 |
+
+The characterized mechanism, which is the result:
+
+1. **Confidence calibration on real 0.5B specialists is nearly nonexistent.** Correct-key vs.
+   wrong-type-key mean logprob gaps of 0.03–0.07 nats; a LoRA specialist asked about a
+   wrong-type entity confabulates an answer of its own relation type at almost its trained
+   confidence.
+2. **Iteration amplifies confabulation.** Each admitted junk fact seeds further confabulation
+   next round — a positive-feedback hallucination cascade. One step admitted 64 facts at 0.547
+   precision; five rounds admitted 2,171 at 0.018 (~54 facts/query, 98.2% false).
+3. **Pooling ALSO lost to the best single model** (0.05 vs. 0.15): three of four specialists
+   cannot answer any multi-hop query, and their confident wrong votes drown the
+   sometimes-right one. At this scale both aggregation baselines lose to argmax-model — a
+   finding that cuts against ensembling generally, not only against our construct.
+4. **The sandbox's 1.50x win silently assumed calibrated ignorance** — a sandbox model
+   contributed only on dimensions it truly knew (mask=0 elsewhere). Real small specialists
+   have no such mask. That assumption, not the settling algebra, was the load-bearing part.
+
+Consequences (per the pre-registered decision rule): the settling/reconciliation law is not
+promoted to the spec (Section 3); the MVP omits settling. The honest residual claim is only:
+on split-knowledge multi-hop queries at this scale, one-shot pooling of small specialists is
+worse than best-single, and recurrent settling without calibrated confidence is worse still —
+it amplifies hallucination. Bound for any retry: the missing precondition is per-fact
+calibration (abstention), not more iteration or a better frame; a retry must gate
+contributions on a verifier at >=0.8 fact-precision *before* settling gets another test, as a
+separately pre-registered experiment. Nothing here licenses building the settling layer.
+
+### 4.2 G2 — MZ kernel is low-rank on real models: **PASS (scoped)**
 
 Pre-committed threshold (verbatim from gates/README.md):
 
@@ -250,15 +325,52 @@ Pre-committed threshold (verbatim from gates/README.md):
 
 Sandbox (clean/linear, exact — **not a real-model result**): passed; a short memory kernel
 reproduced settling exactly, kernel effective rank tracked the routed subset size rather than
-federation size, memory (vs. Markovian) was necessary, and residual tracked difficulty. The
-real test is nonlinear and approximate; none of the linear exactness transfers by argument.
+federation size, memory (vs. Markovian) was necessary, and residual tracked difficulty
+(r=+0.29).
 
-Real-model result: **[PENDING]**.
+**Real-model result (2026-07-08, GATE2_RESULTS.md): PASS on all pre-registered criteria.**
+Nodes = (model, layer) hidden-state spaces of the four specialists plus the frozen base
+(layers 10/16/22), 240 shared probes, PCA to d=40 per node; channels = spectrally-capped
+ridge maps fitted on half the probes; damped coupled settling to T=40 on the held-out half.
 
-### 4.3 G3 — Pathway thickening / gap-filling [PENDING — see gates/]
+| measure | result | criterion |
+|---|---|---|
+| closure error vs. memory length | L=1: 0.084 -> **L=2: 0.000 (exact)** | some L<=8 < 0.15 — pass |
+| memory necessity | Markovian 0.084 vs. L=2 exact | memory helps — pass |
+| kernel eff-rank vs. routed width K | 80 / 160 / 240 for K=2/4/6 | grows with K — pass |
+| kernel eff-rank vs. federation size N | **120 / 120 / 120 / 120** for N=4/6/8/10 | flat ±2 — pass |
+| residual-difficulty correlation | **-0.07** (sandbox: +0.29) | reported, not gating |
 
-No prototype exists for G3, sandbox or otherwise; this claim is unmeasured in any setting and
-is the highest-risk gate.
+The settling dynamics of a real-geometry federation are closable from a short history of the
+routed subset alone, and the closure's complexity does not grow with federation size — the
+scale-invariance property the "innumerable models" story needs.
+
+Honest scope limits (from GATE2_RESULTS.md, binding on every use of this result):
+
+1. **Rank-at-cap.** Effective rank equals the output-dimension cap K·d in every
+   configuration, so "rank grows with K" is partly dimensional necessity. The STRONGER
+   atomicity reading — a compressed index with rank << K·d — is NOT demonstrated. What is
+   demonstrated is exactly the pre-registered pair: short-memory closability plus
+   N-independence.
+2. **Linear instantiation.** The coupled dynamics use linear (ridge) channels over real model
+   geometry with linear damping. The geometry is real; the dynamics are not nonlinear. The
+   fully nonlinear settling of gates/README.md lived in G1's text-space protocol, which failed
+   upstream (hallucination cascade) before any kernel question could be posed there. A
+   nonlinear-dynamics G2 remains untested.
+3. **The repair-trigger signal did not replicate** on real geometry (-0.07 vs. sandbox +0.29).
+   The corresponding spec clause stays unpromoted.
+
+Promoted claim, scoped form only: settling over frame-aligned real representation spaces with
+linear channels admits an exact short-memory MZ closure over the routed subset, with closure
+complexity independent of federation size (N=4..10, 15 real nodes available). Not promoted:
+atomicity-as-compression, residual-as-repair-trigger, nonlinear settling.
+
+### 4.3 G3 — Pathway thickening / gap-filling: **PASS (amended design)**
+
+G3 entered the program with no prototype (the highest-risk gate). A sandbox prototype was
+built and passed on 2026-07-08 (SANDBOX_RESULTS.md, with two documented test-construction
+corrections and one honestly measured bound: dimensions invisible to the intermediate model
+stay at rel-error 0.99 — a transitive edge cannot carry them and does not pretend to).
 
 Pre-committed threshold (verbatim from gates/README.md):
 
@@ -275,7 +387,56 @@ Pre-committed threshold (verbatim from gates/README.md):
 > FAIL => the mesh cannot self-densify honestly; drop the "grows toward all-to-all" claim,
 > keep only the static-federation reconcile result.
 
-Real-model result: **[PENDING]**.
+**Real-model result (2026-07-08, GATE3_RESULTS.md): PASS under an amended held-out design;
+the amendment is on the record and documented below.** Real 2-hop chains of specialist calls
+(all four specialists at 1.00 single-hop accuracy): pair 1 = person -> city -> company,
+distilled into a direct rank-8 LoRA edge on the frozen base; pair 2 = the held-out gap
+(city -> company -> product), the same procedure applied unchanged to a transitively-connected
+pair it was not designed against; fabrication guard = person -> hobby fed into the
+city-to-company model — a chain across models sharing no real path. Thresholds: agreement
+>= 0.90; >= +20% relative vs. both controls; guard <= +5%.
+
+| measure | pair 1 | pair 2 (held-out gap) |
+|---|---|---|
+| agreement with chain, trained template | 1.00 | 1.00 |
+| agreement with chain, UNSEEN paraphrase | **1.00** | **1.00** |
+| ground-truth accuracy: distilled edge | **0.775** | **0.786** |
+| ground-truth accuracy: chain (ceiling) | 0.775 | 0.786 |
+| base-rate control (shuffled-label LoRA) | 0.425 | 0.286 |
+| no-edge (frozen base) | 0.00 | 0.00 |
+| inference cost | 1 call vs. 2 | 1 call vs. 2 |
+
+Fabrication guard: the junk-chain edge scores **0.15** ground truth vs. base-rate **0.42** —
+far below the no-information baseline. The pipeline does not manufacture structure; fabricated
+edges are detectable and rejected by exactly the check gates/README.md demanded.
+
+Reading. A transitive pathway through real frozen specialists CAN be thickened: the distilled
+direct edge is a perfect functional cache of the 2-hop chain (agreement 1.00 even on unseen
+phrasings) at half the inference cost, and the procedure transfers unchanged to a held-out
+pair. The honest bound holds exactly: the edge's ground-truth accuracy equals the chain's
+ceiling to the third decimal and cannot exceed it. **Thickening is compression of existing
+composite structure, not creation of new capability** (promoted as a bound, Section 5.6).
+The guard result is as important as the pass.
+
+Record of corrections (none are post-hoc threshold changes; full detail in GATE3_RESULTS.md):
+
+1. A first run was INVALID (a finite-loss/non-finite-gradient NaN bug silently poisoned the
+   distilled adapters); that run's results were discarded and the bug fixed separately.
+2. The as-preregistered design was FAIL-BY-CONSTRUCTION (preserved in
+   gate3_results_prereg_original.json): it held out PERSONS, but in a random relational world
+   the composite on an unseen key is information-theoretically unpredictable, and the run
+   showed exactly that signature (agreement 0.00; base-rate control 0.42 > direct 0.25).
+   gates/README.md's own G3 wording makes the held-out unit a transitively-connected MODEL
+   PAIR; the amended design implements that, keeps all threshold magnitudes unchanged, and
+   upgrades the guard's baseline from the vacuous frozen base to the base-rate control.
+   Because this is a pre-registration amendment rather than a clean pre-registered pass, the
+   verdict is reported as PASS (amended design), never as an unqualified PASS.
+
+Note on scope: the gap-filling arm of gates/README.md's G3 spec ("does settling across the two
+produce it") was mooted upstream by G1 — settling itself failed — so what G3 validates is the
+distillation/thickening mechanism, not settling-mediated emergence. The gap-filling-via-
+settling claim is therefore neither passed nor failed on real models; it is unreachable until
+G1's precondition (Section 5.5) is met.
 
 ---
 
@@ -293,7 +454,7 @@ nothing.
 
 ### 5.2 Interpolable gaps only
 
-Gap-filling (if G3 passes) operates strictly inside the convex hull of existing structure:
+Gap-filling operates strictly inside the convex hull of existing structure:
 a missing capability can be synthesized only when it is implied by the joint structure of
 connected neighbors. Extrapolation beyond what any combination of the federation's models
 supports is out of scope by construction, and no thickened edge may be created where the
@@ -319,7 +480,35 @@ clause), every synthesized edge must beat no-edge and random-edge baselines on h
 and a "stable" result whose stability is attributable to frozen corpus geometry rather than to
 the mechanism is a FAIL (the attribution lesson of the stability gate, Section 6). The
 fabrication guard is why the certification modality in spec/ is grounded in an *external*
-empirical valuation and not internalized.
+empirical valuation and not internalized. Post-merge, this guard has an empirical
+demonstration: G3's junk-chain edge scored 0.15 against a 0.42 base-rate — fabricated
+structure is not merely forbidden, it is detectable (Section 4.3).
+
+### 5.5 Settling requires calibrated ignorance (empirical bound, from G1)
+
+Settling is only well-founded over models that know what they do not know. The reconciliation
+dynamics assumes each participant contributes on the dimensions it genuinely knows and
+abstains elsewhere; real small specialists exhibit no such mask (correct-key vs.
+wrong-type-key confidence gaps of 0.03–0.07 nats, Section 4.1). Absent per-fact calibration,
+settling is not merely useless but actively harmful — **a hallucination amplifier**: each
+uncalibrated contribution seeds further confabulation on the next round, and the
+positive-feedback cascade drove fact-precision from 0.547 (one step) to 0.018 (five steps).
+Any future settling construction must place a calibration/abstention verifier (>=0.8
+fact-precision on admitted facts) *upstream* of the coupling loop as a precondition, not as a
+post-hoc filter. Until that precondition is met on real models, the settling layer of
+Section 1.4 is a definition without an instance.
+
+### 5.6 Thickening is compression, bounded by the chain ceiling (empirical bound, from G3)
+
+A distilled direct edge is exactly a functional cache of the composite path it replaces: it
+matches the chain's ground-truth accuracy to the third decimal (0.775/0.775 and 0.786/0.786
+on the held-out pair) and can never exceed it. Thickening buys inference cost (one call
+instead of two) and transfer of the *procedure* to new transitively-connected pairs — it
+never buys new capability. Anything the composite path gets wrong, the thickened edge gets
+wrong; anything invisible to the intermediate model stays invisible (the sandbox measured
+this at rel-error 0.99 on B-invisible dimensions). "Self-densification" therefore means the
+mesh compresses its existing composite structure toward direct connectivity; it does not mean
+the mesh grows knowledge.
 
 ---
 
@@ -354,14 +543,22 @@ after a gate passes.
    canonicalization pressure that gate's post-mortem prescribed.
 
 The common failure mode was always the same: elegant machinery built on an unvalidated claim
-that floats. The present paper is structured so that it *cannot* do that — Sections 3 and 4
-are empty until the gates fill them, and if the gates red, this document becomes a precise
-construct definition paired with characterized negatives, which is the honest deliverable.
+that floats. The present paper was structured so that it *could not* do that — Sections 3 and
+4 stayed empty until the gates filled them — and the discipline paid out on schedule: the
+program's own core claim (G1) redded, exactly as three of its ancestors did, and this
+document is now what the protocol said it would be in that case — a precise construct
+definition paired with a characterized headline negative (Section 4.1) and two scoped,
+gate-validated survivals (Sections 4.2, 4.3). The G1 failure also rhymes with its lineage:
+like the stability gate, the load-bearing ingredient turned out to live somewhere other than
+the mechanism (there, frozen corpus geometry; here, an assumed calibration mask the sandbox
+provided for free and real models do not).
 
 ---
 
-*Scaffold notes (remove in final): Section 3 imports from spec/ after the merge step; Section
-4 subsections are filled from per-gate RESULTS.md files, numbers unedited; Section 2.1(3)
-requires the direct graph-MoE paper verification before final claims; citations to be added
-for relative representations, DEQ, GrTT/QTT, MoFE, SAGMM, and the graph-MoE line during the
-merge step.*
+*Editorial notes (remove in final): merge executed 2026-07-08 — Section 4 filled from
+GATE1/GATE2/GATE3_RESULTS.md with numbers unedited, Section 3 updated to the promoted/refuted
+ledger, bounds 5.5–5.6 added from the gate mechanisms. Still open before a final version:
+Section 2.1(3)'s direct graph-MoE paper verification; citations for relative representations,
+DEQ, GrTT/QTT, MoFE, SAGMM, and the graph-MoE line; and a decision on whether the title's
+"memory-kernel settling" should be revised given that settling failed its gate while the
+kernel result survives only in scoped form.*

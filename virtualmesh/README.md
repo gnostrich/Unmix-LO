@@ -31,3 +31,18 @@ mode was always: elegant machinery built on an unvalidated claim that floats. So
 ## real-model evidence. Spec-alone = vapor. MVP-alone = a demo the graph-MoE field absorbs. Both.
 
 See gates/README.md, spec/README.md, paper/README.md, mvp/README.md for each track.
+
+---
+
+## OUTCOME (2026-07-08 — gates run, merge executed)
+
+| gate | verdict | one line |
+|---|---|---|
+| G1 reconcile>pooling | **FAIL** | settling is a hallucination amplifier without calibrated ignorance (fact-precision 0.018; pooling also lost to best-single) — `gates/GATE1_RESULTS.md` |
+| G2 MZ kernel | **PASS (scoped)** | exact L=2 closure; kernel complexity flat across N=4..10; linear instantiation, rank-at-cap caveat — `gates/GATE2_RESULTS.md` |
+| G3 thickening | **PASS (amended)** | distilled edges perfectly cache real 2-hop chains at half cost, transfer to a held-out pair, and the guard refuses fabricated edges — `gates/GATE3_RESULTS.md` |
+
+Merge protocol executed: `spec/virtualmesh.md` promotes only the scoped G2/G3 laws (refuted
+G1 laws live in its §II.R register), `paper/paper.md` reports all three with the FAIL as a
+headline result, and `mvp/demo_thicken.py` demos the passed mechanism only. Pre-registration,
+amendments, and two invalidated runs are all on the record in `gates/`.
