@@ -1,0 +1,44 @@
+{
+ "calibration": {
+  "p2c": {
+   "good_mean": -0.2617659766227007,
+   "bad_mean": -0.3322957245012124,
+   "threshold": -0.29703085056195655
+  },
+  "c2co": {
+   "good_mean": -0.20676805770822934,
+   "bad_mean": -0.24016453921794892,
+   "threshold": -0.22346629846308913
+  },
+  "co2pr": {
+   "good_mean": -0.37467483927806217,
+   "bad_mean": -0.4224002723182951,
+   "threshold": -0.3985375557981786
+  },
+  "p2h": {
+   "good_mean": -0.2062761563807726,
+   "bad_mean": -0.2106139465634312,
+   "threshold": -0.2084450514721019
+  }
+ },
+ "n_queries": 40,
+ "best_single": 0.15,
+ "single_by_model": {
+  "p2c": 0.0,
+  "c2co": 0.15,
+  "co2pr": 0.1,
+  "p2h": 0.0
+ },
+ "pooling": 0.05,
+ "one_step": 0.0,
+ "one_step_fact_precision": 0.546875,
+ "one_step_facts_admitted": 64,
+ "one_step_mean_rounds": 1.0,
+ "settling": 0.0,
+ "settling_fact_precision": 0.017503454629203132,
+ "settling_facts_admitted": 2171,
+ "settling_mean_rounds": 4.3,
+ "settling_vs_pooling_relative": -1.0,
+ "pass": false,
+ "frame_cost": "shared frozen base + tokenizer; no anchor alignment trained (cost ~0)"
+}
