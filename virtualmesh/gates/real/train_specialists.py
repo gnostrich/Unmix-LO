@@ -111,7 +111,9 @@ def train_one(tok, rel, mapping, out_dir):
         if not torch.isfinite(loss):                    # never let a bad step poison the adapter
             opt.zero_grad(set_to_none=True); sched.step(); continue
         loss.backward()
-        torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], 1.0)
+        gn = torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], 1.0)
+        if not torch.isfinite(gn):                      # finite loss but inf/nan grads: clip would
+            opt.zero_grad(set_to_none=True); sched.step(); continue  # scale by nan and poison weights
         opt.step(); sched.step(); opt.zero_grad(set_to_none=True)
         calm = calm + 1 if loss.item() < 0.005 else 0
         if calm >= 30:                                  # converged; extra steps only invite blowup
@@ -119,6 +121,9 @@ def train_one(tok, rel, mapping, out_dir):
             break
         if (step + 1) % 100 == 0:
             print(f"    [{rel}] step {step+1}/{STEPS} loss {loss.item():.4f} ({time.time()-t0:.0f}s)", flush=True)
+    for n, p in model.named_parameters():
+        if p.requires_grad and not torch.isfinite(p).all():
+            raise RuntimeError(f"{rel}: non-finite weights in {n} — adapter would be poisoned")
     model.save_pretrained(out_dir)
     return model
 
