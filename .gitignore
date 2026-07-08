@@ -7,3 +7,6 @@ theta0.npy
 grads-qwen/**/*.npy
 agda-gate/work/
 stability-gate/*.npy
+
+# LoRA adapter weights from real-model gate training (heavyweight)
+virtualmesh/gates/real/adapters/
