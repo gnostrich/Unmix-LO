@@ -99,10 +99,19 @@ def main():
         p = probes[tag]["prob_test"][bal]
         return (p >= probes[tag]["thr"]).astype(int) == yte[bal]
     cp, cm, cu = correct("protein_only"), correct("molecule_only"), correct("union")
-    split_mask = (~cp) & (~cm) & cu
+    both_wrong = (~cp) & (~cm)
+    split_mask = both_wrong & cu
     split_fraction = float(split_mask.mean())
     res["balanced_subset_n"] = int(len(bal))
     res["split_knowledge_fraction"] = split_fraction
+    # decomposition — WHY the split fraction is what it is (diagnostic, not gating)
+    res["decomposition"] = {
+        "p_protein_correct": float(cp.mean()), "p_molecule_correct": float(cm.mean()),
+        "p_union_correct": float(cu.mean()), "p_both_singles_wrong": float(both_wrong.mean()),
+        "union_rescue_rate_when_both_wrong": float(cu[both_wrong].mean()) if both_wrong.sum() else 0.0,
+        "p_exactly_one_single_wrong": float((cp ^ cm).mean()),
+        "single_error_correlation": float(np.corrcoef((~cp).astype(float), (~cm).astype(float))[0, 1]),
+    }
 
     # --- condition 2: pooling beats best-single
     union_auprc = res["union"]["auprc"]

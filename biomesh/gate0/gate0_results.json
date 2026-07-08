@@ -1,0 +1,36 @@
+{
+ "n_pairs": 30056,
+ "binder_rate": 0.08324461006121905,
+ "n_train": 21038,
+ "n_val": 4508,
+ "n_test": 4510,
+ "protein_only": {
+  "auroc": 0.7109517339344718,
+  "auprc": 0.20859604530924916
+ },
+ "molecule_only": {
+  "auroc": 0.7937816524102153,
+  "auprc": 0.3039447573522653
+ },
+ "union": {
+  "auroc": 0.8697072280723426,
+  "auprc": 0.41683690423745867
+ },
+ "balanced_subset_n": 752,
+ "split_knowledge_fraction": 0.005319148936170213,
+ "decomposition": {
+  "p_protein_correct": 0.6835106382978723,
+  "p_molecule_correct": 0.7220744680851063,
+  "p_union_correct": 0.8111702127659575,
+  "p_both_singles_wrong": 0.05053191489361702,
+  "union_rescue_rate_when_both_wrong": 0.10526315789473684,
+  "p_exactly_one_single_wrong": 0.4933510638297872,
+  "single_error_correlation": -0.1796369596014086
+ },
+ "best_single": {
+  "name": "molecule_only",
+  "auprc": 0.3039447573522653
+ },
+ "union_over_best_single_auprc_ratio": 1.3714232365683827,
+ "pass": false
+}
