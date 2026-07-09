@@ -1,0 +1,62 @@
+{
+ "config": {
+  "R": 30,
+  "T": 40,
+  "K_MODES": 10,
+  "align_frac": 0.5
+ },
+ "readout_r2": {
+  "ViT": -0.15067819143896055,
+  "DINO": -0.07424164626404939,
+  "Qwen": 0.1391459454194237
+ },
+ "pairs": {
+  "ViT-DINO (cross-ARCH)": {
+   "frac_soft": 0.5030747540197545,
+   "frac_hard": 1.0,
+   "mean_absmu": 0.46374352328480517,
+   "mean_rev": 0.5593349002719497,
+   "current_frac": 0.1536231864524754,
+   "k": 10.0,
+   "disagree_rel_norm": 0.3789061877548604
+  },
+  "ViT-Qwen (cross-MODAL)": {
+   "frac_soft": 0.5409863700119156,
+   "frac_hard": 1.0,
+   "mean_absmu": 0.663913795034153,
+   "mean_rev": 0.6790772679052353,
+   "current_frac": 0.10203503602970689,
+   "k": 10.0,
+   "disagree_rel_norm": 0.5226933864436092
+  },
+  "DINO-Qwen (cross-MODAL)": {
+   "frac_soft": 0.4860642269844469,
+   "frac_hard": 1.0,
+   "mean_absmu": 0.7667807592860916,
+   "mean_rev": 0.7409613333728914,
+   "current_frac": 0.08019999867936348,
+   "k": 10.0,
+   "disagree_rel_norm": 0.5048338771959204
+  }
+ },
+ "controls": {
+  "ViT-vs-RANDOMfeat (literal)": {
+   "frac_soft": 0.13187217352958822,
+   "frac_hard": 0.2,
+   "mean_absmu": 0.13881096597573492,
+   "mean_rev": 0.20559973954916272,
+   "current_frac": 0.36217181545835414,
+   "k": 10.0,
+   "disagree_rel_norm": 0.9782296880186782
+  },
+  "DINO-vs-RANDOMnoise (matched)": {
+   "frac_soft": 0.43137181227802496,
+   "frac_hard": 0.7,
+   "mean_absmu": 0.32979315430722467,
+   "mean_rev": 0.51325414691731,
+   "current_frac": 0.15544170498490742,
+   "k": 10.0,
+   "disagree_rel_norm": 0.6879993931728327
+  }
+ }
+}

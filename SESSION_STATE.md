@@ -19,11 +19,21 @@ multi-hop/cyclic, flat cost. 9. THOUGHTWORLD vision-deviation: NOISE. 10. THOUGH
 +0.059 banked). thoughtworld_construct/CONSTRUCT.md = canonical spec (construct itself UNVALIDATED; open joints J1-J5).
 
 ## IN FLIGHT
-- **fdt_denoise** (component, native-denoising FDT theory test): STEP-0 estimator VALIDATED & committed
-  (8a57bf8) — OU 0.81 vs FDT-violating ≤0.18, gap 0.64, passed. Real-model run (run_fdt.py) was still
-  running at last check; **when done: read fdt_denoise/fdt_results.json, write FDT_RESULTS.md, commit to main**,
-  add row 12 to report.md. Controls: random-model fabrication guard + cross-arch/cross-modal pairs.
-  (Was launched as a parallel general-purpose agent; agent stopped, run left in background.)
+- (none) — fdt_denoise and virtualworld both landed; see below.
+
+## DONE since last state
+- **fdt_denoise** (gate 12, component native-denoising FDT test): **MID → DOWNGRADE (null-leaning)**.
+  Real disagreement pairs FDT-frac 0.49–0.54 (never near FDT-holds 0.81); covariance-matched-noise
+  control already scores 0.43 so genuine content above noise ~0.06–0.11; vision readout R² negative;
+  literal-random fabrication guard floors at 0.13 (estimator sound, null trustworthy). MZ "noise floor"
+  = heuristic threshold, not native separation. FDT_RESULTS.md + fdt_results.json committed, report row 12.
+  (First run died on the Qwen download stall; re-run with ViT/DINO cached completed clean.)
+- **virtualworld** (playable instrument, NOT a gate): built + pushed (24c2387). Coverage-union stitch
+  R²=0.445 (best single = text 0.337); drop-one text +0.140 / audio +0.034; NATURAL structured
+  decoherence 0/6 (matches xresolve convergence null); inject-knobs live (noise→rejected 4/4,
+  structured→extended 4/4); Step-0 detector validated (D∈{20,24,32}, held-out-R²≥0.3). MZ recurrent
+  layer kept SEPARATE + badged UNVALIDATED. Layer-separation PROVEN: VW_MZ=0 → validated payload
+  BIT-IDENTICAL (18887 bytes) to VW_MZ=1; MZ is a pure sink, no entanglement (flag committed f9f078a).
 
 ## NEXT / PENDING BUILD (not started)
 - **virtualworld** (spec in virtualworld/PREREG.md, BRIEF.md, smoke_loop.py — committed): a PLAYABLE INSTRUMENT
