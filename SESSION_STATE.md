@@ -32,6 +32,15 @@ routing kept FIXED/initialized (labeled, not learning); learning mechanism = equ
 (two-settles-and-a-difference, NO backprop-through-time). Honest point-4 flag: response reciprocity
 asymmetry ≈0.19–0.23, β-INDEPENDENT (structural, not numerical) → EqProp-LIKE but NOT textbook: paraconsistent
 holding makes it a constrained relaxation, not a clean scalar-energy flow. RESULTS.md + json committed.
+- SATISFACTION battery (internal check vs the REAL build, NOT a gate): 7/7 checks PASS; FALSE-POSITIVE rate
+  0.0%/40 seeds (no-fabrication headline confirmed); detection floor sharp ~1.2–1.4× noise (100% by 1.6×).
+  Read-payoff LARGE (~+0.50 vs consensus, ~+0.46 vs the FAIR naive-mean baseline which sits at chance) —
+  investigated per the brief's "large payoff = suspicious" warning and found REAL not artifact (held-out
+  probe; naive averaging genuinely can't recover the minority alignment-orthogonal branch). Discrepancy vs
+  sandbox (sharper floor, bigger payoff) explained: real build holds structure OUT of consensus; sandbox
+  folds it in (degrading its own channel). Honest caveat: payoff is regime-specific (injected structure);
+  on real convergent models it no-ops. SATISFACTION.md + run_satisfaction.py committed. Added non-breaking
+  settle(init=) to enable the contraction-from-transient test against the real dynamics.
 
 ## DONE since last state
 - **fdt_denoise** (gate 12, component native-denoising FDT test): **MID → DOWNGRADE (null-leaning)**.

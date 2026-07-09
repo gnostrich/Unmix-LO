@@ -68,7 +68,7 @@ def structured(d, z):
     return bool(is_s), P, {"cap": float(cap), "ho": float(ho), "eff": int(eff)}
 
 
-def settle(ifaces, z, guard=True, nudge=None, beta=0.0):
+def settle(ifaces, z, guard=True, nudge=None, beta=0.0, init=None):
     """RECURRENT SETTLING under the internal coherence loss, guards INSIDE. The consensus (streaming) state
     settles by minimising UNSTRUCTURED decoherence; STRUCTURED decoherence is HELD in the tape (memory),
     circulated but kept OUT of the consensus so a single-frame collapse cannot see it. Damped => observe
@@ -79,8 +79,10 @@ def settle(ifaces, z, guard=True, nudge=None, beta=0.0):
     and NOT a fixed heuristic dressed as learning; for this first run we keep it fixed and observe behavior.
 
     `nudge`/`beta`: a weak perturbation (beta*nudge) added to the coherence target — used ONLY by eqprop_probe
-    to read the EQUILIBRIUM RESPONSE (the native EqProp learning signal); beta=0 is the free settle."""
-    state = np.mean(ifaces, axis=0)
+    to read the EQUILIBRIUM RESPONSE (the native EqProp learning signal); beta=0 is the free settle.
+    `init`: optional starting state (default = the naive consensus). Used to test contraction from a transient
+    started AWAY from the fixed point without changing the dynamics."""
+    state = np.mean(ifaces, axis=0) if init is None else init.copy()
     res, memory = [], {}
     for _ in range(ITERS):
         prev = state.copy()
