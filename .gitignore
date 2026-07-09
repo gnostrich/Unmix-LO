@@ -25,3 +25,6 @@ thoughtworld/feat_cache/
 thoughtworld2/feat_cache/
 
 xresolve/feat_cache/
+
+# agent dev-scratch (real deliverables live in each experiment dir)
+scratchpad_dev/
