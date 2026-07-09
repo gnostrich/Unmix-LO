@@ -153,8 +153,51 @@ def timeseries_features(hist):
     return np.array(feats, dtype=np.float32)
 
 
+# ------------------------------------------------------- shared medium --------
+# The shared world-state medium is a PERMUTATION-INVARIANT scene descriptor (D=26). Balls are
+# indistinguishable, so a per-ball ORDERED state is not identifiable from vision/text/audio; invariant
+# scene features (occupancy, spatial + wall stats, speed/energy stats) ARE genuinely readable by every
+# modality. Each modality sees a DIFFERENT subset -> real coverage complementarity.
+SCENE_LABELS = (
+    [f"occ[{r},{c}]" for r in range(3) for c in range(3)] +      # 9 : 3x3 occupancy grid (spatial)
+    ["x_mean", "x_std", "y_mean", "y_std"] +                     # 4 : spatial stats
+    ["n_left", "n_right", "n_floor", "n_ceil"] +                 # 4 : balls near each wall
+    ["speed_mean", "speed_max", "speed_std"] +                   # 3 : motion
+    ["KE_total", "PE_total"] +                                   # 2 : energies
+    ["absvx_mean", "absvy_mean"] +                               # 2 : velocity magnitude
+    ["min_pair_dist", "n_close_pairs"]                           # 2 : collision geometry
+)
+SCENE_D = len(SCENE_LABELS)  # 26
+# which dims are POSITION/spatial vs VELOCITY/energy (for the coverage story)
+SCENE_POS = list(range(0, 17))                 # occupancy + spatial stats + wall counts
+SCENE_VEL = list(range(17, 24))                # speed/energy/velocity dims
+SCENE_COLL = [15, 16, 24, 25]                  # wall/collision-geometry dims
+
+
+def scene_features(s):
+    """Permutation-invariant scene descriptor of a single engine state s (D_engine,) -> (SCENE_D,)."""
+    p = s[:2 * N].reshape(N, 2); v = s[2 * N:].reshape(N, 2)
+    sp = np.hypot(v[:, 0], v[:, 1])
+    gx = np.clip((p[:, 0] * 3).astype(int), 0, 2); gy = np.clip((p[:, 1] * 3).astype(int), 0, 2)
+    grid = np.zeros((3, 3))
+    for i in range(N):
+        grid[gy[i], gx[i]] += 1
+    m = R + 0.05
+    dists = [np.hypot(*(p[i] - p[j])) for i in range(N) for j in range(i + 1, N)]
+    feats = list(grid.ravel())
+    feats += [p[:, 0].mean(), p[:, 0].std(), p[:, 1].mean(), p[:, 1].std()]
+    feats += [float((p[:, 0] < m).sum()), float((p[:, 0] > 1 - m).sum()),
+              float((p[:, 1] < m).sum()), float((p[:, 1] > 1 - m).sum())]
+    feats += [sp.mean(), sp.max(), sp.std()]
+    feats += [0.5 * (sp ** 2).sum(), ENG.G * p[:, 1].sum()]
+    feats += [np.abs(v[:, 0]).mean(), np.abs(v[:, 1]).mean()]
+    feats += [min(dists), float(np.sum(np.array(dists) < 3 * R))]
+    return np.array(feats, dtype=np.float32)
+
+
 if __name__ == "__main__":
     d = collect(n_rollouts=2, T=10)
+    print("scene medium dim", scene_features(d["s_cur"][0]).shape, "labels", len(SCENE_LABELS))
     print("frames", d["s_cur"].shape, "D", D, "N", N)
     print("audio dim", audio_features(d["hist"][0]).shape)
     print("timeseries dim", timeseries_features(d["hist"][0]).shape)
