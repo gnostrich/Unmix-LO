@@ -60,13 +60,15 @@ barely predict the physics at all). **THOUGHTWORLD-2** then tested the fragments
 (Qwen-0.5B LLM on scene descriptions; VideoMAE trained on video) — where a positive was genuinely possible.
 Result: **NOISE again, now generalized**. VideoMAE is full-rank engine-leakage (eff-rank 16.1) despite
 dynamics training; the LLM predicts the physics (readout R² 0.57) and is the single most-structured fragment
-across both experiments (eff-rank 13.1 below the floor, beating its own random control, directed-frac 0.45)
-— yet fails held-out coherence (R² 0.16 < 0.3), so its low-rank structure is not a generalizing function of
-state. Same shape as the capability negatives, now on the world-model axis and general across fragment
-types: frozen models hold no *new structure* — task capability or world-model — that clears the bar; only
-reachable content to route and compress. (Scope honestly: one minimal seed; the seed-densification /
-domain-matched-fragment percolation question is a pre-registered follow-up, and the LLM's sub-threshold
-signal is where it would be pursued.)
+across both experiments — but a **required velocity-confound control** (the LLM was handed velocities in
+its prompt) shows this was **prompt-arithmetic, not world-knowledge**: pure arithmetic on the handed
+numbers *dominates* the LLM (eff-rank 9.1 vs 13.1, readout R² 0.82 vs 0.57, directed-frac 0.68 vs 0.45).
+So once the confound is controlled, the negative is **clean, not soft**: no frozen model — vision, video,
+or language — carries world-structure beyond the engine. Same shape as the capability negatives, now on the
+world-model axis and general across fragment types: frozen models hold no *new structure* — task capability
+or world-model; only reachable content to route and compress. (Scope honestly: one minimal seed; a
+genuinely velocity-withheld dynamics probe and the seed-densification/percolation question remain the
+pre-registered follow-ups — the retracted LLM signal is not one of them.)
 
 ## The one-line conclusion
 Frozen-model composition is a cost-and-routing story (G2/G3), not a capability story

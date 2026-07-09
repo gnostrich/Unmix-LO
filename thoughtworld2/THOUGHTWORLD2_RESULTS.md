@@ -60,6 +60,26 @@ frozen fragment departs meaningfully from the noise floor. The prereg's pre-regi
 atomicity ignite as the seed densifies, or with domain-matched fragments / better alignment — is where that
 hint would be pursued; nothing here clears the bar, and the frozen thresholds stand.
 
+## VELOCITY-CONFOUND CONTROL (required by thoughtworld_construct/CONSTRUCT.md — and it fires)
+The LLM was **handed velocities in its prompt**, so its "most-structured fragment" signal could be
+*prompt-arithmetic on the handed numbers*, not world-knowledge. The mandated control measures the SAME
+instrument on a pure-arithmetic fragment = a linear map on the raw state numbers the LLM was given
+(no LLM at all):
+
+| fragment | readout R² | eff-rank | directed-frac |
+|---|---|---|---|
+| LLM handed (the flagged signal) | 0.566 | 13.06 | 0.45 |
+| **pure arithmetic on the same handed [pos,vel]** | **0.818** | **9.13** | **0.68** |
+
+Pure arithmetic **dominates** the LLM on every axis — more predictive, more concentrated, more directed.
+**CONFOUND CONFIRMED**: the LLM's sub-threshold signal is not world-knowledge; it is a *lossy re-encoding
+of arithmetic the prompt handed it*. Corrected reading: the LLM's departure from the noise floor is
+spurious, and the generalized negative is **cleaner**, not softer — once the arithmetic confound is
+controlled, no frozen model (vision, video, or language) shows world-structure at all. My earlier
+"most-structured fragment / where the follow-up would look" framing was too charitable and is retracted
+here; the follow-up worth running is a genuinely velocity-withheld dynamics probe, not this LLM signal.
+(Numbers in velocity_control_results.json. This is a COMPONENT-level sharpening of TW2, not a construct test.)
+
 ## Where it sits
 Same shape as the whole program, now on the world-structure axis and generalized across fragment types:
 frozen-model composition/reference is infrastructure over *reachable* content (G2/G3/ROUTEMESH), not a
