@@ -2,8 +2,10 @@
 VIRTUAL WORLD MODEL — the seed world + FOUR direct-view modalities.
 
 Reuses thoughtworld/engine.py physics (numpy rigid-body: balls, gravity, walls, elastic collisions)
-UNCHANGED as a file; we only raise N at runtime so the shared world-state dimension is D=24 (>=20-32,
-per the smoke_loop calibration note — a higher-D medium keeps the structured/noise baseline low).
+UNCHANGED as a file; we only raise N at runtime so the ENGINE STATE dimension is 4*N=24. NOTE: the engine
+state (24) is NOT the shared medium — the medium is the permutation-invariant SCENE descriptor of dimension
+SCENE_D=26 (>=20-32 per the smoke_loop calibration note; a higher-D medium keeps the structured/noise
+baseline low). Since the registry refactor SCENE_D = len(SCENE_REGISTRY), so the medium D is a knob.
 
 The SAME physics events are exposed through four genuinely-different DIRECT views (physical-bridge law,
 no orphan modalities):

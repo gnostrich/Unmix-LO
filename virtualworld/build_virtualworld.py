@@ -252,12 +252,11 @@ def main():
     # trajectory sample (one test rollout) for the stitched-vs-truth plot, in ORIGINAL units
     viz_roll = n_tr_roll
     idx = np.where(rollout == viz_roll)[0]
-    L = W.SCENE_LABELS
-    comps = {"mean height (y_mean)": L.index("y_mean"),
-             "mean speed": L.index("speed_mean"),
-             "total kinetic energy": L.index("KE_total"),
-             "balls near floor": L.index("n_floor"),
-             "top-row occupancy": L.index("occ[2,0]")}
+    L = list(W.SCENE_LABELS)
+    _cand = {"mean height (y_mean)": "y_mean", "mean speed": "speed_mean",
+             "total kinetic energy": "KE_total", "balls near floor": "n_floor",
+             "top-row occupancy": "occ[2,0]"}
+    comps = {name: L.index(lab) for name, lab in _cand.items() if lab in L}  # skip labels absent from a changed registry
     st_orig = st * tsd + tmu
     trajectory = {"t": d["tidx"][idx].tolist(), "truth": {}, "stitch": {}}
     for name, c in comps.items():
@@ -339,9 +338,9 @@ def main():
         "false_positive_ref": ("coherentflow satisfaction battery: 0% false-positive hold-rate across 40 "
                                "seeds — the system does not fabricate structure."),
     }
-    with open(os.path.join(HERE, "interactive_data.js"), "w") as f:
+    with open(os.path.join(HERE, f"interactive_data{OUT_SUF}.js"), "w") as f:  # honor VW_SUF like data{SUF}.js
         f.write("window.VW_IX = "); json.dump(ix, f, default=js); f.write(";")
-    print("wrote interactive_data.js (real-model aligned vectors + ball scene, for world_ux.html)")
+    print(f"wrote interactive_data{OUT_SUF}.js (real-model aligned vectors + ball scene, for world_ux.html)")
 
 
 if __name__ == "__main__":

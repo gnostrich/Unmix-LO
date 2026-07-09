@@ -26,9 +26,10 @@ frozen — only cached, never trained.
 ## 2. The medium dimension D (shipped value)
 
 - **virtualworld shared medium: D = 26.** Set at `build_virtualworld.py:132` `D = scene.shape[1]`, where
-  `scene = W.scene_features(...)`. The 26 comes from `world.py:161-170` `SCENE_LABELS` (9 occupancy + 4 spatial
-  + 4 wall-count + 3 motion + 2 energy + 2 velocity + 2 collision = **26**), `SCENE_D = 26`. It is a
-  **permutation-invariant scene descriptor**, not the engine state.
+  `scene = W.scene_features(...)`. Since the registry refactor, the 26 = `len(SCENE_REGISTRY)` — `SCENE_LABELS`
+  / `SCENE_D` / `SCENE_POS`/`VEL`/`COLL` are all *derived* in `_refresh_scene_index()` (no literal tuple); the
+  registry declares 9 occupancy + 4 spatial + 4 wall-count + 3 motion + 2 energy + 2 velocity + 2 collision =
+  **26**. It is a **permutation-invariant scene descriptor**, not the engine state.
 - **Engine state = 24** (`ENG.D = 4*N`, N=6 balls × [x,y,vx,vy], `world.py:30`). The "D=24" in comments/spec
   refers to this engine state, *not* the medium. (The sandbox's "24" was the engine/synthetic dim.)
 - **coherentflow medium: D = 24**, hard-coded constant `coherentflow.py:32` `D, T = 24, 600`. Unrelated to

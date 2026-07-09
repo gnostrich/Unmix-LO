@@ -79,7 +79,7 @@
 
   <div class="banner">
     <div>⚖️</div>
-    <div><b>Honest framing.</b> On <b>real, convergent</b> encoders the four senses mostly <b>agree</b> — natural structured decoherence is ≈0 (0/6 pairs here) and injected structure gets <b>buried</b> in each sense's large idiosyncratic error, so the object correctly <b>no-ops</b>. The held-superposition mechanism only bites where senses are genuinely <b>separable</b> — flip the mode toggle to <b>synthetic-separable</b> to watch it work. The system <b>never fabricates</b>: on coherent input and pure noise it holds nothing — <span id="fpref"></span></div>
+    <div><b>Honest framing.</b> On <b>real, convergent</b> encoders the four senses mostly <b>agree</b> — natural structured decoherence is ≈0 (<span id="natCount">0/6</span> pairs here) and injected structure gets <b>buried</b> in each sense's large idiosyncratic error, so the object correctly <b>no-ops</b>. The held-superposition mechanism only bites where senses are genuinely <b>separable</b> — flip the mode toggle to <b>synthetic-separable</b> to watch it work. The system <b>never fabricates</b>: on coherent input and pure noise it holds nothing — <span id="fpref"></span></div>
   </div>
 
   <div class="row" style="gap:10px;margin-bottom:6px">
@@ -122,7 +122,7 @@
     <div class="panel exp">
       <h2>Decoherence map <span class="small">— do two senses agree, or carry structure?</span></h2>
       <canvas id="deco" width="440" height="300"></canvas>
-      <p class="small" style="margin:8px 0 0"><span style="color:var(--consensus)">green = consensus</span> (agree → folded into the unified estimate) · <span style="color:var(--struct)">amber = STRUCTURED</span> (a real reproducible distinction → <b>held</b>) · <span style="color:var(--noise)">red = NOISE</span> (corrupted / full-rank → <b>rejected</b>). Thickness = disagreement size; detection = effective rank of the disagreement.</p>
+      <p class="small" style="margin:8px 0 0"><span style="color:var(--consensus)">green = consensus</span> (agree → folded into the unified estimate) · <span style="color:var(--struct)">amber = STRUCTURED</span> (a real reproducible distinction → <b>held</b>) · <span style="color:var(--noise)">red = NOISE</span> (corrupted / full-rank → <b>rejected</b>). Thickness = disagreement size; detection = effective rank (covariance participation ratio — a live in-browser proxy of the validated detector, not byte-identical to it).</p>
       <table id="decotab" style="margin-top:10px"></table>
     </div>
     <div class="panel exp">
@@ -170,6 +170,7 @@ const IX = window.VW_IX, M = IX.meta, MODS = M.modalities, D = M.D, N = M.N, n =
 const COL = {vision:'--vision',text:'--text',audio:'--audio',timeseries:'--timeseries'};
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 document.getElementById('fpref').textContent = IX.false_positive_ref;
+document.getElementById('natCount').textContent = (IX.natural_structured_count ?? 0) + '/' + (MODS.length*(MODS.length-1)/2);  // data-driven, not hardcoded
 const Y = IX.Y;
 const ALL = [...Array(n).keys()];
 const ntr = Math.floor(n*0.6);
@@ -195,7 +196,7 @@ const ALLD=[...Array(D).keys()];
 const branch=(()=>{const rand=rng(4242);return Array.from({length:n},()=>rand()>0.5?1:0);})();
 const injDir=(()=>{const rand=rng(9001),d=Array.from({length:D},()=>gauss(rand));const nm=Math.hypot(...d);return d.map(x=>x/nm);})();
 // scale ~ typical real disagreement RMS (so knob strengths are comparable across modes)
-const BASE=(()=>{let s=0,c=0;for(let i=0;i<MODS.length;i++)for(let j=i+1;j<MODS.length;j++){for(const r of[0,60,120,180]){let q=0;for(let d=0;d<D;d++){const e=IX.aligned[MODS[i]][r][d]-IX.aligned[MODS[j]][r][d];q+=e*e;}s+=Math.sqrt(q/D);c++;}}return s/c||0.5;})();
+const BASE=(()=>{let s=0,c=0;const rows=[0,1,2,3].map(k=>Math.min(n-1,Math.floor(k*n/4)));for(let i=0;i<MODS.length;i++)for(let j=i+1;j<MODS.length;j++){for(const r of rows){let q=0;for(let d=0;d<D;d++){const e=IX.aligned[MODS[i]][r][d]-IX.aligned[MODS[j]][r][d];q+=e*e;}s+=Math.sqrt(q/D);c++;}}return s/c||0.5;})();  // sample rows that exist (no fixed indices)
 
 // SYNTHETIC-separable interfaces: each sense ≈ the world medium + a SMALL idiosyncratic error, so an
 // injected distinction dominates its disagreement (low-rank) and the held/combined mechanism can bite.
