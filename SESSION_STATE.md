@@ -38,6 +38,15 @@ multi-hop/cyclic, flat cost. 9. THOUGHTWORLD vision-deviation: NOISE. 10. THOUGH
   HONEST LABEL required: real small models mostly agree/noise (convergence, per xresolve) → coverage-union is the
   main real win; structured extension mostly appears only when the user injects it — do NOT present injected
   structure as convergent-model-supplied.
+  ** OWNER STEERING (2026-07-09, binding): do NOT flatten the construct into a static per-frame stitch/classify/
+  extend pipeline — that is the forbidden flattening error. Keep TWO clearly-separated layers: (1) VALIDATED
+  single-step behaviors (stitch/classify[D≥20 + heldout-R²≥0.3]/extend-paraconsistent/reject) — present as
+  validated; (2) EXPERIMENTAL recurrent Baur/MZ fluid (tape≡MZ memory as ONE object, memory kernel through-time,
+  self-expansion by Hankel-SV-vs-noise-floor, contraction/settling native) — label "unvalidated; probes showed
+  it reduces toward classical state-space filtering." Faithfulness = a LOSS TERM, not a generate/verify phase.
+  Loss = seed models' own grounding, not arbitrary/invented-judge data. Dashboard/README must keep the two
+  layers visibly distinct; never dress the recurrent part as validated. Build agent was steered to report a
+  diff against CONSTRUCT.md's non-negotiable-structure items 1-5 before proceeding. **
 
 ## Repo map
 report.md (headline ledger), COMPOSITION_THESIS.md (synthesis), per-dir RESULTS.md. thoughtworld/engine.py =
