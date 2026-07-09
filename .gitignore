@@ -18,3 +18,6 @@ synergy/data/
 
 # WN18RR knowledge-graph data (regenerate via URLs in R1_DESIGN.md)
 routemesh/data/
+
+# thoughtworld cached ViT features (regenerable)
+thoughtworld/feat_cache/
