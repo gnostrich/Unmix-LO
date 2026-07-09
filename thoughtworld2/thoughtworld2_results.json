@@ -1,0 +1,30 @@
+{
+ "D": 20,
+ "vit_floor_eff_rank": 16.4,
+ "fragments": {
+  "F2_qwen_llm": {
+   "eff_rank": 13.063428969845415,
+   "heldout_r2": 0.16285598002395396,
+   "directed_frac": 0.45292705314251946,
+   "atomic": false,
+   "dev_rel_norm": 0.4802685859326901,
+   "readout_pred_r2": 0.5662638649367553,
+   "control_eff_rank": 17.9844257013484,
+   "control_heldout_r2": 0.206936858121761
+  },
+  "F1_videomae": {
+   "eff_rank": 16.141977869404656,
+   "heldout_r2": 0.6148340342219498,
+   "directed_frac": 0.3317785246114327,
+   "atomic": false,
+   "dev_rel_norm": 0.5938718428325442,
+   "readout_pred_r2": 0.33459504426258835,
+   "control_eff_rank": 17.474416879357513,
+   "control_heldout_r2": 0.47724635890507194
+  }
+ },
+ "verdict": {
+  "any_dynamics_fragment_atomic": false,
+  "generalized_negative": true
+ }
+}
