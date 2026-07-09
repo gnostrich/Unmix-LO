@@ -29,6 +29,8 @@ import mz_fluid as MZ
 CACHE = os.path.join(HERE, "feat_cache"); os.makedirs(CACHE, exist_ok=True)
 torch.set_num_threads(os.cpu_count() or 4)
 SEED = 0
+MZ_ON = os.environ.get("VW_MZ", "1") != "0"     # VW_MZ=0 disables the EXPERIMENTAL recurrent layer entirely
+OUT_SUF = os.environ.get("VW_SUF", "")           # output-filename suffix (separation-check runs write elsewhere)
 N_ROLLOUTS, T = 26, 45
 VISION_MODEL = "google/vit-base-patch16-224"
 TEXT_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
@@ -233,12 +235,19 @@ def main():
     print(f"KNOB inject-structured: {sum(k['extended'] for k in knob_struct)}/{len(knob_struct)} correctly extended as STRUCTURED")
 
     # EXPERIMENTAL (UNVALIDATED) recurrent MZ/tape layer — runs ALONGSIDE, kept SEPARATE, never merged.
-    print("\n[EXPERIMENTAL] recurrent MZ/tape probe (UNVALIDATED — reduces toward classical filtering):")
-    experimental_mz = MZ.run(Y, st, rollout, np.arange(n_tr_roll), np.arange(n_tr_roll, N_ROLLOUTS))
-    print(f"    tape self-expands to order {experimental_mz['tape_order_selected']} "
-          f"(Hankel SVs>floor); memory-closure held-out R^2 = "
-          f"{experimental_mz['memory_closure']['memory_heldout_r2']:.3f}, "
-          f"spectral radius {experimental_mz['memory_closure']['spectral_radius']:.2f}")
+    # It is a pure SINK: it reads the validated Y/stitch (as copies) and feeds NOTHING back, so every
+    # validated number above is bit-identical whether it runs or not (VW_MZ=0 proves this empirically).
+    if MZ_ON:
+        print("\n[EXPERIMENTAL] recurrent MZ/tape probe (UNVALIDATED — reduces toward classical filtering):")
+        experimental_mz = MZ.run(Y, st, rollout, np.arange(n_tr_roll), np.arange(n_tr_roll, N_ROLLOUTS))
+        print(f"    tape self-expands to order {experimental_mz['tape_order_selected']} "
+              f"(Hankel SVs>floor); memory-closure held-out R^2 = "
+              f"{experimental_mz['memory_closure']['memory_heldout_r2']:.3f}, "
+              f"spectral radius {experimental_mz['memory_closure']['spectral_radius']:.2f}")
+    else:
+        print("\n[EXPERIMENTAL] recurrent MZ/tape layer DISABLED (VW_MZ=0) — separation check.")
+        experimental_mz = {"disabled": True,
+                           "note": "recurrent layer turned OFF for the validated-layer separation check"}
 
     # trajectory sample (one test rollout) for the stitched-vs-truth plot, in ORIGINAL units
     viz_roll = n_tr_roll
@@ -292,8 +301,8 @@ def main():
         if isinstance(o, np.ndarray): return o.tolist()
         raise TypeError(o)
 
-    json.dump(out, open(os.path.join(HERE, "virtualworld_data.json"), "w"), indent=1, default=js)
-    with open(os.path.join(HERE, "data.js"), "w") as f:
+    json.dump(out, open(os.path.join(HERE, f"virtualworld_data{OUT_SUF}.json"), "w"), indent=1, default=js)
+    with open(os.path.join(HERE, f"data{OUT_SUF}.js"), "w") as f:
         f.write("window.VW_DATA = ")
         json.dump(out, f, default=js)
         f.write(";")
