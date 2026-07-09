@@ -22,11 +22,13 @@ knowledge — not *intelligence*. This report is the complete ledger.
 | 6 | indextest | blind indexed connective tissue | **RED** | Even a steelman cross-view bilinear indexer, on complementarity engineered to be maximally favorable, is *worse* than a strong naive readout (0.78–0.93×). |
 | 7 | synergy | task-aware redundancy-penalized aggregator | **RED (at precondition)** | Complementarity doesn't survive the strictest cold split on any real task (DAVIS cold-pair +0.02, PPI +0.05, ≪ 0.15). Marginals dominate. |
 | 8 | ROUTEMESH | union-without-drag routing (drops ">") | **PASS (scoped)** | A *different* thesis: reach the reachable union, ceiling "=". Light critic realizes the oracle from sparse data (99% of gap); beats a SOTA single-hop router structurally via multi-hop/cyclic assembly (atomic +0.00, multi +0.98, cyclic +0.35) at cost flat in N. Scoped to the constructed disjoint-compositional regime. |
+| 9 | THOUGHTWORLD | do frozen models' deviations from a physics seed carry atomic world-structure? | **NOISE (negative)** | Against a gauge-fixing physics engine, two frozen vision encoders' deviations are near-full-rank (eff-rank 16.4/20) and *indistinguishable from the random-fragment control* — no atomic directed structure. The world-model analogue of the composition negatives. |
 
 **Survives:** G2 (scale-free cost) + G3 (compression of reachable knowledge) + ROUTEMESH (union-without-
 drag routing, a conditional positive). **Dead:** every attempt to extract *new* capability — pooling,
-settling, blind indexing, task-aware aggregation. The line is sharp: composition buys cheaper and more
-complete access to **reachable** knowledge (infrastructure), never **new** knowledge (capability).
+settling, blind indexing, task-aware aggregation — and now *new world-structure* (THOUGHTWORLD). The line
+is sharp: composition buys cheaper and more complete access to **reachable** knowledge (infrastructure),
+never **new** knowledge — capability or world-structure (intelligence).
 
 ---
 

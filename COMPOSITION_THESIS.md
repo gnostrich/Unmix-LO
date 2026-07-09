@@ -49,6 +49,18 @@ cost, or more completely retrieved. None creates capability that wasn't already 
 members' reachable composition. ROUTEMESH is the first conditional *positive* of the program, and it
 is a routing/retrieval result — orthogonal to the dead ">" thesis, squarely in the G2/G3 lane.
 
+## A fifth negative, on a new axis — world-structure (THOUGHTWORLD)
+The four capability negatives ask whether composing frozen models yields new *task* capability.
+THOUGHTWORLD asks the world-model analogue: referenced against a dense self-consistent physics engine
+(which fixes the gauge so deviation is well-defined), do frozen models' *deviations* from true dynamics
+carry **atomic** directed structure, or structureless noise? Answer: **NOISE** — two frozen vision
+encoders' deviations are near-full-rank (eff-rank 16.4 of 20) and statistically indistinguishable from a
+random-fragment control; they add no concentrated world-structure over the null (the frozen encoders
+barely predict the physics at all). Same shape as the capability negatives, on the representation/world
+axis: frozen models hold no *new structure* — of task capability or of world-model — to compose; only
+reachable content to route and compress. (Scope: one minimal seed, two general vision fragments; the
+seed-densification/percolation question is a pre-registered follow-up, not this experiment.)
+
 ## The one-line conclusion
 Frozen-model composition is a cost-and-routing story (G2/G3), not a capability story
 (G1/BIOMESH/indextest/synergy). Every attempt to extract *new* joint capability from frozen parts —
