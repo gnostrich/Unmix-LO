@@ -308,6 +308,41 @@ def main():
         f.write(";")
     print("\nwrote virtualworld_data.json + data.js")
 
+    # ---- INTERACTIVE UX payload: real-model aligned modality vectors + raw ball positions, on the TEST
+    # frames, so world_ux.html can run the coverage-union / decoherence / settle+combined-read math LIVE in
+    # JS on genuine ViT/MiniLM-derived data (encoders can't run in-browser; the light linear algebra can).
+    posN = W.N
+    ball_pos = s_cur[:, :2 * posN].reshape(n, posN, 2)          # (n, N, 2) raw positions in the box
+    rnd = lambda a: np.round(np.asarray(a), 4)                  # trim precision to keep the payload light
+    keep_rolls = sorted(set(rollout[test].tolist()))[:6]       # first ~6 test rollouts (enough for JS stats)
+    ti = test[np.isin(rollout[test], keep_rolls)]              # held-out TEST frames, lighter subset
+    ix = {
+        "meta": {"N": int(posN), "D": int(D), "n": int(len(ti)),
+                 "scene_labels": list(W.SCENE_LABELS), "pos_dims": list(W.SCENE_POS),
+                 "vel_dims": list(W.SCENE_VEL), "coll_dims": list(W.SCENE_COLL),
+                 "modalities": MODS},
+        "model_source": {
+            "vision": {"name": VISION_MODEL, "kind": "real encoder"},
+            "text": {"name": TEXT_MODEL, "kind": "real encoder"},
+            "audio": {"name": "hand-crafted collision / impact features", "kind": "feature"},
+            "timeseries": {"name": "hand-crafted velocity / speed / energy features", "kind": "feature"}},
+        "rollout": rollout[ti].tolist(), "tidx": d["tidx"][ti].tolist(),
+        "balls": rnd(ball_pos[ti]).tolist(),                   # (n_test, N, 2)
+        "Y": rnd(Y[ti]).tolist(),                              # standardized shared-medium ground truth
+        "aligned": {m: rnd(aligned[m][ti]).tolist() for m in MODS},  # per-modality aligned predictions
+        "weights": {m: rnd(np.clip(weights[m], 0, None)).tolist() for m in MODS},   # per-dim train coverage
+        "tmu": rnd(tmu).tolist(), "tsd": rnd(tsd).tolist(),    # de-standardize for display
+        "stitch_r2_ref": stitch_all["r2_overall"],
+        "drop_one_ref": {x["modality"]: x["delta"] for x in drop_one},
+        "natural_structured_count": int(n_struct),
+        "honest_label": out["honest_label"],
+        "false_positive_ref": ("coherentflow satisfaction battery: 0% false-positive hold-rate across 40 "
+                               "seeds — the system does not fabricate structure."),
+    }
+    with open(os.path.join(HERE, "interactive_data.js"), "w") as f:
+        f.write("window.VW_IX = "); json.dump(ix, f, default=js); f.write(";")
+    print("wrote interactive_data.js (real-model aligned vectors + ball scene, for world_ux.html)")
+
 
 if __name__ == "__main__":
     main()

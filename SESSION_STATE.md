@@ -56,6 +56,23 @@ holding makes it a constrained relaxation, not a clean scalar-energy flow. RESUL
   layer kept SEPARATE + badged UNVALIDATED. Layer-separation PROVEN: VW_MZ=0 → validated payload
   BIT-IDENTICAL (18887 bytes) to VW_MZ=1; MZ is a pure sink, no entanglement (flag committed f9f078a).
 
+## world_ux.html (interactive instrument — marries virtualworld real models + coherentflow settle semantics)
+Self-contained single-file UX (virtualworld/world_ux.html + interactive_data.js exported by build_virtualworld.py).
+Physics scene + decoherence-map are the visual heroes. Runs stitch/classify/settle/combined-read LIVE in JS on
+real ViT/MiniLM-derived aligned vectors (encoders can't run in-browser). STOCK-TAKING (answered): REAL models =
+vision ViT-base (google/vit-base-patch16-224), text MiniLM (all-MiniLM-L6-v2); audio & timeseries = HAND-FEATURES.
+The interactive SETTLING loop lives in coherentflow (synthetic interfaces); virtualworld is single-step +
+experimental MZ. KEY HONEST FINDING (empirically established): on REAL convergent modalities the pairwise
+disagreements are large, mid-rank (eff 12-15) and world-UNpredictable, so injected structure gets BURIED → the
+object correctly NO-OPS (matches the convergence thesis). What works live on real data: coverage-union (stitch
+0.36 on shown subset / 0.445 full-test ref, drop-one) + NOISE detection (injected noise → eff→21-25 → NOISE·
+rejected, 0 held = no-fabrication live). The STRUCTURED-held-and-surfaced mechanism only bites on SEPARABLE
+senses → provided a REAL vs SYNTHETIC-separable mode toggle; synth mode shows STRUCTURED·held + combined-read
+beats consensus. Detection = eff-rank 3-way (struct=low-rank+sizeable, noise=full-rank+large, else consensus).
+Verified via Playwright (Chromium): no console errors, all behaviors + both modes correct. Includes an I/O-flow
+panel (world 24-dim → 4 senses [ViT 768/MiniLM 384/audio 28/ts 84] → medium 26 → stitch/settle → readout;
+"nothing set in stone": D & N runtime params, medium self-expanding, senses add/remove-able).
+
 ## NEXT / PENDING BUILD (not started)
 - **virtualworld** (spec in virtualworld/PREREG.md, BRIEF.md, smoke_loop.py — committed): a PLAYABLE INSTRUMENT
   (not a gate). Build a small 2D physics world (numpy rigid-body / reuse thoughtworld/engine.py) emitting 4
