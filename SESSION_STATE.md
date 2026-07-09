@@ -19,7 +19,19 @@ multi-hop/cyclic, flat cost. 9. THOUGHTWORLD vision-deviation: NOISE. 10. THOUGH
 +0.059 banked). thoughtworld_construct/CONSTRUCT.md = canonical spec (construct itself UNVALIDATED; open joints J1-J5).
 
 ## IN FLIGHT
-- (none) — fdt_denoise and virtualworld both landed; see below.
+- (none) — fdt_denoise, virtualworld, coherentflow all landed; see below.
+
+## coherentflow (whole-object one-shot, observe-don't-prove — NOT a gate, like virtualworld)
+Built the COMPLETE construct object as ONE loop (Baur-written MZ tape, recurrent settle under internal
+coherence loss, guards INSIDE, combined read across interfaces). On frame-diverse INJECTED input:
+SETTLES (residual 2.666→0.003), SURFACES+HOLDS structure (1/3 held, only the branch-carrier), COMBINED
+READ recovers the branch 1.000 vs consensus-collapse 0.483 (+0.517 payoff — held superposition surfaces
+what a single-frame collapse loses). Controls: COHERENT→honest no-op (0/3 held, circ 0); NOISE→rejected
+by concentration (full-rank eff 23/24), nothing written to tape, no G1. OWNER EqProp STEERING honored:
+routing kept FIXED/initialized (labeled, not learning); learning mechanism = equilibrium-response
+(two-settles-and-a-difference, NO backprop-through-time). Honest point-4 flag: response reciprocity
+asymmetry ≈0.19–0.23, β-INDEPENDENT (structural, not numerical) → EqProp-LIKE but NOT textbook: paraconsistent
+holding makes it a constrained relaxation, not a clean scalar-energy flow. RESULTS.md + json committed.
 
 ## DONE since last state
 - **fdt_denoise** (gate 12, component native-denoising FDT test): **MID → DOWNGRADE (null-leaning)**.

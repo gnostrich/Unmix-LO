@@ -1,0 +1,124 @@
+{
+ "config": {
+  "D": 24,
+  "T": 600,
+  "iters": 18,
+  "damp": 0.5,
+  "gain": 1.0,
+  "seed": 0
+ },
+ "main_injected": {
+  "name": "INJECTED (frame-diverse)",
+  "residual_curve": [
+   2.6662089775290796,
+   1.7774726516860522,
+   1.209243902742819,
+   0.796312174392557,
+   0.5271449229329186,
+   0.5471580361008852,
+   0.31315538479633037,
+   0.18664655470481634,
+   0.11530855098287023,
+   0.07322981381155914,
+   0.047399277143105406,
+   0.031054103467769458,
+   0.020495370520566217,
+   0.013585200230232871,
+   0.009027274692234206,
+   0.006007082736337605,
+   0.004000553161592187,
+   0.002665470919217804
+  ],
+  "settles_tail_contract": true,
+  "res_first": 2.6662089775290796,
+  "res_last": 0.002665470919217804,
+  "n_interfaces_held_structured": 1,
+  "circ_norm": 23.609827693441783,
+  "held_memory_dim": 24,
+  "consensus_read_acc": 0.48333333333333334,
+  "combined_read_acc": 1.0
+ },
+ "control_coherent": {
+  "name": "COHERENT (control)",
+  "residual_curve": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "settles_tail_contract": false,
+  "res_first": 0.0,
+  "res_last": 0.0,
+  "n_interfaces_held_structured": 0,
+  "circ_norm": 0.0,
+  "held_memory_dim": 0,
+  "consensus_read_acc": 0.48333333333333334,
+  "combined_read_acc": 0.48333333333333334
+ },
+ "control_noise": {
+  "name": "NOISE (control)",
+  "residual_curve": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "settles_tail_contract": false,
+  "res_first": 0.0,
+  "res_last": 0.0,
+  "n_interfaces_held_structured": 0,
+  "circ_norm": 0.0,
+  "held_memory_dim": null,
+  "consensus_read_acc": null,
+  "combined_read_acc": null,
+  "guard_scores_corrupted_iface": {
+   "cap": 0.9552495098926478,
+   "ho": 0.7974643505118445,
+   "eff": 23
+  },
+  "guard_scores_injected_carrier": {
+   "cap": 0.8294169907380378,
+   "ho": 0.5738308047157561,
+   "eff": 11
+  }
+ },
+ "eqprop_probe": {
+  "beta": 0.02,
+  "ndir": 5,
+  "response_asymmetry": 0.19340632215326267,
+  "verdict": "borderline (mostly conservative, mild non-clean component)",
+  "learning_signal_per_held_iface": {
+   "0": 0.05867822725044326
+  },
+  "method": "equilibrium-response (two settles + difference); NO backprop-through-time"
+ },
+ "payoff_combined_minus_consensus": 0.5166666666666666
+}
