@@ -50,7 +50,7 @@ def encode_vision(key, imgs):
         x = torch.tensor(x.transpose(0, 3, 1, 2), dtype=torch.float32)
         o = model(pixel_values=x)
         h = o.last_hidden_state
-        feat = h.mean(1) if h.dim() == 3 else h.flatten(1)      # ViT/DINO tokens vs ResNet map
+        feat = h.mean(1) if h.dim() == 3 else h.mean(dim=(2, 3))   # ViT/DINO tokens vs ResNet spatial map
         out.append(feat.reshape(len(x), -1).float().numpy())
         if (i // 16) % 20 == 0:
             print(f"    [{key}] {i}/{len(imgs)}", flush=True)
