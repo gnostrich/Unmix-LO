@@ -154,28 +154,23 @@ def timeseries_features(hist):
 
 
 # ------------------------------------------------------- shared medium --------
-# The shared world-state medium is a PERMUTATION-INVARIANT scene descriptor (D=26). Balls are
-# indistinguishable, so a per-ball ORDERED state is not identifiable from vision/text/audio; invariant
-# scene features (occupancy, spatial + wall stats, speed/energy stats) ARE genuinely readable by every
-# modality. Each modality sees a DIFFERENT subset -> real coverage complementarity.
-SCENE_LABELS = (
-    [f"occ[{r},{c}]" for r in range(3) for c in range(3)] +      # 9 : 3x3 occupancy grid (spatial)
-    ["x_mean", "x_std", "y_mean", "y_std"] +                     # 4 : spatial stats
-    ["n_left", "n_right", "n_floor", "n_ceil"] +                 # 4 : balls near each wall
-    ["speed_mean", "speed_max", "speed_std"] +                   # 3 : motion
-    ["KE_total", "PE_total"] +                                   # 2 : energies
-    ["absvx_mean", "absvy_mean"] +                               # 2 : velocity magnitude
-    ["min_pair_dist", "n_close_pairs"]                           # 2 : collision geometry
-)
-SCENE_D = len(SCENE_LABELS)  # 26
-# which dims are POSITION/spatial vs VELOCITY/energy (for the coverage story)
-SCENE_POS = list(range(0, 17))                 # occupancy + spatial stats + wall counts
-SCENE_VEL = list(range(17, 24))                # speed/energy/velocity dims
-SCENE_COLL = [15, 16, 24, 25]                  # wall/collision-geometry dims
+# The shared world-state medium is a PERMUTATION-INVARIANT scene descriptor. Balls are indistinguishable,
+# so a per-ball ORDERED state is not identifiable from vision/text/audio; invariant scene features
+# (occupancy, spatial + wall stats, speed/energy stats) ARE genuinely readable by every modality. Each
+# modality sees a DIFFERENT subset -> real coverage complementarity.
+#
+# The medium is a DECLARED FEATURE REGISTRY (IO_STOCKTAKE gap #1): a list of Feature(name, tags, fn) whose
+# LENGTH IS D and whose per-feature `tags` DERIVE the index groups (pos/vel/coll/...) — no hard-coded index
+# ranges. Changing D = changing the registry; APPENDING a feature = expanding the medium. This is the
+# precondition for the resizable / self-expanding medium CONSTRUCT.md non-negotiable #2 requires (the
+# structure supports growth via `append_feature`; self-expansion itself is intentionally NOT wired here).
+from collections import namedtuple                                  # noqa: E402
+
+Feature = namedtuple("Feature", ["name", "tags", "fn"])            # fn(ctx) -> scalar; tags: set of str
 
 
-def scene_features(s):
-    """Permutation-invariant scene descriptor of a single engine state s (D_engine,) -> (SCENE_D,)."""
+def _scene_context(s):
+    """Shared per-state intermediates the feature fns read (computed once per state)."""
     p = s[:2 * N].reshape(N, 2); v = s[2 * N:].reshape(N, 2)
     sp = np.hypot(v[:, 0], v[:, 1])
     gx = np.clip((p[:, 0] * 3).astype(int), 0, 2); gy = np.clip((p[:, 1] * 3).astype(int), 0, 2)
@@ -184,15 +179,69 @@ def scene_features(s):
         grid[gy[i], gx[i]] += 1
     m = R + 0.05
     dists = [np.hypot(*(p[i] - p[j])) for i in range(N) for j in range(i + 1, N)]
-    feats = list(grid.ravel())
-    feats += [p[:, 0].mean(), p[:, 0].std(), p[:, 1].mean(), p[:, 1].std()]
-    feats += [float((p[:, 0] < m).sum()), float((p[:, 0] > 1 - m).sum()),
-              float((p[:, 1] < m).sum()), float((p[:, 1] > 1 - m).sum())]
-    feats += [sp.mean(), sp.max(), sp.std()]
-    feats += [0.5 * (sp ** 2).sum(), ENG.G * p[:, 1].sum()]
-    feats += [np.abs(v[:, 0]).mean(), np.abs(v[:, 1]).mean()]
-    feats += [min(dists), float(np.sum(np.array(dists) < 3 * R))]
-    return np.array(feats, dtype=np.float32)
+    return {"p": p, "v": v, "sp": sp, "grid": grid, "m": m, "dists": dists}
+
+
+def _default_registry():
+    """The current 26-dim medium, declared feature-by-feature. Order + values are bit-identical to the
+    previous hard-coded scene_features (verified). `tags` reproduce the old POS/VEL/COLL index sets."""
+    reg = []
+    for r in range(3):                                             # 9 : 3x3 occupancy grid
+        for c in range(3):
+            reg.append(Feature(f"occ[{r},{c}]", {"pos", "occ"}, lambda ctx, r=r, c=c: ctx["grid"][r, c]))
+    reg += [
+        Feature("x_mean", {"pos", "spatial"}, lambda ctx: ctx["p"][:, 0].mean()),
+        Feature("x_std",  {"pos", "spatial"}, lambda ctx: ctx["p"][:, 0].std()),
+        Feature("y_mean", {"pos", "spatial"}, lambda ctx: ctx["p"][:, 1].mean()),
+        Feature("y_std",  {"pos", "spatial"}, lambda ctx: ctx["p"][:, 1].std()),
+        Feature("n_left",  {"pos", "wall"},         lambda ctx: float((ctx["p"][:, 0] < ctx["m"]).sum())),
+        Feature("n_right", {"pos", "wall"},         lambda ctx: float((ctx["p"][:, 0] > 1 - ctx["m"]).sum())),
+        Feature("n_floor", {"pos", "wall", "coll"}, lambda ctx: float((ctx["p"][:, 1] < ctx["m"]).sum())),
+        Feature("n_ceil",  {"pos", "wall", "coll"}, lambda ctx: float((ctx["p"][:, 1] > 1 - ctx["m"]).sum())),
+        Feature("speed_mean", {"vel", "motion"}, lambda ctx: ctx["sp"].mean()),
+        Feature("speed_max",  {"vel", "motion"}, lambda ctx: ctx["sp"].max()),
+        Feature("speed_std",  {"vel", "motion"}, lambda ctx: ctx["sp"].std()),
+        Feature("KE_total", {"vel", "energy"}, lambda ctx: 0.5 * (ctx["sp"] ** 2).sum()),
+        Feature("PE_total", {"vel", "energy"}, lambda ctx: ENG.G * ctx["p"][:, 1].sum()),
+        Feature("absvx_mean", {"vel", "velocity"}, lambda ctx: np.abs(ctx["v"][:, 0]).mean()),
+        Feature("absvy_mean", {"vel", "velocity"}, lambda ctx: np.abs(ctx["v"][:, 1]).mean()),
+        Feature("min_pair_dist", {"coll", "geometry"}, lambda ctx: min(ctx["dists"])),
+        Feature("n_close_pairs", {"coll", "geometry"}, lambda ctx: float(np.sum(np.array(ctx["dists"]) < 3 * R))),
+    ]
+    return reg
+
+
+SCENE_REGISTRY = _default_registry()
+
+
+def _refresh_scene_index():
+    """(Re)derive the medium's public views from SCENE_REGISTRY. Call after mutating the registry
+    (e.g. append_feature) so D and the tag-derived index groups stay consistent — the hook a future
+    self-expansion step would use."""
+    global SCENE_LABELS, SCENE_D, SCENE_POS, SCENE_VEL, SCENE_COLL
+    SCENE_LABELS = tuple(f.name for f in SCENE_REGISTRY)
+    SCENE_D = len(SCENE_REGISTRY)                                  # LENGTH OF REGISTRY == D
+    SCENE_POS = [i for i, f in enumerate(SCENE_REGISTRY) if "pos" in f.tags]    # derived from tags, not fixed
+    SCENE_VEL = [i for i, f in enumerate(SCENE_REGISTRY) if "vel" in f.tags]
+    SCENE_COLL = [i for i, f in enumerate(SCENE_REGISTRY) if "coll" in f.tags]
+    return SCENE_D
+
+
+def append_feature(feature):
+    """Grow the medium by one dimension (D -> D+1) and refresh the derived views. The structural hook for
+    the resizable / self-expanding medium (CONSTRUCT #2); self-expansion logic is NOT wired here."""
+    SCENE_REGISTRY.append(feature)
+    return _refresh_scene_index()
+
+
+_refresh_scene_index()                                             # initialise SCENE_LABELS/D/POS/VEL/COLL
+
+
+def scene_features(s):
+    """Permutation-invariant scene descriptor of a single engine state s (D_engine,) -> (SCENE_D,).
+    Evaluated from SCENE_REGISTRY, so its width is exactly len(SCENE_REGISTRY) == D."""
+    ctx = _scene_context(s)
+    return np.array([f.fn(ctx) for f in SCENE_REGISTRY], dtype=np.float32)
 
 
 if __name__ == "__main__":

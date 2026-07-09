@@ -79,20 +79,19 @@ settle onto virtualworld's aligned vectors; that port is the marriage, not a shi
 | **n_models (add/remove a model)** | free, no medium reshape | ✅ `MODS` list / `ifaces` list; medium is model-independent, ridge auto-fits the new model → **no medium reshape needed** | ✅ matches |
 | **T (frames / rollouts)** | free | ✅ `N_ROLLOUTS,T` module constants (`build:34`); everything reads `n` from shape; no reshape | ✅ matches |
 | **held-rank** | free / adaptive | ✅ data-driven: `structured()` eff = participation ratio, `P` = top-eff subspace (`coherentflow:60-64`); MZ tape order = Hankel-SV-vs-noise-floor (`mz_fluid.self_expand_order`) | ✅ matches (adaptive, not fixed) |
-| **D (medium dimension)** | a free scalar knob | ❌ **virtualworld D is NOT a scalar** — it's `len(SCENE_LABELS)` = the length of a hard-coded feature list + the `scene_features()` function (`world.py:161-195`). To change D you must add/remove feature *definitions*, not set a number. | **GAP** |
-| **D-dependent index maps** | derive from D | ❌ `SCENE_POS/SCENE_VEL/SCENE_COLL` are hard-coded index ranges for the 26-layout (`world.py:172-174`) — they silently break if D changes | **GAP** |
-| **medium is resizable / self-expanding** | yes (CONSTRUCT non-negotiable #2) | ❌ the shipped medium is **fixed-width 26**. Self-expansion exists only in the *experimental* MZ probe and the adaptive held-rank — the coverage medium itself does not grow | **GAP vs CONSTRUCT** |
+| **D (medium dimension)** | a free scalar knob | ✅ **FIXED (registry refactor).** The medium is now a declared **FEATURE REGISTRY** — `SCENE_REGISTRY` = list of `Feature(name, tags, fn)`; `SCENE_D = len(SCENE_REGISTRY)` (`world.py`). Changing D = changing the registry; the encoders are D-agnostic and the ridge interface auto-refits to the new width. Verified: default registry reproduces D=26 & all numbers bit-identically; D=27 (append) and D=24 (drop) run end-to-end. | ✅ **resolved** |
+| **D-dependent index maps** | derive from D | ✅ **FIXED.** `SCENE_POS/SCENE_VEL/SCENE_COLL` are now **derived from each feature's `tags`** (`_refresh_scene_index()`), not fixed ranges — they track the registry automatically (e.g. appending a `coll`-tagged feature extends `SCENE_COLL`). | ✅ **resolved** |
+| **medium is resizable / self-expanding** | yes (CONSTRUCT non-negotiable #2) | ⚠️ **structure now supports growth** — `append_feature(feature)` grows D→D+1 and refreshes the index views (the hook a self-expansion step would call). The self-expansion *logic* (when/what to append) is intentionally **not wired yet**. So the precondition is in place; the growth policy is the remaining step. | partial (precondition met) |
 | **coherentflow D** | free | ⚠️ hard-coded constant `D,T=24,600` (`coherentflow:32`), but the math is fully D-generic (reads from shape) → one-line change, self-consistent | minor |
 | **single shared D across builds** | one parameter | ❌ two separate D's (26 vs 24), two codebases, no shared config | **GAP** |
 | **interface bottleneck / regularization** | knob | ⚠️ `n_pca=48`, `λ=10` hard-coded defaults (`fit_ridge`); `K=4` window, `DAMP=0.5`, `ITERS=18` constants | minor |
 
 **Direct answers to the three questions:**
-- *Change D without touching model wiring?* — **No, not cleanly.** The model wiring is already D-agnostic (ridge
-  auto-fits), so the *encoders* don't need touching — but D isn't a number you can set; you must edit
-  `scene_features()`/`SCENE_LABELS` and the `SCENE_POS/VEL/COLL` index constants. **To parameterize:** make the
-  medium a declared feature-registry whose length *is* D, and derive the index groups from it.
+- *Change D without touching model wiring?* — **YES (as of the registry refactor).** The medium is a declared
+  feature registry whose length *is* D; the index groups derive from tags. Edit the registry, and the D-agnostic
+  encoders + auto-refitting ridge adapt with nothing else touched. Verified at D=24/26/27.
 - *Add/remove a model without reshaping the medium?* — **Yes.** The medium is model-independent; add an encoder,
-  append to `MODS`, provide its raw features, and its ridge auto-fits to the existing 26-dim medium. No reshape.
+  append to `MODS`, provide its raw features, and its ridge auto-fits to the medium. No reshape.
 - *Change T freely?* — **Yes.** `N_ROLLOUTS`/`T` are constants; nothing reshapes on T.
 
 ## 6. The read / output representation
@@ -110,17 +109,17 @@ decoherence exists** — exactly as claimed. The shipped function returns *query
 `(consensus_acc, combined_acc, held_dim)`; the underlying **representation is `(state vector, memory dict of
 held vectors)`**, not a single flat vector.
 
-## Divergences from the "everything flexible except interfaces" principle (to parameterize before the UX)
-1. **D is not a scalar knob** in virtualworld — it's a hard-coded feature list + `scene_features()`, with
-   hard-coded `SCENE_POS/VEL/COLL` index ranges. *Fix:* a feature registry whose length defines D and whose
-   tags define the index groups.
-2. **The medium is fixed-width, not self-expanding** — diverges from CONSTRUCT non-negotiable #2 (resizable
-   tape). Self-expansion currently lives only in the experimental MZ probe / adaptive held-rank, not the
-   coverage medium.
-3. **Two separate D's / two codebases** (virtualworld 26, coherentflow 24) with no shared config — the settle is
-   a UX-side port, not a shipped virtualworld function.
-4. **Interface hyperparameters hard-coded** (`n_pca=48`, `λ=10`, `K=4`, `DAMP`, `ITERS`) — fine as defaults, but
-   list them as knobs if the UX exposes them.
+## Divergences from the "everything flexible except interfaces" principle
+1. ~~**D is not a scalar knob**~~ — **RESOLVED (registry refactor).** The medium is now a declared feature
+   registry (`SCENE_REGISTRY`, `world.py`): `D = len(registry)`, index groups derive from per-feature `tags`,
+   and `append_feature()` grows the medium. Verified bit-identical at D=26 and end-to-end at D=24/27.
+2. **The medium's self-expansion is not wired** — the *structure* now supports growth (`append_feature`), so
+   the CONSTRUCT #2 precondition is met, but the growth *policy* (when to append a mode, e.g. Hankel-SV /
+   noise-floor) is intentionally not implemented in this step. Partial.
+3. **Two separate D's / two codebases** (virtualworld registry-D=26, coherentflow hard-coded D=24) with no
+   shared config — the settle is a UX-side port, not a shipped virtualworld function. Still open.
+4. **Interface hyperparameters hard-coded** (`n_pca=48`, `λ=10`, `K=4`, `DAMP`, `ITERS`) — fine as defaults,
+   but list them as knobs if the UX exposes them. Still open (minor).
 
-Everything *else* already honors the principle: model-side frozen, medium-side auto-refitting, n_models / T /
-held-rank all free.
+Everything *else* already honors the principle: model-side frozen, medium-side auto-refitting, **D now a
+registry knob**, n_models / T / held-rank all free.
