@@ -21,3 +21,5 @@ routemesh/data/
 
 # thoughtworld cached ViT features (regenerable)
 thoughtworld/feat_cache/
+
+thoughtworld2/feat_cache/
