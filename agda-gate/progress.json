@@ -1,9 +1,0 @@
-{
- "seed": 2,
- "phase": "held-out",
- "done_domain": "sigma",
- "held_ok": 1,
- "ceiling_ok": 4,
- "held_n": 46,
- "at": "15:20:54"
-}

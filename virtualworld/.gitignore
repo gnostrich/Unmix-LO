@@ -1,4 +1,0 @@
-# large / regenerable artifacts — never commit
-feat_cache/
-*.npy
-__pycache__/
