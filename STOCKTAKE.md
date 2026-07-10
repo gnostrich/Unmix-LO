@@ -82,8 +82,16 @@ Full detail in `THEORY.md`; CONSTRUCT.md now carries a pointer + the resolved te
 ---
 
 ## The one-line picture
-**Code:** a validated coverage-union + guard + a correct-but-unwired feedback fluid; the shipped recurrence is
-still averaging with a fitted-head read (regressions caught and mapped, not yet fixed).
+**Self-driving build progress (2026-07-09):** Step 1 wired the fluid as the settle (INV2 ✅), Step 2 folded the
+descent into the loop (INV3 ✅) → conformance **5/7**. **Step 4 (trace tail-motion output) HALTED at gate #2**
+(`coherentflow/STEP4_HALT.md`): held-superposition does NOT fire from the tail motion because the Step-1 operator
+derivation `lstsq(z,f)` **discards the medium-orthogonal residual** (branch corr 0.966 with the discarded part)
+— exactly where content held-structure lives. The operator-fluid reads the **frame-conflict terrain** (T3,
+medium-linear) but not **content branches** (medium-orthogonal). Deliberate decision pending: retain-the-residual
+redesign vs. build the terrain read (Step 5) first (which the current operators DO support). Guarantees intact.
+
+**Code:** a validated coverage-union + guard; the recurrence is now the operator-feedback fluid (Steps 1-2), but
+its output read is still a fitted head (INV6) and it is blind to medium-orthogonal content (Step 4 finding).
 **Theory:** the informative object is the **per-query stability terrain**, read from the **settling trace's tail
 motion**, streamed until it converges/cycles/ times-out — grounded in the models' own coupling, non-vacuous even
 when they agree.
