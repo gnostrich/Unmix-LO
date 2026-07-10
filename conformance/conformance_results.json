@@ -11,10 +11,10 @@
   {
    "invariant": 2,
    "name": "genuine feedback recurrence, not averaging (the fluid)",
-   "status": "FAIL",
-   "code_does": "the WIRED settle (coherentflow.settle) is feed-forward averaging (incompatible frames z,-z contract to their mean, max-diff<1e-6=True); Jacobian bounded <=1, cannot be unstable or exclude. The CORRECT fluid EXISTS separately (fluid_settle) and PASSES: coupled rho can exceed 1 (1.088) and a destabilizer is excluded (rogue weight 0.0000).",
-   "theory_requires": "the recurrence USED by the pipeline must be model->model feedback (coupled rho>1 achievable; destabilizer excluded, not averaged in)",
-   "evidence": "shipped_is_averaging=True; fluid_settle_passes=True. RESOLUTION: wire fluid_settle into the pipeline (deliberate later step)."
+   "status": "PASS",
+   "code_does": "the DEFAULT wired settle (coherentflow.settle, mechanism='fluid') derives an OPERATOR R\u1d62 from each interface (interface_operator: f \u2248 z\u00b7R\u1d62\u1d40) and runs the coupled feedback flow S\u2190S\u00b7J\u1d40, J=I+step\u00b7\u03a3w\u1d62(R\u1d62\u2212I). On INCOMPATIBLE frame-conflict interfaces the coupled \u03c1 = 1.093 (>1: genuine mutual instability; aligned interfaces give \u03c1 = 0.999 \u2264 1, the honest null). A rogue destabilizer is ROUTED AROUND: equal-weight \u03c1 = 1.017 \u2192 rogue weight 0.0000, \u03c1 \u2192 0.973. The old feed-forward AVERAGING is kept byte-identical behind mechanism='averaging'.",
+   "theory_requires": "the recurrence USED by the pipeline must be model->model feedback (coupled rho>1 achievable on incompatible frames; destabilizer excluded, not averaged in) \u2014 verified on the REAL operator construction",
+   "evidence": "default_is_fluid=True fluid_rho_conflict=1.093(>1=True) aligned_rho=0.999(<=1) destabilizer_excluded=True(rogue_w=0.0000) fluid_amplifies_on_incompat=True averaging_still_contracts=True"
   },
   {
    "invariant": 3,
@@ -58,8 +58,8 @@
   }
  ],
  "tally": {
-  "PASS": 3,
-  "FAIL": 3,
-  "PARTIAL": 1
+  "PASS": 4,
+  "PARTIAL": 1,
+  "FAIL": 2
  }
 }

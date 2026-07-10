@@ -68,11 +68,21 @@ def structured(d, z):
     return bool(is_s), P, {"cap": float(cap), "ho": float(ho), "eff": int(eff)}
 
 
-def settle(ifaces, z, guard=True, nudge=None, beta=0.0, init=None):
-    """RECURRENT SETTLING under the internal coherence loss, guards INSIDE. The consensus (streaming) state
-    settles by minimising UNSTRUCTURED decoherence; STRUCTURED decoherence is HELD in the tape (memory),
-    circulated but kept OUT of the consensus so a single-frame collapse cannot see it. Damped => observe
-    contraction (not proven). Init from the naive consensus (minority branch diluted -> must be HELD to survive).
+def settle(ifaces, z, guard=True, nudge=None, beta=0.0, init=None, mechanism="fluid"):
+    """RECURRENT SETTLING under the internal coherence loss, guards INSIDE.
+
+    `mechanism` (FIX-ORDER STEP 1): the DEFAULT recurrence is now the operator-feedback FLUID
+    ('fluid', in fluid_pipeline) — each interface becomes an operator Rᵢ that reads the CURRENT shared
+    state through its frame and writes back its correction, so models drive each other and the coupled
+    Jacobian J(w)=I+step·Σwᵢ(Rᵢ−I) CAN exceed spectral radius 1 for incompatible frames (genuine mutual
+    instability + fluid exclusion). The old feed-forward AVERAGING recurrence is kept verbatim behind
+    `mechanism='averaging'` (byte-identical to the shipped behaviour). See MECHANISM_CHECK.md / THEORY.md
+    (T1-T2) / FLUID_VERIFICATION.md and conformance INV2.
+
+    Below is the AVERAGING mechanism (mechanism='averaging'): the consensus (streaming) state settles by
+    minimising UNSTRUCTURED decoherence; STRUCTURED decoherence is HELD in the tape (memory), circulated
+    but kept OUT of the consensus so a single-frame collapse cannot see it. Damped => observe contraction
+    (not proven). Init from the naive consensus (minority branch diluted -> must be HELD to survive).
 
     ROUTING is FIXED/initialized here (memory = d@P, gain 1) — NOT learned. Per the EqProp steering, if the
     routing were to be LEARNED it must be by equilibrium-response (see eqprop_probe), NOT backprop-through-time
@@ -82,6 +92,11 @@ def settle(ifaces, z, guard=True, nudge=None, beta=0.0, init=None):
     to read the EQUILIBRIUM RESPONSE (the native EqProp learning signal); beta=0 is the free settle.
     `init`: optional starting state (default = the naive consensus). Used to test contraction from a transient
     started AWAY from the fixed point without changing the dynamics."""
+    if mechanism == "fluid":
+        import fluid_pipeline as _fp
+        return _fp.settle_fluid(ifaces, z, guard=guard, nudge=nudge, beta=beta, init=init)
+    if mechanism != "averaging":
+        raise ValueError(f"unknown settle mechanism {mechanism!r} (expected 'fluid' or 'averaging')")
     state = np.mean(ifaces, axis=0) if init is None else init.copy()
     res, memory = [], {}
     for _ in range(ITERS):

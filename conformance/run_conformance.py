@@ -61,28 +61,67 @@ def inv1_resizable_medium():
 def inv2_feedback_not_averaging():
     import coherentflow as cf
     import fluid_settle as fl
+    import fluid_pipeline as fp
+    import inspect
     D = cf.D
+    ntr = cf.T // 2
     z = np.random.default_rng(0).normal(size=(cf.T, D))
-    # (a) the WIRED recurrence (coherentflow.settle) — is it averaging? incompatible frames must NOT contract if
-    #     it were feedback; averaging contracts to the mean and cannot be unstable.
+
+    # (0) the DEFAULT wired recurrence must BE the fluid, and averaging must still be selectable byte-identical.
+    default_is_fluid = inspect.signature(cf.settle).parameters["mechanism"].default == "fluid"
+    #     averaging path unchanged: incompatible frames z,-z still contract to their mean (feed-forward averaging)
     f1 = z.copy(); f2 = -z.copy()
-    st, _, _, _ = cf.settle([f1, f2], z, guard=False)
-    shipped_contracts_to_mean = float(np.abs(st - np.mean([f1, f2], axis=0)).max()) < 1e-6  # == averaging
-    # (b) the CORRECT fluid (fluid_settle) — coupled operator CAN exceed radius 1 and excludes a destabilizer
-    a1 = fl.acceptance_1_mutual_instability()
-    a2 = fl.acceptance_2_exclusion()
-    fluid_ok = a1["passed"] and a2["passed"]
-    # invariant status: the WIRED recurrence is averaging => FAIL (documented regression); correct fluid exists.
-    status = "FAIL" if shipped_contracts_to_mean else "PASS"
+    st_avg, _, _, _ = cf.settle([f1, f2], z, guard=False, mechanism="averaging")
+    averaging_contracts_to_mean = float(np.abs(st_avg - np.mean([f1, f2], axis=0)).max()) < 1e-6
+
+    # (a) MUTUAL INSTABILITY on the REAL operator construction: build INCOMPATIBLE interfaces (each a genuine
+    #     (T×D) vector view reconstructing the medium through a non-normal/gain frame), DERIVE the operators back
+    #     from that interface data via the pipeline's own interface_operator, and show the coupled ρ > 1.
+    conflict_specs = [(10, 1.3, (0, 1, 1.2)), (11, 1.3, (2, 3, 1.2)), (12, 1.3, (4, 5, 1.2))]
+    inc = fp.incompatible_interfaces(z, ntr, conflict_specs)
+    rho_conflict, _Rs = fp.coupled_radius(inc, z, ntr)
+    #     compatible/aligned interfaces (reconstruct the medium faithfully) → derived ops ≈ I → ρ ≤ 1 (honest null)
+    def aligned(seed):
+        r = np.random.default_rng(seed); R = np.linalg.qr(r.normal(size=(D, D)))[0]
+        v = z @ R + 0.1 * r.normal(size=(cf.T, D))
+        A, *_ = np.linalg.lstsq(v[:ntr], z[:ntr], rcond=None); return v @ A
+    rho_aligned, _ = fp.coupled_radius([aligned(1), aligned(2), aligned(3)], z, ntr)
+    fluid_can_exceed_1 = rho_conflict > 1.0
+
+    # (b) FLUID EXCLUSION on the real operator construction: 3 compatible interfaces + 1 rogue destabilizer
+    #     (non-normal, gain>1). At equal weights ρ>1; the fluid descends its own instability → rogue weight → 0.
+    excl_specs = [(1, 0.9, None), (2, 0.9, None), (3, 0.9, None), (99, 1.5, (0, 1, 1.4))]
+    excl = fp.incompatible_interfaces(z, ntr, excl_specs)
+    Rs_ex = fp.operators_from_ifaces(excl, z, ntr)
+    rho_equal = fl.spec_radius(fl.coupled_jacobian(Rs_ex, [1 / 4] * 4))
+    w, rho_eq2, descended = fp.routing_weights(Rs_ex)
+    rho_after = fl.spec_radius(fl.coupled_jacobian(Rs_ex, w))
+    rogue_w = float(w[3])
+    destabilizer_excluded = (rho_equal > 1.0) and (rogue_w < 0.02) and (rho_after < 1.0)
+
+    # (c) the DEFAULT (fluid) settle genuinely AMPLIFIES on the incompatible set (feedback), where averaging
+    #     would contract — the wired path IS the unstable feedback, not averaging.
+    base = np.mean(inc, axis=0)
+    st_fluid, _, res_fluid, _ = cf.settle(inc, z, guard=False)                 # default = fluid
+    st_avg_inc, _, _, _ = cf.settle(inc, z, guard=False, mechanism="averaging")
+    fluid_amplifies = res_fluid[-1] > res_fluid[0]                             # residual grows => unstable feedback
+    averaging_contracts_inc = float(np.abs(st_avg_inc - base).max()) < 1e-6
+
+    ok = (default_is_fluid and averaging_contracts_to_mean and fluid_can_exceed_1
+          and destabilizer_excluded and fluid_amplifies and (rho_aligned <= 1.0 + 1e-6))
+    status = "PASS" if ok else "FAIL"
     record(2, "genuine feedback recurrence, not averaging (the fluid)", status,
-           "the WIRED settle (coherentflow.settle) is feed-forward averaging (incompatible frames z,-z contract "
-           f"to their mean, max-diff<1e-6={shipped_contracts_to_mean}); Jacobian bounded <=1, cannot be unstable "
-           "or exclude. The CORRECT fluid EXISTS separately (fluid_settle) and PASSES: coupled rho can exceed 1 "
-           f"({a1['rho_conflict_fluid']:.3f}) and a destabilizer is excluded (rogue weight {a2['rogue_weight']:.4f}).",
-           "the recurrence USED by the pipeline must be model->model feedback (coupled rho>1 achievable; "
-           "destabilizer excluded, not averaged in)",
-           f"shipped_is_averaging={shipped_contracts_to_mean}; fluid_settle_passes={fluid_ok}. "
-           "RESOLUTION: wire fluid_settle into the pipeline (deliberate later step).")
+           "the DEFAULT wired settle (coherentflow.settle, mechanism='fluid') derives an OPERATOR Rᵢ from each "
+           "interface (interface_operator: f ≈ z·Rᵢᵀ) and runs the coupled feedback flow S←S·Jᵀ, J=I+step·Σwᵢ(Rᵢ−I). "
+           f"On INCOMPATIBLE frame-conflict interfaces the coupled ρ = {rho_conflict:.3f} (>1: genuine mutual "
+           f"instability; aligned interfaces give ρ = {rho_aligned:.3f} ≤ 1, the honest null). A rogue destabilizer "
+           f"is ROUTED AROUND: equal-weight ρ = {rho_equal:.3f} → rogue weight {rogue_w:.4f}, ρ → {rho_after:.3f}. "
+           "The old feed-forward AVERAGING is kept byte-identical behind mechanism='averaging'.",
+           "the recurrence USED by the pipeline must be model->model feedback (coupled rho>1 achievable on "
+           "incompatible frames; destabilizer excluded, not averaged in) — verified on the REAL operator construction",
+           f"default_is_fluid={default_is_fluid} fluid_rho_conflict={rho_conflict:.3f}(>1={fluid_can_exceed_1}) "
+           f"aligned_rho={rho_aligned:.3f}(<=1) destabilizer_excluded={destabilizer_excluded}(rogue_w={rogue_w:.4f}) "
+           f"fluid_amplifies_on_incompat={fluid_amplifies} averaging_still_contracts={averaging_contracts_to_mean}")
 
 
 # ============================================================ INV 3: faithfulness is a loss TERM, not a phase (#5)

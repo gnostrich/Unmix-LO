@@ -17,10 +17,11 @@ diverge.
 | `virtualworld/mz_fluid.py` | EXPERIMENTAL recurrent MZ/tape probe | block-Hankel SV order + **linear** ridge memory-kernel closure | ⚠️ UNVALIDATED; "reduces toward classical linear state-space filtering" |
 | `virtualworld/settle_real.py` | coherentflow.settle on the REAL aligned vectors | (imports the shipped settle) | ✅ honest **NO-OP** on real convergent senses (0 held); separable control fires; noise rejected |
 | `virtualworld/world_ux.html` | interactive instrument (scene + decoherence map) | live JS stitch/classify/settle/combined-read on real vectors | ✅ Playwright-verified; honest framing |
-| `coherentflow/coherentflow.py` | the shipped `settle` + `structured` guard + `combined_read` | **FEED-FORWARD AVERAGING** + held-subtraction; guard-in-loop; **fitted-lstsq-probe** read | ⚠️ **REGRESSED**: averaging not feedback (`MECHANISM_CHECK.md`); read is a fitted head |
+| `coherentflow/coherentflow.py` | `settle` (dispatch) + `structured` guard + `combined_read` | **DEFAULT = the operator-feedback FLUID** (Step 1, via `fluid_pipeline`); `mechanism='averaging'` kept byte-identical behind a flag; read still a **fitted-lstsq-probe** (INV6, later step) | ✅ INV2 fixed; ⚠️ read still a fitted head |
+| `coherentflow/fluid_pipeline.py` | wires `fluid_settle` into the pipeline recurrence | derives operator Rᵢ from each interface (`f≈z·Rᵢᵀ`); coupled feedback `S←S·Jᵀ`; instability-descent routing | ✅ INV2 PASS: incompatible→ρ=1.09>1, aligned→0.998, rogue excluded; averaging byte-identical to HEAD |
 | `coherentflow/fluid_settle.py` | **the theoretically-correct feedback fluid** | models as OPERATORS; coupled ρ can exceed 1; instability-descent; nonlinear multistable intrinsic settle | ✅ all 3 acceptance criteria PASS (`FLUID_VERIFICATION.md`); **SEPARATE, not wired** |
 | `coherentflow/` satisfaction (`run_satisfaction.py`, sandboxes) | battery vs the shipped object | — | ✅ 7/7, **0% false-positive** (a property of the GUARD, not the fluid) |
-| `conformance/run_conformance.py` | executable test per theory-invariant | — | ✅ built; live tally **PASS 3 / PARTIAL 1 / FAIL 3** |
+| `conformance/run_conformance.py` | executable test per theory-invariant | — | ✅ built; live tally **PASS 4 / PARTIAL 1 / FAIL 2** (INV2 fixed by Step 1) |
 
 Related but SEPARATE experiments (not the construct code): `STABILITY_GATE.md` (pre-registered type-boundary
 reproducibility gate, no results yet), `AGDA_RESULTS.md` (object re-hosted on the Agda oracle substrate), the
@@ -31,7 +32,7 @@ ledger). These inform the program but are not the fluid/construct implementation
 | # | invariant | status | gap |
 |---|---|---|---|
 | 1 | resizable / self-expanding medium | ✅ PASS | — |
-| 2 | genuine feedback recurrence, not averaging | ❌ FAIL | wired settle is averaging; `fluid_settle` exists but **unwired** |
+| 2 | genuine feedback recurrence, not averaging | ✅ PASS | Step 1: `fluid_pipeline` wires the fluid as the default settle; averaging byte-identical behind a flag |
 | 3 | faithfulness is a loss TERM, not a phase | 🟡 PARTIAL | shipped guard-in-loop OK; **fluid** stabilization is a pre-phase |
 | 4 | MZ memory = the tape, ONE object | ❌ FAIL | memory is a transient dict; tape is a separate module |
 | 5 | loss = models' own grounding | ✅ PASS | — |
@@ -51,7 +52,7 @@ ledger). These inform the program but are not the fluid/construct implementation
 |---|---|
 | **BUILT & VERIFIED** | registry medium (D-knob); real-encoder coverage-union (0.445, the honest win); Step-0 detector; satisfaction guard (0% FP); interactive UX; `settle_real` honest no-op; **`fluid_settle` (all 3 acceptance criteria)**; conformance suite |
 | **SPECIFIED, NOT BUILT** | tape≡MZ-memory as one object (INV4); self-expansion trigger (J2); multi-seed-model loss combination (J1); graduation rule (J3); abstraction-as-holonomy; **terrain read (T3)**; **trace tail-motion output (T5 full)**; **streaming I/O (T6)**; formal input registry |
-| **ASSUMED-CORRECT BUT ACTUALLY REGRESSED** | the recurrence was **averaging not feedback** (INV2, caught by probe → `fluid_settle` built); the output is a **fitted probe head** not intrinsic (INV6, newly surfaced); memory is a **transient dict** not the tape (INV4, newly surfaced); dimensionality was **glued** (INV1, fixed by registry) |
+| **ASSUMED-CORRECT BUT ACTUALLY REGRESSED** | the recurrence was **averaging not feedback** (INV2 — caught by probe, `fluid_settle` built, and now **WIRED as default** = FIXED, INV2 PASS); the output is a **fitted probe head** not intrinsic (INV6, newly surfaced); memory is a **transient dict** not the tape (INV4, newly surfaced); dimensionality was **glued** (INV1, fixed by registry) |
 
 ---
 

@@ -119,8 +119,9 @@ def main():
     print("[1] REAL modalities — settle the 4 real aligned vectors (vision/text/audio/timeseries):")
     print(f"    SETTLE        : residual {real['res_first']:.4f} -> {real['res_last']:.4f}  "
           f"(tail-contracts? {real['settles_tail_contract']})")
-    print(f"                    (residual is flat because with NOTHING held the naive consensus is "
-          f"already the coherence fixed point -> the object no-ops from iteration 0)")
+    print(f"                    (recurrence = the operator-feedback FLUID; on convergent real senses the "
+          f"derived operators R_i approx I so the coupled flow is stable (rho<=1) and settles to the "
+          f"consensus with NOTHING held -> the honest no-op)")
     print(f"    HOLD          : {real['n_interfaces_held_structured']}/4 interfaces held STRUCTURED, "
           f"circ_norm={real['circ_norm']:.4f}")
     print(f"    COMBINED READ : consensus={real['consensus_read_acc']:.4f}  "
