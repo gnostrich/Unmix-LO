@@ -1,0 +1,41 @@
+{
+ "config": {
+  "T": 40,
+  "d": 16,
+  "m": 20,
+  "atomic_rank": 3,
+  "npairs": 1500
+ },
+ "rows": {
+  "fungible": {
+   "kind": "fungible",
+   "residue_rel_norm": 0.0053,
+   "eff_rank_residue": 19.94,
+   "readability_residue_b": -0.019,
+   "commuting_read_a": 1.0,
+   "null_read": -0.04,
+   "verdict": "FUNGIBLE"
+  },
+  "atomic": {
+   "kind": "atomic",
+   "residue_rel_norm": 2.0142,
+   "eff_rank_residue": 2.63,
+   "readability_residue_b": 1.0,
+   "commuting_read_a": 1.0,
+   "null_read": -0.033,
+   "verdict": "ATOMIC"
+  },
+  "noise": {
+   "kind": "noise",
+   "residue_rel_norm": 0.7309,
+   "eff_rank_residue": 19.79,
+   "readability_residue_b": 0.001,
+   "commuting_read_a": 1.0,
+   "null_read": -0.034,
+   "verdict": "NOISE"
+  }
+ },
+ "null_read_on_atomic": -0.033,
+ "null_valid": true,
+ "calibration_passes": true
+}
