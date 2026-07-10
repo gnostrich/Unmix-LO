@@ -1,0 +1,98 @@
+{
+ "config": {
+  "p": 3,
+  "q": 3,
+  "T": 12000,
+  "noise": 0.05
+ },
+ "atomic": {
+  "2": {
+   "orders": [
+    2,
+    2,
+    2
+   ],
+   "pole_errs": [
+    0.006945283681112766,
+    0.009555432943501696,
+    0.010396472658223237
+   ],
+   "ok": true
+  },
+  "3": {
+   "orders": [
+    3,
+    2,
+    2
+   ],
+   "pole_errs": [
+    0.018493254590606394,
+    0.27407943950562036,
+    0.0905428866587611
+   ],
+   "ok": false
+  },
+  "4": {
+   "orders": [
+    3,
+    4,
+    3
+   ],
+   "pole_errs": [
+    0.1855461851062199,
+    0.020023647787600282,
+    0.16535118780405383
+   ],
+   "ok": false
+  },
+  "6": {
+   "orders": [
+    5,
+    5,
+    4
+   ],
+   "pole_errs": [
+    0.09816678960160508,
+    0.12143698676128471,
+    0.17660774971299553
+   ],
+   "ok": false
+  },
+  "all_recovered": false
+ },
+ "memoryless": {
+  "orders": [
+   0,
+   0,
+   0
+  ],
+  "shuffled_atomic_order": 0,
+  "ok": true
+ },
+ "continuous": {
+  "rows": [
+   {
+    "T": 3000,
+    "order": 4,
+    "gap": 1.5038102207296584
+   },
+   {
+    "T": 12000,
+    "order": 6,
+    "gap": 1.4473695649651934
+   },
+   {
+    "T": 48000,
+    "order": 7,
+    "gap": 2.049967763183674
+   }
+  ],
+  "no_clean_termination": true
+ },
+ "verdict": {
+  "atomic_recovered": false,
+  "memoryless_reads_zero": true,
+  "continuous_refuses_to_terminate": true,
+  "claim_holds": false
+ }
+}
