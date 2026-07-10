@@ -3,6 +3,35 @@
 This is ONE process, not a pipeline of gadgets. Every prior Claude Code test touched a COMPONENT
 (routing, fusion, single-fragment deviation). None has tested THE CONSTRUCT. Keep that distinction.
 
+## >>> CANONICAL THEORY LAYER (2026-07-09) — see THEORY.md; BINDS EQUALLY <<<
+A layer of theory developed after this spec was written is captured in **`THEORY.md`** and binds equally. The
+seven items: **T1** mutual-instability IS the Baur objective (the loss is the coupled operator's spectral
+radius, grounded via the models' own frames — non-vacuous even at zero content-disagreement); **T2** fluid
+exclusion (descending instability routes AROUND a destabilizer, weight→0, no explicit reject); **T3** per-query
+**stability terrain** is the informative object (damped/agreed vs amplifying/contested vs swirling — non-vacuous
+even on convergent models, a confidence gradient); **T4** information relocation (agree→equilibrium POINT,
+diverge→the DYNAMICS around it); **T5** trace-native output (the settling trace's tail MOTION is the answer;
+directions=branches, magnitude=uncertainty, rotation=ambiguity; NO fitted head); **T6** streaming/anytime I/O
+(converge=consensus / cycle=held-superposition / budget=uncertainty; the manner of stabilization is part of the
+answer); **T7** the field/settling mental model (models = forces tensioning a shared field; read the taut
+resting position, read the tremble where slack).
+
+**Reconciliations that update the items below** (details in THEORY.md):
+- Non-negotiable **#4**: its GROUNDING requirement stands, but its implicit "content-reconstruction loss"
+  reading is **superseded by T1** — the objective is instability of the *grounded coupling*.
+- The **informative object relocated**: CONSTRUCT's "swirl / single-fragment deviation / held-structure" is the
+  **divergent-case reading (T4/T6-cycling)** of the more general object, the **terrain (T3)**. Convergence nulls
+  (xresolve/THOUGHTWORLD) therefore do NOT close the construct — the graded terrain on convergent models is the
+  untested object.
+- Non-negotiable **#2** self-expansion (Hankel-SV vs FDT floor) is empirically weak (`fdt_denoise` MID/DOWNGRADE;
+  `mz_fluid` reduces to linear filtering); candidate re-tie to *persistent instability modes of the terrain*
+  (open joint J2).
+- **Output**: any fitted-probe readout head contradicts **T5** and is retained only as an external *scoring*
+  tool, never as the object's output.
+
+Current code-vs-theory fidelity is tracked by the executable **conformance suite** (`conformance/`,
+`CONFORMANCE.md`) and the module inventory in **`STOCKTAKE.md`**.
+
 ## The one object (say it as one sentence)
 A SELF-EXPANDING OPERATOR-VALUED MORI-ZWANZIG MEMORY living on an NTM-LIKE RESIZABLE TAPE (the "fluid"),
 POPULATED BY THE BAUR DESCENT against the LOSS CARRIED BY THE SEED MODELS' OWN TRAINING DATA, where the
