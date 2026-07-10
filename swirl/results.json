@@ -1,0 +1,68 @@
+{
+ "N": 1200,
+ "D": 20,
+ "atomic_criterion": "eff_rank < 0.4*D (=8) AND heldout_R2 >= 0.3",
+ "null_control": {
+  "readout_R2": 0.08126278961517219,
+  "heldout_R2": -0.04744278504213151,
+  "eff_rank": 18.049440473765703,
+  "D": 20,
+  "atomic_effrank_threshold": 8.0,
+  "swirl_rel_norm": 0.6927402011004513,
+  "atomic": false
+ },
+ "arms": {
+  "Vplus": {
+   "qwen": {
+    "readout_R2": 0.5197279012571067,
+    "heldout_R2": 0.4354885084410578,
+    "eff_rank": 16.91977979361331,
+    "D": 20,
+    "atomic_effrank_threshold": 8.0,
+    "swirl_rel_norm": 0.5085593344968153,
+    "atomic": false
+   },
+   "linear_baseline": {
+    "readout_R2": 0.8641741968771605,
+    "heldout_R2": 0.8561460669049433,
+    "eff_rank": 10.12202787218519,
+    "D": 20,
+    "atomic_effrank_threshold": 8.0,
+    "swirl_rel_norm": 0.25672378475715707,
+    "atomic": false
+   }
+  },
+  "Vminus": {
+   "qwen": {
+    "readout_R2": 0.37813575568758284,
+    "heldout_R2": 0.25438840401844287,
+    "eff_rank": 16.058826498430523,
+    "D": 20,
+    "atomic_effrank_threshold": 8.0,
+    "swirl_rel_norm": 0.5844691104544697,
+    "atomic": false
+   },
+   "linear_baseline": {
+    "readout_R2": 0.3977541162299707,
+    "heldout_R2": 0.41271420285370863,
+    "eff_rank": 10.118861580544893,
+    "D": 20,
+    "atomic_effrank_threshold": 8.0,
+    "swirl_rel_norm": 0.5187164077330424,
+    "atomic": false
+   }
+  }
+ },
+ "decisive": {
+  "null_is_noise_valid": true,
+  "vplus_atomic": false,
+  "vminus_atomic": false,
+  "readout_R2_Vplus": 0.5197279012571067,
+  "readout_R2_Vminus": 0.37813575568758284,
+  "heldout_R2_Vplus": 0.4354885084410578,
+  "heldout_R2_Vminus": 0.25438840401844287,
+  "eff_rank_Vplus": 16.91977979361331,
+  "eff_rank_Vminus": 16.058826498430523,
+  "verdict": "NOISE \u2014 no atomic signature even in V+ (swirl is structureless / uninformative)"
+ }
+}
