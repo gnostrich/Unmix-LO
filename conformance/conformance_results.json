@@ -1,0 +1,65 @@
+{
+ "results": [
+  {
+   "invariant": 1,
+   "name": "resizable / self-expanding medium (#2)",
+   "status": "PASS",
+   "code_does": "medium = SCENE_REGISTRY; SCENE_D = len(registry); index groups tag-derived; append_feature grows D; build derives D = scene.shape[1]",
+   "theory_requires": "D a registry knob, medium can grow, nothing hard-codes a dimension",
+   "evidence": "registry_driven=True tag_derived=True grew=True restored=True D-derived-in-build=True"
+  },
+  {
+   "invariant": 2,
+   "name": "genuine feedback recurrence, not averaging (the fluid)",
+   "status": "FAIL",
+   "code_does": "the WIRED settle (coherentflow.settle) is feed-forward averaging (incompatible frames z,-z contract to their mean, max-diff<1e-6=True); Jacobian bounded <=1, cannot be unstable or exclude. The CORRECT fluid EXISTS separately (fluid_settle) and PASSES: coupled rho can exceed 1 (1.088) and a destabilizer is excluded (rogue weight 0.0000).",
+   "theory_requires": "the recurrence USED by the pipeline must be model->model feedback (coupled rho>1 achievable; destabilizer excluded, not averaged in)",
+   "evidence": "shipped_is_averaging=True; fluid_settle_passes=True. RESOLUTION: wire fluid_settle into the pipeline (deliberate later step)."
+  },
+  {
+   "invariant": 3,
+   "name": "faithfulness/contraction is a loss TERM, not a phase (#5)",
+   "status": "PARTIAL",
+   "code_does": "coherentflow.settle: the guard `structured()` is called INSIDE the ITERS loop (one loop, no separate verify pass). BUT fluid_settle's stabilization (instability_descent) is currently a SEPARATE pre-phase computing w before fluid_settle runs \u2014 a contraction PHASE, not a term inside the settle loop.",
+   "theory_requires": "the contraction/anti-hallucination guard is a term inside the single objective/loop, never a separate generate/verify phase",
+   "evidence": "shipped_guard_in_loop=True no_verify_phase=True fluid_stabilization_is_prephase=True"
+  },
+  {
+   "invariant": 4,
+   "name": "MZ memory = the tape, ONE object (#1)",
+   "status": "FAIL",
+   "code_does": "coherentflow.settle's `memory` is a per-step dict of held projections (transient, recomputed each iteration) \u2014 a held-structure store, NOT a persistent resizable tape. The MZ kernel / tape (block-Hankel, self-expansion) lives in a SEPARATE module virtualworld/mz_fluid.py. So the tape and the memory are TWO different structures, not one object.",
+   "theory_requires": "the NTM-like resizable tape and the MZ memory kernel are the SAME structure; the tape's read/write dynamics ARE the kernel (streaming/memory split intrinsic)",
+   "evidence": "memory_transient_dict=True tape_separate_module=True"
+  },
+  {
+   "invariant": 5,
+   "name": "loss = models' own grounding, not external judge (#4)",
+   "status": "PASS",
+   "code_does": "the guard reads held-out predictivity from the shared medium z (the models' grounding); the fluid's objective is coupling instability (spectral radius / measured growth) \u2014 both model-intrinsic. The ridge aligns to the physics engine's own scene state (the seed's grounding). No external labels/judge.",
+   "theory_requires": "each model's loss signal comes from its own training data / grounding; the descent uses those, never arbitrary data or an invented external judge",
+   "evidence": "intrinsic_guard=True intrinsic_fluid_objective=True ridge_to_engine_grounding=True external_supervision=False"
+  },
+  {
+   "invariant": 6,
+   "name": "intrinsic output (read from settled dynamics, not a fitted head)",
+   "status": "FAIL",
+   "code_does": "the SHIPPED read (coherentflow.combined_read) fits a linear probe via lstsq to predict a target \u2014 an external fitted readout head, NOT intrinsic. The CORRECT intrinsic output EXISTS in fluid_settle: the answer is the equilibrium SHIFT of the settled state (query = perturbation), no readout head.",
+   "theory_requires": "the output emerges from the settled dynamics/terrain (equilibrium shift), not a separately-trained probe",
+   "evidence": "shipped_combined_read_uses_lstsq_probe=True; fluid_settle_intrinsic=True. RESOLUTION: use the fluid's equilibrium-shift output."
+  },
+  {
+   "invariant": 7,
+   "name": "frozen interfaces, everything else flexible",
+   "status": "PASS",
+   "code_does": "encoders are frozen (@torch.no_grad + .eval(), cached); only the medium-side ridge is fitted. D is a registry knob, n_models is a list (MODS), T is module constants \u2014 all runtime-variable with no model rewiring.",
+   "theory_requires": "model-side of each interface frozen; D, n_models, T, held-rank all runtime knobs",
+   "evidence": "model_frozen=True only_ridge_fitted=True n_models_list=True T_constants=True D_registry_knob=True"
+  }
+ ],
+ "tally": {
+  "PASS": 3,
+  "FAIL": 3,
+  "PARTIAL": 1
+ }
+}
