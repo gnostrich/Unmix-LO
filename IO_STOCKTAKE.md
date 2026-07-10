@@ -6,6 +6,14 @@ file:line citations included. **Headline correction up front:** the two builds a
 different medium dimensions* — virtualworld's shared medium is **D=26** (not 24; 24 is the engine state), and
 coherentflow's is a *separate* hard-coded **D=24**. There is no single shared `D` across the two.
 
+> **Mechanism regression (see `MECHANISM_CHECK.md`):** the shipped settle is **feed-forward averaging** (proven
+> identical to `mean(f_i)` with no held structure) + a state-dependent held-subtraction — **not** the genuine
+> model→model feedback fluid CONSTRUCT #1-2 requires. It is structurally contractive (cannot be mutually
+> unstable) and non-exclusionary (a corrupt model is averaged in, not routed around). Prior "no-op on real
+> models" / satisfaction results validated the **guard** and the **coverage-union/held read** (real); the
+> **fluid's** routing/exclusion was never instantiated or tested. Resolve deliberately before building on the
+> "fluid" story.
+
 ## 1. Models actually wired (per modality)
 
 | modality | source (as committed) | real neural encoder? | native output dim | frozen? |
