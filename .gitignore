@@ -1,2 +1,8 @@
 __pycache__/
 *.pyc
+
+# Stale artifacts from a different experiment (GATE/grads) that surface via container desync;
+# large binary blobs (~3.6GB), not part of this program's main. Ignored, not committed.
+gate/
+grads/
+grads-qwen/
