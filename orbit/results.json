@@ -1,0 +1,47 @@
+{
+ "calibration": {
+  "null_omega": 1.2458433434833443e-08,
+  "periodic_omega": 0.2529642664162831,
+  "periodic_omega_true": 0.25132741228718347,
+  "periodic_recovers": true,
+  "null_no_mode": true,
+  "kernel_calibration_passes": true
+ },
+ "real": {
+  "driven_multiscale": {
+   "omega": 0.04382142039518746,
+   "gamma": 0.039195757991064804,
+   "gap_flagged": true,
+   "kappa=0.0": {
+    "miss_mean": 4.9245867416087545,
+    "miss_std": 0.10508505805217769
+   },
+   "kappa=0.4": {
+    "miss_mean": 4.813281903097962,
+    "miss_std": 0.17727112058658792
+   },
+   "margin": 0.022601863740227147
+  },
+  "plain_billiards": {
+   "omega": 0.02850936927446721,
+   "gamma": 0.012276592749533478,
+   "gap_flagged": true,
+   "kappa=0.0": {
+    "miss_mean": 4.659173235152108,
+    "miss_std": 0.19183006983360482
+   },
+   "kappa=0.4": {
+    "miss_mean": 4.546228269823344,
+    "miss_std": 0.16731352647753187
+   },
+   "margin": 0.02424141787143739
+  },
+  "verdict": "(b) NULL \u2014 no state-observable phrase-scale mode on this substrate (omega~0), so the MZ momentum has nothing oscillatory to exploit; kappa ties kappa=0 within noise. The kernel is validated (periodic control), but mechanical physics is not music: the slow coupling isn't observable in the instantaneous state.",
+  "artifacts": [
+   "artifact_kappa0.png",
+   "artifact_kappa0.gif",
+   "artifact_kappa04.png",
+   "artifact_kappa04.gif"
+  ]
+ }
+}
