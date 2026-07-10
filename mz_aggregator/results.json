@@ -1,0 +1,250 @@
+{
+ "config": {
+  "p": 3,
+  "Kmarkov": 40,
+  "L": 18,
+  "sigma0": 0.02
+ },
+ "calibration": {
+  "atomic": {
+   "2": {
+    "terminal_orders": [
+     2,
+     2,
+     2
+    ],
+    "mean_gap": 99.44000000000001,
+    "match": true
+   },
+   "3": {
+    "terminal_orders": [
+     3,
+     3,
+     3
+    ],
+    "mean_gap": 14.756666666666668,
+    "match": true
+   },
+   "4": {
+    "terminal_orders": [
+     4,
+     4,
+     4
+    ],
+    "mean_gap": 18.470000000000002,
+    "match": true
+   },
+   "6": {
+    "terminal_orders": [
+     6,
+     6,
+     6
+    ],
+    "mean_gap": 22.046666666666667,
+    "match": true
+   },
+   "8": {
+    "terminal_orders": [
+     8,
+     8,
+     8
+    ],
+    "mean_gap": 6.996666666666667,
+    "match": true
+   }
+  },
+  "continuous": {
+   "orders_vs_K": [
+    [
+     4,
+     5,
+     1.08
+    ],
+    [
+     8,
+     7,
+     1.06
+    ],
+    [
+     16,
+     8,
+     1.25
+    ],
+    [
+     32,
+     9,
+     1.42
+    ]
+   ],
+   "no_clean_termination": true
+  }
+ },
+ "sweep": {
+  "arm1_raiseK_fixed_diversity": {
+   "2": {
+    "orders": [
+     4,
+     4,
+     4,
+     4,
+     4
+    ],
+    "mean_order": 4.0,
+    "mean_kernel_cost": 40.0
+   },
+   "4": {
+    "orders": [
+     4,
+     4,
+     4,
+     4,
+     4
+    ],
+    "mean_order": 4.0,
+    "mean_kernel_cost": 40.0
+   },
+   "8": {
+    "orders": [
+     4,
+     4,
+     4,
+     4,
+     4
+    ],
+    "mean_order": 4.0,
+    "mean_kernel_cost": 40.0
+   },
+   "16": {
+    "orders": [
+     4,
+     4,
+     4,
+     4,
+     4
+    ],
+    "mean_order": 4.0,
+    "mean_kernel_cost": 40.0
+   },
+   "32": {
+    "orders": [
+     4,
+     4,
+     4,
+     4,
+     4
+    ],
+    "mean_order": 4.0,
+    "mean_kernel_cost": 40.0
+   },
+   "64": {
+    "orders": [
+     4,
+     4,
+     4,
+     4,
+     4
+    ],
+    "mean_order": 4.0,
+    "mean_kernel_cost": 40.0
+   }
+  },
+  "arm2_raise_diversity_fixed_K": {
+   "2": {
+    "orders": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "mean_order": 2.0,
+    "truth": 2,
+    "mean_kernel_cost": 16.0
+   },
+   "3": {
+    "orders": [
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "mean_order": 3.0,
+    "truth": 3,
+    "mean_kernel_cost": 27.0
+   },
+   "4": {
+    "orders": [
+     4,
+     4,
+     4,
+     4,
+     4
+    ],
+    "mean_order": 4.0,
+    "truth": 4,
+    "mean_kernel_cost": 40.0
+   },
+   "6": {
+    "orders": [
+     6,
+     6,
+     6,
+     6,
+     6
+    ],
+    "mean_order": 6.0,
+    "truth": 6,
+    "mean_kernel_cost": 72.0
+   },
+   "8": {
+    "orders": [
+     8,
+     8,
+     8,
+     8,
+     8
+    ],
+    "mean_order": 8.0,
+    "truth": 8,
+    "mean_kernel_cost": 112.0
+   },
+   "10": {
+    "orders": [
+     10,
+     10,
+     9,
+     10,
+     10
+    ],
+    "mean_order": 9.8,
+    "truth": 10,
+    "mean_kernel_cost": 155.0
+   }
+  },
+  "verdict": {
+   "arm1_flat_in_K": true,
+   "arm2_grows_with_diversity": true,
+   "arm2_tracks_mcmillan_degree": true,
+   "claim_holds": true
+  }
+ },
+ "dim_independence": {
+  "homogeneous": {
+   "terminal_orders": [
+    4,
+    4,
+    4
+   ],
+   "mean": 4.0
+  },
+  "heterogeneous q_w in [p,3p]": {
+   "terminal_orders": [
+    4,
+    4,
+    4
+   ],
+   "mean": 4.0
+  }
+ }
+}

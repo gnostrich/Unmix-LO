@@ -1,0 +1,48 @@
+==========================================================================
+POLES-FIRST CALIBRATION (ground truth: atomic degree = r; continuous = inf)
+==========================================================================
+
+ATOMIC (terminal kernel order must == r, with a clean Hankel gap):
+  r=2: terminal order [2, 2, 2] (truth 2) gap~    99.4  MATCH
+  r=3: terminal order [3, 3, 3] (truth 3) gap~    14.8  MATCH
+  r=4: terminal order [4, 4, 4] (truth 4) gap~    18.5  MATCH
+  r=6: terminal order [6, 6, 6] (truth 6) gap~    22.0  MATCH
+  r=8: terminal order [8, 8, 8] (truth 8) gap~     7.0  MATCH
+
+CONTINUOUS (must NOT cleanly terminate; order drifts with evidence/K, gap ~ 1):
+  K= 4: terminal order= 5  gap~1.08  (order drifts with K, no clean small-integer termination)
+  K= 8: terminal order= 7  gap~1.06  (order drifts with K, no clean small-integer termination)
+  K=16: terminal order= 8  gap~1.25  (order drifts with K, no clean small-integer termination)
+  K=32: terminal order= 9  gap~1.42  (order drifts with K, no clean small-integer termination)
+  -> drifts with K: True; gaps ~1 (no atomic gap): True  => no clean termination: True
+
+==========================================================================
+DOUBLE DISSOCIATION SWEEP
+==========================================================================
+
+ARM 1 — raise K (workers) at FIXED diversity r=4. PREDICT: kernel rank FLAT in K.
+  K=  2: kernel rank [4, 4, 4, 4, 4] mean=4.00  kernel_mem=40
+  K=  4: kernel rank [4, 4, 4, 4, 4] mean=4.00  kernel_mem=40
+  K=  8: kernel rank [4, 4, 4, 4, 4] mean=4.00  kernel_mem=40
+  K= 16: kernel rank [4, 4, 4, 4, 4] mean=4.00  kernel_mem=40
+  K= 32: kernel rank [4, 4, 4, 4, 4] mean=4.00  kernel_mem=40
+  K= 64: kernel rank [4, 4, 4, 4, 4] mean=4.00  kernel_mem=40
+
+ARM 2 — raise diversity r at FIXED K=8. PREDICT: kernel rank GROWS with r (tracks McMillan degree).
+  r= 2: kernel rank [2, 2, 2, 2, 2] mean=2.00 (truth 2)  kernel_mem=16
+  r= 3: kernel rank [3, 3, 3, 3, 3] mean=3.00 (truth 3)  kernel_mem=27
+  r= 4: kernel rank [4, 4, 4, 4, 4] mean=4.00 (truth 4)  kernel_mem=40
+  r= 6: kernel rank [6, 6, 6, 6, 6] mean=6.00 (truth 6)  kernel_mem=72
+  r= 8: kernel rank [8, 8, 8, 8, 8] mean=8.00 (truth 8)  kernel_mem=112
+  r=10: kernel rank [10, 10, 9, 10, 10] mean=9.80 (truth 10)  kernel_mem=155
+
+VERDICT: Arm1 flat in K = True (orders [4.0, 4.0, 4.0, 4.0, 4.0, 4.0]); Arm2 grows with diversity = True, tracks degree = True (orders [2.0, 3.0, 4.0, 6.0, 8.0, 9.8])
+  => CLAIM HOLDS (flat-in-K AND grows-in-diversity): True
+
+==========================================================================
+DIMENSION-INDEPENDENCE (heterogeneous per-worker dims; kernel order unaffected)
+==========================================================================
+  homogeneous                     : terminal kernel order [4, 4, 4] (truth r=4)
+  heterogeneous q_w in [p,3p]     : terminal kernel order [4, 4, 4] (truth r=4)
+
+wrote results.json
