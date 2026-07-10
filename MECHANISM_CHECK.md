@@ -86,3 +86,12 @@ subtraction — **not** the feedback fluid. It is structurally contractive (cann
 non-exclusionary (destabilizing models are averaged in). The validated results are about the **guard** and the
 **coverage-union/held read**, which are real; the **fluid's** routing/exclusion has never been instantiated or
 tested. Flagging as a regression to resolve deliberately before building further on the "fluid" story.
+
+## RESOLUTION (2026-07-09) — the correct fluid now exists, separately
+The theoretically-correct feedback fluid was built as a **separate** module `coherentflow/fluid_settle.py`
+(this averaging settle left intact and labelled). It meets all three acceptance criteria (see
+`FLUID_VERIFICATION.md`): mutual instability (conflicting frames ρ=1.088 > 1 vs averaging ≤ 0.978), decisive
+exclusion (rogue weight → 0.000, ρ → 0.970), and intrinsic held-superposition (contested query → rank-2 both
+branches; agreed → collapse; adversarial → bounded). Key finding: robust held-superposition requires **nonlinear
+multistability** — linear feedback gives only fragile marginal hold. The two objects now coexist honestly:
+`settle` = occupied consensus fusion (averaging); `fluid_settle` = the construct's feedback fluid.

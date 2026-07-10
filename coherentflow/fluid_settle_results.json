@@ -1,0 +1,49 @@
+{
+ "step": 0.3,
+ "acceptance_1_mutual_instability": {
+  "rho_conflict_fluid": 1.0876333638864022,
+  "rho_agree_fluid": 0.9550000000000001,
+  "rho_averaging_shipped": 0.9780921214630088,
+  "rho_minimal_skew_2d": 1.0440306508910548,
+  "fluid_can_exceed_1": true,
+  "averaging_bounded_by_1": true,
+  "passed": true
+ },
+ "acceptance_2_fluid_exclusion": {
+  "rho_equal_weights": 1.0150000000000001,
+  "unstable_at_equal_weights": true,
+  "weights_after_descent": [
+   0.3333333333333333,
+   0.3333333333333333,
+   0.3333333333333333,
+   0.0
+  ],
+  "rogue_weight": 0.0,
+  "rogue_excluded": true,
+  "rho_after_descent": 0.9700000000000003,
+  "stabilized": true,
+  "passed": true
+ },
+ "acceptance_3_intrinsic_output": {
+  "agreed_query_response_norm": 8.160561195836395e-16,
+  "agreed_collapses_to_consensus": true,
+  "contested_response_singular_values": [
+   5.648888831809079,
+   5.249458725904204
+  ],
+  "held_superposition_rank2": true,
+  "held_branches": [
+   -1.39,
+   1.39
+  ],
+  "adversarial_response_norms": [
+   1.9606927178209124,
+   1.9606927178209124,
+   1.9606927178209124
+  ],
+  "adversarial_bounded": true,
+  "passed": true
+ },
+ "all_pass": true,
+ "finding": "Criteria 1-2 (mutual instability, exclusion) are linear-coupled-operator properties. Criterion 3c (robust held-superposition) is NOT achievable by linear feedback (fragile marginal hold only) \u2014 it requires nonlinear multistability. The paraconsistent hold is a nonlinear phenomenon: the consensus is unstable on contested subspaces and the fluid commits to a held branch rather than averaging to the midpoint."
+}
