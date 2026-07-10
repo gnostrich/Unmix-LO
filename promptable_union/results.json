@@ -1,0 +1,1883 @@
+{
+ "config": {
+  "n": 20,
+  "admit_core": 1.01,
+  "route_sim": 0.24,
+  "admit_spec": 0.3,
+  "abstain_core": 0.65,
+  "core": "core:SmolVLM-500M-Instruct",
+  "specialists": [
+   "flower species",
+   "food dish",
+   "human face age"
+  ]
+ },
+ "per_set": {
+  "U_flowers": {
+   "n": 20,
+   "core_acc": 0.05,
+   "obj_acc": 0.65,
+   "naive_acc": 0.55,
+   "obj_abstain_rate": 0.0,
+   "obj_calls_per_q": 1.0,
+   "naive_calls_per_q": 3.0,
+   "obj_routed_rate": 1.0,
+   "mean_core_conf": 0.7834637308976682
+  },
+  "U_food": {
+   "n": 20,
+   "core_acc": 0.15,
+   "obj_acc": 0.4,
+   "naive_acc": 0.85,
+   "obj_abstain_rate": 0.3,
+   "obj_calls_per_q": 0.5,
+   "naive_calls_per_q": 3.0,
+   "obj_routed_rate": 0.5,
+   "mean_core_conf": 0.6777066980852674
+  },
+  "K_objects": {
+   "n": 20,
+   "core_acc": 0.45,
+   "obj_acc": 0.45,
+   "naive_acc": 0.0,
+   "obj_abstain_rate": 0.35,
+   "obj_calls_per_q": 0.0,
+   "naive_calls_per_q": 3.0,
+   "obj_routed_rate": 0.0,
+   "mean_core_conf": 0.6815007302357121
+  },
+  "ADV_texture": {
+   "n": 20,
+   "core_acc": 0.0,
+   "obj_acc": 0.0,
+   "naive_acc": 0.0,
+   "obj_abstain_rate": 0.75,
+   "obj_calls_per_q": 0.2,
+   "naive_calls_per_q": 3.0,
+   "obj_routed_rate": 0.0,
+   "mean_core_conf": 0.5092342031211914
+  }
+ },
+ "records": [
+  {
+   "set": "U_flowers",
+   "gt": "balloon flower",
+   "core_conf": 0.842,
+   "core": "Flowers.",
+   "obj": "Flower.",
+   "obj_meta": {
+    "core_conf": 0.842,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.286,
+     "human face age": 0.204,
+     "food dish": 0.195
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "orange dahlia",
+   "core_conf": 0.832,
+   "core": "Orange flower.",
+   "obj": "Orange dahlia.",
+   "obj_meta": {
+    "core_conf": 0.832,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.265,
+     "food dish": 0.179,
+     "human face age": 0.179
+    }
+   },
+   "naive": "Orange dahlia.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "peruvian lily",
+   "core_conf": 0.877,
+   "core": "Flowers.",
+   "obj": "Peruvian Lily.",
+   "obj_meta": {
+    "core_conf": 0.877,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.268,
+     "food dish": 0.186,
+     "human face age": 0.181
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "U_flowers",
+   "gt": "mexican petunia",
+   "core_conf": 0.747,
+   "core": "Flowers.",
+   "obj": "Mexican petunia.",
+   "obj_meta": {
+    "core_conf": 0.747,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.266,
+     "food dish": 0.185,
+     "human face age": 0.176
+    }
+   },
+   "naive": "Mexican petunia.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "pelargonium",
+   "core_conf": 0.838,
+   "core": "Flower.",
+   "obj": "Flower.",
+   "obj_meta": {
+    "core_conf": 0.838,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.272,
+     "food dish": 0.192,
+     "human face age": 0.189
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "U_flowers",
+   "gt": "toad lily",
+   "core_conf": 0.793,
+   "core": "Flowers.",
+   "obj": "Flower.",
+   "obj_meta": {
+    "core_conf": 0.793,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.262,
+     "food dish": 0.178,
+     "human face age": 0.176
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "U_flowers",
+   "gt": "ball moss",
+   "core_conf": 0.703,
+   "core": "Flowers.",
+   "obj": "Ball moss.",
+   "obj_meta": {
+    "core_conf": 0.703,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.261,
+     "food dish": 0.186,
+     "human face age": 0.165
+    }
+   },
+   "naive": "Ball moss.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "azalea",
+   "core_conf": 0.787,
+   "core": "Flowers.",
+   "obj": "Flower.",
+   "obj_meta": {
+    "core_conf": 0.787,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.281,
+     "human face age": 0.191,
+     "food dish": 0.188
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "U_flowers",
+   "gt": "pink-yellow dahlia?",
+   "core_conf": 0.77,
+   "core": "Flowers.",
+   "obj": "Dahlia.",
+   "obj_meta": {
+    "core_conf": 0.77,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.282,
+     "human face age": 0.203,
+     "food dish": 0.197
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "U_flowers",
+   "gt": "cape flower",
+   "core_conf": 0.688,
+   "core": "Flowers.",
+   "obj": "Flower.",
+   "obj_meta": {
+    "core_conf": 0.688,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.278,
+     "human face age": 0.187,
+     "food dish": 0.178
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "carnation",
+   "core_conf": 0.849,
+   "core": "Flowers.",
+   "obj": "Carnations.",
+   "obj_meta": {
+    "core_conf": 0.849,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.263,
+     "human face age": 0.185,
+     "food dish": 0.181
+    }
+   },
+   "naive": "Carnation.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "passion flower",
+   "core_conf": 0.819,
+   "core": "Flower.",
+   "obj": "Passion flower.",
+   "obj_meta": {
+    "core_conf": 0.819,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.269,
+     "food dish": 0.178,
+     "human face age": 0.164
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "camellia",
+   "core_conf": 0.675,
+   "core": "Red flower.",
+   "obj": "Red flower.",
+   "obj_meta": {
+    "core_conf": 0.675,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.278,
+     "food dish": 0.184,
+     "human face age": 0.183
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "U_flowers",
+   "gt": "petunia",
+   "core_conf": 0.828,
+   "core": "Flowers.",
+   "obj": "Petunia.",
+   "obj_meta": {
+    "core_conf": 0.828,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.275,
+     "human face age": 0.193,
+     "food dish": 0.184
+    }
+   },
+   "naive": "Petunia.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "lenten rose",
+   "core_conf": 0.928,
+   "core": "Flowers.",
+   "obj": "Flower.",
+   "obj_meta": {
+    "core_conf": 0.928,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.271,
+     "food dish": 0.185,
+     "human face age": 0.184
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "U_flowers",
+   "gt": "balloon flower",
+   "core_conf": 0.831,
+   "core": "Flowers.",
+   "obj": "Tulip.",
+   "obj_meta": {
+    "core_conf": 0.831,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.281,
+     "human face age": 0.2,
+     "food dish": 0.191
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "common dandelion",
+   "core_conf": 0.79,
+   "core": "Yellow flower.",
+   "obj": "Yellow flower.",
+   "obj_meta": {
+    "core_conf": 0.79,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.274,
+     "food dish": 0.202,
+     "human face age": 0.194
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "U_flowers",
+   "gt": "bird of paradise",
+   "core_conf": 0.447,
+   "core": "Orange flower.",
+   "obj": "Bird of paradise.",
+   "obj_meta": {
+    "core_conf": 0.447,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.246,
+     "food dish": 0.2,
+     "human face age": 0.185
+    }
+   },
+   "naive": "Bird of paradise.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "cape flower",
+   "core_conf": 0.857,
+   "core": "Flowers.",
+   "obj": "Flower.",
+   "obj_meta": {
+    "core_conf": 0.857,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.265,
+     "food dish": 0.176,
+     "human face age": 0.175
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_flowers",
+   "gt": "spring crocus",
+   "core_conf": 0.769,
+   "core": "Flower.",
+   "obj": "Spring crocus.",
+   "obj_meta": {
+    "core_conf": 0.769,
+    "routed": [
+     "flower species"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.284,
+     "human face age": 0.2,
+     "food dish": 0.194
+    }
+   },
+   "naive": "Flower.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "U_food",
+   "gt": "cheesecake",
+   "core_conf": 0.749,
+   "core": "Cheesecake.",
+   "obj": "Cheesecake.",
+   "obj_meta": {
+    "core_conf": 0.749,
+    "routed": [
+     "food dish"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.242,
+     "flower species": 0.19,
+     "human face age": 0.157
+    }
+   },
+   "naive": "Cheesecake.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "beignets",
+   "core_conf": 0.77,
+   "core": "Dessert.",
+   "obj": "Donuts.",
+   "obj_meta": {
+    "core_conf": 0.77,
+    "routed": [
+     "food dish"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.247,
+     "flower species": 0.17,
+     "human face age": 0.146
+    }
+   },
+   "naive": "Donuts.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "U_food",
+   "gt": "pho",
+   "core_conf": 0.859,
+   "core": "Soup.",
+   "obj": "Soup.",
+   "obj_meta": {
+    "core_conf": 0.859,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.236,
+     "flower species": 0.193,
+     "human face age": 0.179
+    }
+   },
+   "naive": "Pho.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "cheesecake",
+   "core_conf": 0.739,
+   "core": "Cake.",
+   "obj": "Cheesecake.",
+   "obj_meta": {
+    "core_conf": 0.739,
+    "routed": [
+     "food dish"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.246,
+     "flower species": 0.193,
+     "human face age": 0.186
+    }
+   },
+   "naive": "Cheesecake.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "beignets",
+   "core_conf": 0.786,
+   "core": "Donuts.",
+   "obj": "Beignets.",
+   "obj_meta": {
+    "core_conf": 0.786,
+    "routed": [
+     "food dish"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.243,
+     "flower species": 0.176,
+     "human face age": 0.162
+    }
+   },
+   "naive": "Beignets.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "cheesecake",
+   "core_conf": 0.731,
+   "core": "Pie.",
+   "obj": "Cheesecake.",
+   "obj_meta": {
+    "core_conf": 0.731,
+    "routed": [
+     "food dish"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.248,
+     "flower species": 0.21,
+     "human face age": 0.172
+    }
+   },
+   "naive": "Cheesecake.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "pho",
+   "core_conf": 0.591,
+   "core": "Soup.",
+   "obj": "(abstain: outside the union's coverage) Soup.",
+   "obj_meta": {
+    "core_conf": 0.591,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "food dish": 0.232,
+     "flower species": 0.179,
+     "human face age": 0.176
+    }
+   },
+   "naive": "Pho.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "pho",
+   "core_conf": 0.614,
+   "core": "Soup.",
+   "obj": "(abstain: outside the union's coverage) Soup.",
+   "obj_meta": {
+    "core_conf": 0.614,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "food dish": 0.228,
+     "flower species": 0.186,
+     "human face age": 0.16
+    }
+   },
+   "naive": "Pho.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "cheesecake",
+   "core_conf": 0.538,
+   "core": "DWA.",
+   "obj": "DWA.",
+   "obj_meta": {
+    "core_conf": 0.538,
+    "routed": [
+     "food dish"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.251,
+     "flower species": 0.186,
+     "human face age": 0.175
+    }
+   },
+   "naive": "Doya.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "U_food",
+   "gt": "pho",
+   "core_conf": 0.591,
+   "core": "Soup.",
+   "obj": "(abstain: outside the union's coverage) Soup.",
+   "obj_meta": {
+    "core_conf": 0.591,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "food dish": 0.227,
+     "flower species": 0.181,
+     "human face age": 0.172
+    }
+   },
+   "naive": "Pho.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "pho",
+   "core_conf": 0.694,
+   "core": "Soup.",
+   "obj": "Soup.",
+   "obj_meta": {
+    "core_conf": 0.694,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.229,
+     "flower species": 0.197,
+     "human face age": 0.178
+    }
+   },
+   "naive": "Pho.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "cheesecake",
+   "core_conf": 0.73,
+   "core": "Cafe Lidia.",
+   "obj": "Cheesecake.",
+   "obj_meta": {
+    "core_conf": 0.73,
+    "routed": [
+     "food dish"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.251,
+     "flower species": 0.184,
+     "human face age": 0.176
+    }
+   },
+   "naive": "Cafe Lidia.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "U_food",
+   "gt": "beignets",
+   "core_conf": 0.545,
+   "core": "There is a plate of French Toast on a white table.",
+   "obj": "(abstain: outside the union's coverage) There is a plate of French Toast on a wh",
+   "obj_meta": {
+    "core_conf": 0.545,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "food dish": 0.238,
+     "flower species": 0.198,
+     "human face age": 0.173
+    }
+   },
+   "naive": "Beignets.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "beignets",
+   "core_conf": 0.482,
+   "core": "A bowl of French Toast.",
+   "obj": "Beignets.",
+   "obj_meta": {
+    "core_conf": 0.482,
+    "routed": [
+     "food dish"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.249,
+     "flower species": 0.202,
+     "human face age": 0.17
+    }
+   },
+   "naive": "Beignets.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "cheesecake",
+   "core_conf": 0.877,
+   "core": "Cheesecake.",
+   "obj": "Cheesecake.",
+   "obj_meta": {
+    "core_conf": 0.877,
+    "routed": [
+     "food dish"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.257,
+     "flower species": 0.203,
+     "human face age": 0.173
+    }
+   },
+   "naive": "Cheesecake.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "beignets",
+   "core_conf": 0.614,
+   "core": "French Toast.",
+   "obj": "Beignets.",
+   "obj_meta": {
+    "core_conf": 0.614,
+    "routed": [
+     "food dish"
+    ],
+    "specialist_calls": 1,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.252,
+     "flower species": 0.192,
+     "human face age": 0.163
+    }
+   },
+   "naive": "Beignets.",
+   "core_ok": false,
+   "obj_ok": true,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "pho",
+   "core_conf": 0.827,
+   "core": "Soup.",
+   "obj": "Soup.",
+   "obj_meta": {
+    "core_conf": 0.827,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.234,
+     "flower species": 0.191,
+     "human face age": 0.163
+    }
+   },
+   "naive": "Pho.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "pho",
+   "core_conf": 0.502,
+   "core": "The image shows a bowl of soup with various ingredients. The bowl is placed on",
+   "obj": "(abstain: outside the union's coverage) The image shows a bowl of soup with vari",
+   "obj_meta": {
+    "core_conf": 0.502,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "food dish": 0.23,
+     "flower species": 0.198,
+     "human face age": 0.161
+    }
+   },
+   "naive": "Pho.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "pho",
+   "core_conf": 0.774,
+   "core": "Soup.",
+   "obj": "Soup.",
+   "obj_meta": {
+    "core_conf": 0.774,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.228,
+     "flower species": 0.189,
+     "human face age": 0.168
+    }
+   },
+   "naive": "Pho.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "U_food",
+   "gt": "beignets",
+   "core_conf": 0.542,
+   "core": "Sandwich.",
+   "obj": "(abstain: outside the union's coverage) Sandwich.",
+   "obj_meta": {
+    "core_conf": 0.542,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "food dish": 0.23,
+     "flower species": 0.181,
+     "human face age": 0.167
+    }
+   },
+   "naive": "Beignets.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": true
+  },
+  {
+   "set": "K_objects",
+   "gt": "truck",
+   "core_conf": 0.892,
+   "core": "Truck.",
+   "obj": "Truck.",
+   "obj_meta": {
+    "core_conf": 0.892,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "human face age": 0.198,
+     "flower species": 0.196,
+     "food dish": 0.184
+    }
+   },
+   "naive": "Ball Moss.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "cat",
+   "core_conf": 0.746,
+   "core": "White cat.",
+   "obj": "White cat.",
+   "obj_meta": {
+    "core_conf": 0.746,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.205,
+     "food dish": 0.202,
+     "human face age": 0.198
+    }
+   },
+   "naive": "Magnolia.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "frog",
+   "core_conf": 0.937,
+   "core": "Frog.",
+   "obj": "Frog.",
+   "obj_meta": {
+    "core_conf": 0.937,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.213,
+     "human face age": 0.211,
+     "food dish": 0.209
+    }
+   },
+   "naive": "Snapdragon.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "cat",
+   "core_conf": 0.829,
+   "core": "Cat.",
+   "obj": "Cat.",
+   "obj_meta": {
+    "core_conf": 0.829,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.202,
+     "human face age": 0.201,
+     "flower species": 0.183
+    }
+   },
+   "naive": "Fritillary.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "cat",
+   "core_conf": 0.507,
+   "core": "Dog.",
+   "obj": "(abstain: outside the union's coverage) Dog.",
+   "obj_meta": {
+    "core_conf": 0.507,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "food dish": 0.212,
+     "flower species": 0.21,
+     "human face age": 0.208
+    }
+   },
+   "naive": "Rose.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "cat",
+   "core_conf": 0.778,
+   "core": "Cat.",
+   "obj": "Cat.",
+   "obj_meta": {
+    "core_conf": 0.778,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.215,
+     "human face age": 0.213,
+     "flower species": 0.205
+    }
+   },
+   "naive": "Cyclamen.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "ship",
+   "core_conf": 0.725,
+   "core": "Boat.",
+   "obj": "Boat.",
+   "obj_meta": {
+    "core_conf": 0.725,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.204,
+     "flower species": 0.203,
+     "human face age": 0.184
+    }
+   },
+   "naive": "Gaura.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "airplane",
+   "core_conf": 0.435,
+   "core": "The image contains a book cover. The cover is predominantly white with a blue st",
+   "obj": "(abstain: outside the union's coverage) The image contains a book cover. The cov",
+   "obj_meta": {
+    "core_conf": 0.435,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "food dish": 0.19,
+     "human face age": 0.182,
+     "flower species": 0.176
+    }
+   },
+   "naive": "Giant white arum lily.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "bird",
+   "core_conf": 0.532,
+   "core": "Dog.",
+   "obj": "(abstain: outside the union's coverage) Dog.",
+   "obj_meta": {
+    "core_conf": 0.532,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "human face age": 0.236,
+     "flower species": 0.199,
+     "food dish": 0.198
+    }
+   },
+   "naive": "Cannoli.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "frog",
+   "core_conf": 0.562,
+   "core": "Fish.",
+   "obj": "(abstain: outside the union's coverage) Fish.",
+   "obj_meta": {
+    "core_conf": 0.562,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "human face age": 0.234,
+     "flower species": 0.216,
+     "food dish": 0.212
+    }
+   },
+   "naive": "Ball Moss.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "bird",
+   "core_conf": 0.83,
+   "core": "Butterfly.",
+   "obj": "Butterfly.",
+   "obj_meta": {
+    "core_conf": 0.83,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.232,
+     "human face age": 0.231,
+     "food dish": 0.218
+    }
+   },
+   "naive": "Alpine sea holly.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "bird",
+   "core_conf": 0.918,
+   "core": "Bird.",
+   "obj": "Bird.",
+   "obj_meta": {
+    "core_conf": 0.918,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.22,
+     "human face age": 0.205,
+     "food dish": 0.203
+    }
+   },
+   "naive": "Wild pansy.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "deer",
+   "core_conf": 0.935,
+   "core": "Deer.",
+   "obj": "Deer.",
+   "obj_meta": {
+    "core_conf": 0.935,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.205,
+     "food dish": 0.203,
+     "human face age": 0.198
+    }
+   },
+   "naive": "Gaura.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "cat",
+   "core_conf": 0.272,
+   "core": "1.",
+   "obj": "(abstain: outside the union's coverage) 1.",
+   "obj_meta": {
+    "core_conf": 0.272,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "human face age": 0.228,
+     "food dish": 0.218,
+     "flower species": 0.21
+    }
+   },
+   "naive": "Giant white arum lily.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "horse",
+   "core_conf": 0.781,
+   "core": "Horse.",
+   "obj": "Horse.",
+   "obj_meta": {
+    "core_conf": 0.781,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.21,
+     "food dish": 0.209,
+     "human face age": 0.205
+    }
+   },
+   "naive": "Ball Moss.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "horse",
+   "core_conf": 0.386,
+   "core": "The image contains a stylized, abstract representation of a dragon. The dragon i",
+   "obj": "(abstain: outside the union's coverage) The image contains a stylized, abstract ",
+   "obj_meta": {
+    "core_conf": 0.386,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "human face age": 0.206,
+     "flower species": 0.198,
+     "food dish": 0.195
+    }
+   },
+   "naive": "Cautleya spicata.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "ship",
+   "core_conf": 0.665,
+   "core": "Boat.",
+   "obj": "Boat.",
+   "obj_meta": {
+    "core_conf": 0.665,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "human face age": 0.186,
+     "flower species": 0.179,
+     "food dish": 0.179
+    }
+   },
+   "naive": "Ball Moss.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "ship",
+   "core_conf": 0.84,
+   "core": "Boat.",
+   "obj": "Boat.",
+   "obj_meta": {
+    "core_conf": 0.84,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.199,
+     "flower species": 0.199,
+     "human face age": 0.194
+    }
+   },
+   "naive": "Ball Moss.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "airplane",
+   "core_conf": 0.332,
+   "core": "Sky.",
+   "obj": "(abstain: outside the union's coverage) Sky.",
+   "obj_meta": {
+    "core_conf": 0.332,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "human face age": 0.206,
+     "food dish": 0.204,
+     "flower species": 0.198
+    }
+   },
+   "naive": "Bee balm.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "K_objects",
+   "gt": "cat",
+   "core_conf": 0.726,
+   "core": "Cat.",
+   "obj": "Cat.",
+   "obj_meta": {
+    "core_conf": 0.726,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.219,
+     "flower species": 0.219,
+     "human face age": 0.219
+    }
+   },
+   "naive": "Carnation.",
+   "core_ok": true,
+   "obj_ok": true,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "flecked",
+   "core_conf": 0.354,
+   "core": "The image contains a solid brown background.",
+   "obj": "(abstain: outside the union's coverage) The image contains a solid brown backgro",
+   "obj_meta": {
+    "core_conf": 0.354,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "human face age": 0.229,
+     "flower species": 0.221,
+     "food dish": 0.221
+    }
+   },
+   "naive": "Ball Moss.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "fibrous",
+   "core_conf": 0.677,
+   "core": "Tree roots.",
+   "obj": "Tree roots.",
+   "obj_meta": {
+    "core_conf": 0.677,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "flower species": 0.22,
+     "food dish": 0.193,
+     "human face age": 0.188
+    }
+   },
+   "naive": "Ball moss.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "dotted",
+   "core_conf": 0.548,
+   "core": "Cylinders.",
+   "obj": "(abstain: outside the union's coverage) Cylinders.",
+   "obj_meta": {
+    "core_conf": 0.548,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "flower species": 0.196,
+     "food dish": 0.194,
+     "human face age": 0.179
+    }
+   },
+   "naive": "Ball moss.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "blotchy",
+   "core_conf": 0.397,
+   "core": "The image contains a black and white photograph of a wall. The wall appears to",
+   "obj": "(abstain: outside the union's coverage) The image contains a black and white pho",
+   "obj_meta": {
+    "core_conf": 0.397,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "human face age": 0.226,
+     "flower species": 0.221,
+     "food dish": 0.205
+    }
+   },
+   "naive": "Prince of Wales feathers.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "blotchy",
+   "core_conf": 0.334,
+   "core": "The image contains a close-up of a hand holding a piece of paper.",
+   "obj": "(abstain: outside the union's coverage) The image contains a close-up of a hand ",
+   "obj_meta": {
+    "core_conf": 0.334,
+    "routed": [],
+    "specialist_calls": 1,
+    "abstained": true,
+    "router_sims": {
+     "flower species": 0.246,
+     "human face age": 0.232,
+     "food dish": 0.22
+    }
+   },
+   "naive": "Prince of Wales feathers.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "banded",
+   "core_conf": 0.411,
+   "core": "Paper.",
+   "obj": "(abstain: outside the union's coverage) Paper.",
+   "obj_meta": {
+    "core_conf": 0.411,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "flower species": 0.229,
+     "human face age": 0.225,
+     "food dish": 0.214
+    }
+   },
+   "naive": "Canterbury Bells.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "banded",
+   "core_conf": 0.378,
+   "core": "Black and white.",
+   "obj": "(abstain: outside the union's coverage) Black and white.",
+   "obj_meta": {
+    "core_conf": 0.378,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "flower species": 0.219,
+     "food dish": 0.214,
+     "human face age": 0.211
+    }
+   },
+   "naive": "Ball Moss.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "banded",
+   "core_conf": 0.799,
+   "core": "Stripes.",
+   "obj": "Stripes.",
+   "obj_meta": {
+    "core_conf": 0.799,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.191,
+     "flower species": 0.182,
+     "human face age": 0.179
+    }
+   },
+   "naive": "Ball Moss.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "banded",
+   "core_conf": 0.784,
+   "core": "Stripes.",
+   "obj": "Stripes.",
+   "obj_meta": {
+    "core_conf": 0.784,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "food dish": 0.213,
+     "flower species": 0.187,
+     "human face age": 0.18
+    }
+   },
+   "naive": "Cautlya spicata.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "flecked",
+   "core_conf": 0.307,
+   "core": "The image contains a close-up view of a plant with a variety of colors",
+   "obj": "(abstain: outside the union's coverage) The image contains a close-up view of a ",
+   "obj_meta": {
+    "core_conf": 0.307,
+    "routed": [],
+    "specialist_calls": 1,
+    "abstained": true,
+    "router_sims": {
+     "flower species": 0.272,
+     "food dish": 0.224,
+     "human face age": 0.223
+    }
+   },
+   "naive": "Gaura.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "fibrous",
+   "core_conf": 0.426,
+   "core": "Grass.",
+   "obj": "(abstain: outside the union's coverage) Grass.",
+   "obj_meta": {
+    "core_conf": 0.426,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "food dish": 0.226,
+     "flower species": 0.21,
+     "human face age": 0.196
+    }
+   },
+   "naive": "Ball moss.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "flecked",
+   "core_conf": 0.323,
+   "core": "Black wool.",
+   "obj": "(abstain: outside the union's coverage) Black wool.",
+   "obj_meta": {
+    "core_conf": 0.323,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "human face age": 0.197,
+     "food dish": 0.184,
+     "flower species": 0.178
+    }
+   },
+   "naive": "Flower species specialist says: pelargonium.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "dotted",
+   "core_conf": 0.524,
+   "core": "Fabric.",
+   "obj": "(abstain: outside the union's coverage) Fabric.",
+   "obj_meta": {
+    "core_conf": 0.524,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "flower species": 0.22,
+     "food dish": 0.21,
+     "human face age": 0.199
+    }
+   },
+   "naive": "Sweet pea.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "fibrous",
+   "core_conf": 0.453,
+   "core": "Red.",
+   "obj": "(abstain: outside the union's coverage) Red.",
+   "obj_meta": {
+    "core_conf": 0.453,
+    "routed": [],
+    "specialist_calls": 2,
+    "abstained": true,
+    "router_sims": {
+     "flower species": 0.264,
+     "human face age": 0.252,
+     "food dish": 0.23
+    }
+   },
+   "naive": "Prince of Wales feathers.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "flecked",
+   "core_conf": 0.733,
+   "core": "Black sweater.",
+   "obj": "Black sweater.",
+   "obj_meta": {
+    "core_conf": 0.733,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "human face age": 0.209,
+     "flower species": 0.198,
+     "food dish": 0.187
+    }
+   },
+   "naive": "Flower species specialist says: pelargonium.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "fibrous",
+   "core_conf": 0.494,
+   "core": "Cactus.",
+   "obj": "(abstain: outside the union's coverage) Cactus.",
+   "obj_meta": {
+    "core_conf": 0.494,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "flower species": 0.216,
+     "food dish": 0.197,
+     "human face age": 0.19
+    }
+   },
+   "naive": "Aloe.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "fibrous",
+   "core_conf": 0.496,
+   "core": "Squares.",
+   "obj": "(abstain: outside the union's coverage) Squares.",
+   "obj_meta": {
+    "core_conf": 0.496,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "food dish": 0.203,
+     "flower species": 0.202,
+     "human face age": 0.191
+    }
+   },
+   "naive": "Carnation.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "dotted",
+   "core_conf": 0.629,
+   "core": "Pink circles.",
+   "obj": "(abstain: outside the union's coverage) Pink circles.",
+   "obj_meta": {
+    "core_conf": 0.629,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "flower species": 0.217,
+     "human face age": 0.194,
+     "food dish": 0.193
+    }
+   },
+   "naive": "Ball Moss.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "dotted",
+   "core_conf": 0.405,
+   "core": "Red.",
+   "obj": "(abstain: outside the union's coverage) Red.",
+   "obj_meta": {
+    "core_conf": 0.405,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": true,
+    "router_sims": {
+     "flower species": 0.226,
+     "human face age": 0.22,
+     "food dish": 0.217
+    }
+   },
+   "naive": "Poinsettia.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  },
+  {
+   "set": "ADV_texture",
+   "gt": "flecked",
+   "core_conf": 0.712,
+   "core": "Black sweater.",
+   "obj": "Black sweater.",
+   "obj_meta": {
+    "core_conf": 0.712,
+    "routed": [],
+    "specialist_calls": 0,
+    "abstained": false,
+    "router_sims": {
+     "human face age": 0.189,
+     "flower species": 0.183,
+     "food dish": 0.175
+    }
+   },
+   "naive": "Flower species specialist says: pelargonium.",
+   "core_ok": false,
+   "obj_ok": false,
+   "naive_ok": false
+  }
+ ]
+}
