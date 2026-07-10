@@ -57,10 +57,10 @@ def coupled_radius(ifaces, z, ntr, w=None, step=fl.STEP):
 
 
 def routing_weights(Rs, step=fl.STEP, descent_iters=200):
-    """Fluid exclusion: at equal weights, if the coupled flow is already stable (ρ ≤ 1) there is no
-    destabilizer to route around → keep equal weights (a fast, faithful no-op for convergent interfaces).
-    If it is UNSTABLE (ρ > 1), descend the coupled instability over the routing simplex (fluid_settle's
-    instability_descent) → a destabilizing model's weight is driven toward 0 (routed around)."""
+    """Fluid exclusion (standalone, for tests/analysis): at equal weights, if the coupled flow is already
+    stable (ρ ≤ 1) keep equal weights; if UNSTABLE (ρ > 1), descend the coupled instability over the routing
+    simplex → a destabilizing model's weight is driven toward 0. NOTE: the pipeline recurrence does NOT use
+    this as a pre-phase — it folds ONE `descent_step` INSIDE the settle loop (see settle_fluid / INV3)."""
     n = len(Rs)
     w_eq = np.ones(n) / n
     rho_eq = fl.spec_radius(fl.coupled_jacobian(Rs, w_eq, step))
@@ -68,6 +68,22 @@ def routing_weights(Rs, step=fl.STEP, descent_iters=200):
         return w_eq, rho_eq, False
     w, _hist = fl.instability_descent(Rs, step=step, iters=descent_iters)
     return w, rho_eq, True
+
+
+def descent_step(Rs, w, step=fl.STEP, eta=1.2, eps=1e-3):
+    """ONE projected-gradient step descending the coupled mutual-instability — the faithfulness/contraction
+    LOSS TERM applied INSIDE the settle loop (NOT a separate pre-phase; THEORY T1/#5). If the coupled flow is
+    already stable (growth ≤ 1) it returns w UNCHANGED — so on convergent interfaces the settle is identical to
+    uniform routing (native no-op). On an unstable coupling it routes weight away from the destabilizer (T2),
+    step by step, as part of the single settling objective."""
+    base = fl._growth(fl.coupled_jacobian(Rs, w, step))
+    if base <= 1.0 + 1e-9:
+        return w
+    g = np.zeros(len(Rs))
+    for i in range(len(Rs)):
+        wp = w.copy(); wp[i] += eps
+        g[i] = (fl._growth(fl.coupled_jacobian(Rs, wp, step)) - base) / eps
+    return fl._simplex_proj(w - eta * g)
 
 
 # ---------------------------------------------------------------- the fluid pipeline settle
@@ -93,12 +109,13 @@ def settle_fluid(ifaces, z, guard=True, nudge=None, beta=0.0, init=None,
     z = np.asarray(z, float)
 
     Rs = operators_from_ifaces(ifaces, z, ntr)
-    w, rho_eq, descended = routing_weights(Rs, step)
-    J = fl.coupled_jacobian(Rs, w, step)
+    n = len(Rs); w = np.ones(n) / n                   # routing starts uniform; the loop descends instability
 
     S = np.mean(ifaces, axis=0) if init is None else np.asarray(init, float).copy()
     res = []
     for _ in range(iters):
+        w = descent_step(Rs, w, step)                 # faithfulness/contraction as a LOSS TERM, INSIDE the loop
+        J = fl.coupled_jacobian(Rs, w, step)          # coupled operator with the current (stabilizing) routing
         prev = S
         S = S @ J.T                                   # coupled operator feedback: every model reads S, writes back
         if nudge is not None and beta:

@@ -134,20 +134,27 @@ def inv3_loss_term_not_phase():
     # no separate two-phase generate/verify gadget
     no_verify_phase = ("def verify" not in read("coherentflow/coherentflow.py")
                        and "generate_then_verify" not in read("coherentflow/coherentflow.py"))
-    # fluid_settle: is the contraction/stabilization inside the settle loop, or a separate pre-phase?
-    fsrc = read("coherentflow/fluid_settle.py")
-    fluid_desc_is_prephase = ("instability_descent" in fsrc and "def fluid_settle" in fsrc
-                              and "instability_descent" not in inspect.getsource(__import__("fluid_settle").fluid_settle))
+    # the PIPELINE recurrence (fluid_pipeline.settle_fluid): stabilization must be a TERM INSIDE the settle loop,
+    # not a separate pre-phase computing w before the loop.
+    import fluid_pipeline as fp
+    psrc = inspect.getsource(fp.settle_fluid)
+    loop_at = psrc.find("for _ in range(iters)")
+    descent_inside_loop = loop_at != -1 and "descent_step(" in psrc[loop_at:]
+    no_prephase = loop_at != -1 and "routing_weights(" not in psrc[:loop_at]
+    fluid_ok = descent_inside_loop and no_prephase
     shipped_ok = guard_inside and no_verify_phase
-    status = "PARTIAL" if (shipped_ok and fluid_desc_is_prephase) else ("PASS" if shipped_ok else "FAIL")
+    ok = shipped_ok and fluid_ok
+    status = "PASS" if ok else ("PARTIAL" if shipped_ok else "FAIL")
     record(3, "faithfulness/contraction is a loss TERM, not a phase (#5)", status,
-           "coherentflow.settle: the guard `structured()` is called INSIDE the ITERS loop (one loop, no separate "
-           "verify pass). BUT fluid_settle's stabilization (instability_descent) is currently a SEPARATE pre-phase "
-           "computing w before fluid_settle runs — a contraction PHASE, not a term inside the settle loop.",
+           "coherentflow.settle: the guard `structured()` is called INSIDE the ITERS loop (one loop, no verify "
+           "pass). The PIPELINE fluid recurrence (fluid_pipeline.settle_fluid) folds the instability-descent "
+           "(`descent_step`) INSIDE its settle loop — the contraction is a loss TERM adapting the routing each "
+           "step, NOT a pre-phase (no routing_weights before the loop). On convergent interfaces descent_step "
+           "returns w unchanged (native no-op).",
            "the contraction/anti-hallucination guard is a term inside the single objective/loop, never a separate "
            "generate/verify phase",
            f"shipped_guard_in_loop={guard_inside} no_verify_phase={no_verify_phase} "
-           f"fluid_stabilization_is_prephase={fluid_desc_is_prephase}")
+           f"fluid_descent_inside_loop={descent_inside_loop} fluid_no_prephase={no_prephase}")
 
 
 # ============================================================ INV 4: MZ memory = the tape, one object (#1)

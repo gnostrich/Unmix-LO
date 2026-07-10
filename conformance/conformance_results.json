@@ -19,10 +19,10 @@
   {
    "invariant": 3,
    "name": "faithfulness/contraction is a loss TERM, not a phase (#5)",
-   "status": "PARTIAL",
-   "code_does": "coherentflow.settle: the guard `structured()` is called INSIDE the ITERS loop (one loop, no separate verify pass). BUT fluid_settle's stabilization (instability_descent) is currently a SEPARATE pre-phase computing w before fluid_settle runs \u2014 a contraction PHASE, not a term inside the settle loop.",
+   "status": "PASS",
+   "code_does": "coherentflow.settle: the guard `structured()` is called INSIDE the ITERS loop (one loop, no verify pass). The PIPELINE fluid recurrence (fluid_pipeline.settle_fluid) folds the instability-descent (`descent_step`) INSIDE its settle loop \u2014 the contraction is a loss TERM adapting the routing each step, NOT a pre-phase (no routing_weights before the loop). On convergent interfaces descent_step returns w unchanged (native no-op).",
    "theory_requires": "the contraction/anti-hallucination guard is a term inside the single objective/loop, never a separate generate/verify phase",
-   "evidence": "shipped_guard_in_loop=True no_verify_phase=True fluid_stabilization_is_prephase=True"
+   "evidence": "shipped_guard_in_loop=True no_verify_phase=True fluid_descent_inside_loop=True fluid_no_prephase=True"
   },
   {
    "invariant": 4,
@@ -58,8 +58,7 @@
   }
  ],
  "tally": {
-  "PASS": 4,
-  "PARTIAL": 1,
+  "PASS": 5,
   "FAIL": 2
  }
 }

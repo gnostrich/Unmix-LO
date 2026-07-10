@@ -21,7 +21,7 @@ diverge.
 | `coherentflow/fluid_pipeline.py` | wires `fluid_settle` into the pipeline recurrence | derives operator Rᵢ from each interface (`f≈z·Rᵢᵀ`); coupled feedback `S←S·Jᵀ`; instability-descent routing | ✅ INV2 PASS: incompatible→ρ=1.09>1, aligned→0.998, rogue excluded; averaging byte-identical to HEAD |
 | `coherentflow/fluid_settle.py` | **the theoretically-correct feedback fluid** | models as OPERATORS; coupled ρ can exceed 1; instability-descent; nonlinear multistable intrinsic settle | ✅ all 3 acceptance criteria PASS (`FLUID_VERIFICATION.md`); **SEPARATE, not wired** |
 | `coherentflow/` satisfaction (`run_satisfaction.py`, sandboxes) | battery vs the shipped object | — | ✅ 7/7, **0% false-positive** (a property of the GUARD, not the fluid) |
-| `conformance/run_conformance.py` | executable test per theory-invariant | — | ✅ built; live tally **PASS 4 / PARTIAL 1 / FAIL 2** (INV2 fixed by Step 1) |
+| `conformance/run_conformance.py` | executable test per theory-invariant | — | ✅ built; live tally **PASS 5 / FAIL 2** (Steps 1-2: INV2+INV3 fixed) |
 
 Related but SEPARATE experiments (not the construct code): `STABILITY_GATE.md` (pre-registered type-boundary
 reproducibility gate, no results yet), `AGDA_RESULTS.md` (object re-hosted on the Agda oracle substrate), the
@@ -33,7 +33,7 @@ ledger). These inform the program but are not the fluid/construct implementation
 |---|---|---|---|
 | 1 | resizable / self-expanding medium | ✅ PASS | — |
 | 2 | genuine feedback recurrence, not averaging | ✅ PASS | Step 1: `fluid_pipeline` wires the fluid as the default settle; averaging byte-identical behind a flag |
-| 3 | faithfulness is a loss TERM, not a phase | 🟡 PARTIAL | shipped guard-in-loop OK; **fluid** stabilization is a pre-phase |
+| 3 | faithfulness is a loss TERM, not a phase | ✅ PASS | Step 2: instability-descent folded INSIDE the settle loop (descent_step); pre-phase removed |
 | 4 | MZ memory = the tape, ONE object | ❌ FAIL | memory is a transient dict; tape is a separate module |
 | 5 | loss = models' own grounding | ✅ PASS | — |
 | 6 | intrinsic output (not a fitted head) | ❌ FAIL | shipped `combined_read` is an lstsq probe; fluid equilibrium-shift correct but unwired |
