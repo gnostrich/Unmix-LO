@@ -45,13 +45,42 @@ Ho-Kalman → poles) is reused from `stream_trace` unchanged. Calibration (`pyth
 relative to the normal matrix) to stay conditioned when `R_ff` is near-singular. It is disclosed, kept small,
 and does not affect the white or well-excited cases.
 
+## Multiple modalities — what vision and language SHARE is the world (`multimodal.py`, `watched_multimodal.png`)
+
+The single pixel projection above throws away the point of `diagnostics/encode.py`: the same world state is
+observed through **two real encoders** — ViT on the rendered frame, MiniLM on a text description. This
+experiment puts both on the reader's input side (`google/vit-base-patch16-224`,
+`sentence-transformers/all-MiniLM-L6-v2`, mean-pooled, PCA-reduced; features cached in `feats.npz`, T=4000).
+
+A colored world latent `u_t` moves the balls (a watchable scene); a planted **oscillatory** watcher (complex
+pole pair 0.693 ± 0.4j) is driven by `u_t` and emits `y_t`. The reader tries to recover the watcher's poles
+through each modality and through their shared latent. Result:
+
+- **vision alone**: order 0 — the watcher's memory is below the reader's floor (mean-pooled ViT of small
+  balls is a weak, noisy proxy for the world).
+- **text alone**: order 1 — recovers only a real pole; blind to the oscillation.
+- **cross-modal shared latent** (CCA between the two encoders, **no supervision** — the world state `u` is
+  never used): order 2, pole error ≈ 0.02 — the full oscillatory pair comes back.
+
+Why it works, and why it's the `Unmix` thesis: the only thing the two very different encoders share is the
+world that generated both views. Their canonical correlations are ≈ 0.96 / 0.94 / 0.92 / 0.81, and the shared
+subspace tracks the true world factor `u` (recovered blind). That shared latent is a clean enough drive to
+read the hidden dynamics where either raw modality alone is too impoverished. Robust across CCA rank
+k ∈ {100,150,200} and shared-dim ∈ {3,4,5}, not a tuned knife-edge.
+
+Honest scope: the per-modality readout being below the floor is a real, sample-limited negative (it improves
+from T=2000 to T=4000 but does not reach full recovery); the multi-modal win is that fusing the shared cause
+crosses the threshold. The encoding step is slow (~4 min at T=2000, ~8 min at T=4000 on CPU) and cached.
+
 Reproduce:
 
 ```
-pip install numpy matplotlib
+pip install numpy matplotlib torch transformers
 cd watched
-python visualize.py          # watched.png        — white-drive version (reader handed the clean drive)
-python nuanced.py            # watched_nuanced.png — watcher reads the pixels; naive fails, deconv recovers
+python visualize.py          # watched.png           — white-drive version (reader handed the clean drive)
+python nuanced.py            # watched_nuanced.png    — watcher reads the pixels; naive fails, deconv recovers
 python correlated_read.py    # calibration: white + colored controls
+python multimodal.py --T 4000  # encodes (ViT + MiniLM) and caches feats.npz; prints per-modality reads
+python mm_figure.py          # watched_multimodal.png — two real encoders; shared latent reads the watcher
 python watched.py            # prints the recovered order + pole error
 ```
