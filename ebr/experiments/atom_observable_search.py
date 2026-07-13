@@ -87,8 +87,12 @@ def eff_rank(vals):
 
 
 def spearman(x, y):
-    """Spearman rank correlation (no scipy): Pearson on the ranks. Handles the 5-level monotonicity check."""
+    """Spearman rank correlation (no scipy): Pearson on the ranks. A CONSTANT readout (e.g. the knee pinned at
+    m=3 for every r) has zero rank variance and an UNDEFINED correlation — report 0.0, not the +1.0 that
+    argsort's stable tie-breaking would spuriously produce for a constant vector."""
     x = np.asarray(x, float); y = np.asarray(y, float)
+    if x.std() < 1e-12 or y.std() < 1e-12:
+        return 0.0
     rx = np.argsort(np.argsort(x)).astype(float)
     ry = np.argsort(np.argsort(y)).astype(float)
     rx -= rx.mean(); ry -= ry.mean()
