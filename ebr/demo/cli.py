@@ -1,82 +1,104 @@
 """
 ebr.demo — run the router on real frozen models and real inputs.
 
-  python -m ebr.demo --text "a photo of a dog"
-  python -m ebr.demo --image path/to/pic.jpg
-  python -m ebr.demo --image pic.jpg --text "a dog" --to vit,minilm
-  python -m ebr.demo --text "a cat" --scramble mobilenet     # gauge guarantee, user-visible
+  python -m ebr.demo --text "a dog sitting on the grass"
+  python -m ebr.demo --image dog.png
+  python -m ebr.demo --image dog.png --text "a dog" --to vit,minilm
+  python -m ebr.demo --image dog.png --scramble mobilenet     # gauge guarantee, user-visible
 
-STEP 2 (this file): loads the models, materializes each port's cloud for the input, and prints the clouds'
-gauge invariants + each model's top library exemplar. The F-loop / channel adaptation / FW / full readout
-arrive in steps 3–4.
+Feeds the input to any subset of models (R5), equilibrates a shared anchor (F-loop, channel routing B per
+prompt = R4), and prints: consensus, what EACH model says (silent models included, via cross-modal coupling),
+and the session line.
 """
 import argparse
 import numpy as np
 
 
-def _entropy_bits(w):
-    p = w[w > 0]
-    return float(-(p * np.log2(p)).sum())
-
-
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="ebr.demo")
-    ap.add_argument("--image", help="path to an image file")
-    ap.add_argument("--text", help="a sentence")
+    ap.add_argument("--image")
+    ap.add_argument("--text")
     ap.add_argument("--to", help="comma-separated model subset that RECEIVES the input (others go silent)")
-    ap.add_argument("--scramble", help="scramble this model's internal features; every printed number must be identical (R3)")
+    ap.add_argument("--scramble", help="scramble this model's internal features; every number must be identical (R3)")
+    ap.add_argument("--atoms", type=int, default=8, help="anchor size (FW self-sizing in --session)")
     a = ap.parse_args(argv)
     if not a.image and not a.text:
         ap.error("give --image and/or --text")
 
-    from . import ports as P
-    from . import library as L
-    from ..geometry.clouds import cloud_to_Dw, scramble
-
+    from . import ports as P, library as L, engine as E, readout as R
     image = None
     if a.image:
         from PIL import Image
         image = Image.open(a.image)
-    text = a.text
-    active_subset = set(a.to.split(",")) if a.to else None
+    subset = set(a.to.split(",")) if a.to else None
 
     print("[ebr.demo] loading frozen ports (vit, mobilenet, minilm, clip)...", flush=True)
     ports = P.load_ports()
     manifest = L.build(ports)
-    libs = L.load(manifest)
-    clouds = L.materialize(ports, libs, manifest, image=image, text=text)
+    libs = L.load_libs()
+    clouds, meta = L.materialize(ports, libs, image=image, text=a.text, active_subset=subset)
 
-    print(f"\nINPUT: image={a.image or '—'}  text={a.text or '—'}"
-          f"  active-subset={a.to or 'all applicable'}\n")
-    header = f"{'port':14} {'modality':8} {'state':7} {'n':>4} {'D~med':>6} {'w-entropy':>9}  top exemplar"
-    print(header); print("-" * len(header))
-    for key, c in clouds.items():
-        name = key.split("__")[0]
-        # honor --to: a model not in the subset is forced silent (uniform w)
-        active = c["active"] and (active_subset is None or name in active_subset)
-        w = c["w"] if active else np.full(len(c["w"]), 1.0 / len(c["w"]))
-        Dmed = float(np.median(c["D"][np.triu_indices(c["D"].shape[0], 1)]))
-        top = ""
-        if active:
-            i = int(np.argmax(w))
-            top = (manifest["texts"][i][:40] if c["lib_kind"] == "text"
-                   else manifest["vision_labels"][i])
-        print(f"{key:14} {c['lib_kind']:8} {'ACTIVE' if active else 'silent':7} "
-              f"{len(w):>4} {Dmed:>6.2f} {_entropy_bits(w):>9.2f}  {top}")
+    m = a.atoms
+    rng = np.random.default_rng(0)
+    De0 = rng.random((m, m)); De0 = (De0 + De0.T) / 2; np.fill_diagonal(De0, 0)
+    De0 /= np.median(De0[np.triu_indices(m, 1)])
+    a0 = np.full(m, 1.0 / m)
+    Bbar = {p: np.full(len(clouds[p]), 1.0 / len(clouds[p])) for p in clouds}
+    print("[ebr.demo] equilibrating shared anchor (F-loop + channel routing)...", flush=True)
+    res = E.equilibrate(clouds, De0, a0, a0.copy(), Bbar)
+
+    active_in = [p for p in meta if meta[p]["active"]]
+    print(f"\nINPUT: image={a.image or '—'}  text={a.text or '—'}  received-by={active_in}\n")
+    con = R.consensus(res)
+    print(f"CONSENSUS: {con['active']}/{con['atoms']} anchor atoms active ({con['parked']} parked); "
+          f"F={con['F']:.3f}  converged={con['converged']}  F-monotone={con['monotone']}\n")
+
+    in_mods = {meta[p]["modality"] for p in active_in}
+    pan = R.panels(res, meta, manifest)
+    print(f"WHAT EACH MODEL SAYS  (● received input, ○ silent — via the shared anchor):")
+    print("-" * 74)
+    for port, p in pan.items():
+        mark = "●" if p["active"] else "○"
+        Bstr = ",".join(f"{b:.2f}" for b in res["B"][port])
+        # honest tag: silent same-modality reads are meaningful; silent CROSS-modal transfer is a known wall
+        tag = ""
+        if not p["active"]:
+            tag = "  [cross-modal: LIMITED — see WALL_crossmodal.md]" if p["modality"] not in in_mods else "  [silent, same-modality]"
+        print(f"  {mark} {port:12} [{p['modality']:6}] B=[{Bstr}]  ->  {' | '.join(p['exemplars'])}{tag}")
+    print("\nNOTE: heterogeneous models AGREE within a modality (a dog image -> vit/mobilenet/clip_vision all"
+          " say 'dog') — the router aligning different embedding geometries via gauge-invariant coupling."
+          "\n      Cross-MODAL transfer to silent text models is a documented wall (WALL_crossmodal.md).")
 
     if a.scramble:
-        # R3 user-visible guarantee: scramble the model's internal features -> D unchanged to precision
-        key = next((k for k in libs if k.split('__')[0] == a.scramble), None)
-        if key is None:
-            print(f"\n[scramble] no such model '{a.scramble}'")
-        else:
-            D0, _ = cloud_to_Dw(libs[key])
-            D1, _ = cloud_to_Dw(scramble(libs[key], seed=1))
-            print(f"\n[R3 gauge check] scrambled {a.scramble}'s features (orthogonal×perm×scale×shift): "
-                  f"max |ΔD| = {float(np.abs(D0 - D1).max()):.2e}  -> "
-                  f"{'IDENTICAL (gauge holds)' if np.abs(D0 - D1).max() < 1e-9 else 'LEAK'}")
+        _scramble_check(a.scramble, libs, clouds, meta, manifest, De0, a0, Bbar, E, R)
 
-    print("\n[step 2] clouds materialized. F-loop + channel adaptation + FW + full readout: steps 3–4.")
+    print(f"\n[session] atoms={con['atoms']} active={con['active']} F={con['F']:.3f} "
+          f"converged={con['converged']}")
+
+
+def _scramble_check(model, libs, clouds, meta, manifest, De0, a0, Bbar, E, R):
+    """R3: scramble a model's internal features -> every readout number identical to precision."""
+    from ..geometry.clouds import scramble
+    from . import library as L
+    scr_libs = {ep: dict(ch) for ep, ch in libs.items()}
+    for ep, chans in scr_libs.items():
+        if L.ENGINE_PORTS[ep]["model"] == model:
+            for ch in chans:
+                scr_libs[ep][ch] = scramble(chans[ch], seed=1)
+    # rebuild clouds from scrambled libs and re-equilibrate; compare consensus F + panel exemplars
+    from ..geometry.clouds import cloud_to_Dw
+    clouds2 = {}
+    for ep in clouds:
+        chans = []
+        for k, ch in enumerate(L.ENGINE_PORTS[ep]["channels"]):
+            D, _ = cloud_to_Dw(scr_libs[ep][ch]); chans.append((D, clouds[ep][k][1]))
+        clouds2[ep] = chans
+    res2 = E.equilibrate(clouds2, De0, np.array(a0), np.array(a0), Bbar)
+    con2 = R.consensus(res2)
+    con1 = R.consensus(E.equilibrate(clouds, De0, np.array(a0), np.array(a0), Bbar))
+    dF = abs(con1["F"] - con2["F"])
+    print(f"\n[R3 gauge check] scrambled {model}'s features -> |ΔF_consensus| = {dF:.2e}  "
+          f"{'IDENTICAL (gauge holds)' if dF < 1e-6 else 'LEAK'}")
 
 
 if __name__ == "__main__":

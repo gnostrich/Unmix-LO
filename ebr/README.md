@@ -32,12 +32,13 @@ G4 disagreement meter (20.4×), P5 pole closure. Open: the demo (R2/R4/R5 readou
 python -m pytest ebr/tests -q     # invariants
 ```
 
-## Demo — run the router on real frozen models (step 2: skeleton)
+## Demo — run the router on real frozen models (steps 2–3)
 
 Real ports: **vit** + **mobilenet** (two vision families), **minilm** (text), **clip** (channel-native: vision
-tower + text tower). Cross-modal by construction. Probe libraries (each model's behavioral support) are built
-once and cached: **CIFAR-10** test[:256] (natural images) for vision, **COCO captions** train[:256] for text —
-both from the HF mirror, committed provenance below.
+tower + text tower), each carrying 2 channels where the interface decomposes (R2). Probe libraries (each
+model's behavioral support) are built once and cached: **CIFAR-10** test[:256] natural images for vision,
+index-paired **class-anchored captions** ("a photo of a {class}") for text — from the HF mirror. (Free-form
+COCO captions were tried and break cross-modal alignment — see `WALL_crossmodal.md`.)
 
 ```
 pip install torch torchvision transformers datasets pillow numpy
@@ -47,8 +48,17 @@ python -m ebr.demo --image dog.png --text "a dog" --to vit,minilm   # send input
 python -m ebr.demo --text "a cat" --scramble mobilenet      # R3 gauge guarantee, user-visible
 ```
 
-Step 2 loads the models, materializes each port's cloud for the input (its library reweighted toward the
-input; silent models stay uniform), and prints the gauge invariants + each model's top library exemplar. On a
-dog image the three vision families all surface `dog`; `--scramble` shows max |ΔD| ≈ 1e-14 (gauge holds).
-The F-loop, per-prompt channel adaptation (B), FW self-sizing, and the full consensus/per-model/disagreement
-readout arrive in steps 3–4. Probe provenance: `uoft-cs/cifar10` test[:256], `sentence-transformers/coco-captions` train[:256].
+The demo loads the models, materializes each port's cloud (its library reweighted toward the input; silent
+models uniform), equilibrates a shared anchor (F-loop, Lyapunov-monotone; per-prompt channel-gain routing B =
+R4), and prints consensus + what each model says + the session line.
+
+**What works (live):** a dog image → **vit, mobilenet, AND clip_vision all say `dog`** — three different
+vision architectures, each with its own embedding geometry, aligned through the shared anchor by
+gauge-invariant relational coupling. `--scramble` shows |ΔF| ≈ 1e-16 (R3 gauge guarantee, user-visible).
+Channel routing B adapts per prompt.
+
+**Documented wall (`WALL_crossmodal.md`):** cross-MODAL transfer to silent *text* models does NOT work —
+relational-only GW (R3) discards the cross-modal correspondence, so a dog image cannot reliably make a silent
+text model surface dog captions across heterogeneous embedding spaces. Silent cross-modal panels are flagged
+`[cross-modal: LIMITED]`; the panel is honest, not dressed up. Options (CLIP-bridge / tied paired couplings /
+one-axis scope) are in the wall doc. Probe provenance: `uoft-cs/cifar10` test[:256] + class-anchored captions.
