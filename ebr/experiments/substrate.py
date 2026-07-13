@@ -82,6 +82,20 @@ def make_diverse_models(K, d_lat=6, d_out=12, seed0=200):
     return [DiverseModel(DIVERSE_KINDS[i % len(DIVERSE_KINDS)], d_lat, d_out, seed=seed0 + i) for i in range(K)]
 
 
+_WARP_RNG = np.random.default_rng(7)
+_WARP_PROBE = None
+_WARP_GK = None
+
+
+def warp_inputs(u_row, n, warp=0.3):
+    """A fixed probe cloud warped by the latent u_row (validation-substrate input generator)."""
+    global _WARP_PROBE, _WARP_GK
+    if _WARP_PROBE is None or _WARP_PROBE.shape[0] != n:
+        _WARP_PROBE = _WARP_RNG.normal(size=(n, 6)); _WARP_GK = [_WARP_RNG.normal(size=(6, 6)) for _ in range(6)]
+    M = np.eye(6) + sum(u_row[k] * _WARP_GK[k] for k in range(6)) * warp
+    return _WARP_PROBE @ M
+
+
 def prompt_clouds(models, u_row, n=256, jitter=0.15, seed=0):
     """One prompt -> n augmented inputs around the latent u_row -> one cloud per model (n points each)."""
     rng = np.random.default_rng(seed)

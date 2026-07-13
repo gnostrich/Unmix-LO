@@ -15,22 +15,19 @@ normalized cost matrices `(D, w)` cross any boundary. This is what makes every l
 
 ```
 ebr/
-  geometry/   cloud -> (normalized D, w). ONLY module touching model outputs.
-  transport/  square-loss entropic semi-relaxed GW; monotone proximal steps.
+  geometry/   cloud -> (normalized D, w) + gauge-faithful Gram helpers. ONLY module touching model outputs.
+  transport/  square-loss entropic semi-relaxed GW; backtracked monotone mirror steps.
   energy/     F assembly + shared-anchor block-coordinate loop (Lyapunov-guarded).
-  hankel/     residual block-Hankel (§6); reuses io_trace/stream_trace.
   events/     Frank–Wolfe support adaptation (atoms: grow/park/revive — F-driven, validated).
-  router/     DeepSets warm-starter (oracle; no term in F) — scaffold.
-  registry/   append-only ledger + preflight (frozen constants, §10).
-  experiments/ substrate (known-degree traffic) + stage-0 harness + G1 probe.
-  tests/      5 CI invariants (gauge, Lyapunov, coupling-continuity, interface).
+  registry/   append-only ledger + preflight (frozen constants).
+  experiments/ substrate + validated controls (fw_selfsize, g4_meter meter, sympower/pole_closure P5).
+  tests/      CI invariants (gauge, Lyapunov, coupling-continuity, interface, gram gauge).
 ```
 
-Status and honest gate verdicts: see `REPORT.md`. Short version — G0 PASS, Lyapunov PASS, G2 PASS,
-G1 K-invariance PASS but diversity leg FAIL (diagnosed interface collapse, pre-registered fix = pre-logits
-tap), G3/G4/G5 scaffolded.
+Status, honest verdicts, and corrections: see `LEDGER.md`, `AUDIT_VERDICT.md`, and `WALL_2x2_atomleg.md`.
+Proven: gauge-exact interface, Lyapunov-monotone equilibration, F-driven FW self-quench + K-invariance,
+G4 disagreement meter (20.4×), P5 pole closure. Open: the demo (R2/R4/R5 readout on real models).
 
 ```
 python -m pytest ebr/tests -q     # invariants
-python -m ebr.phase_zero          # G0
 ```

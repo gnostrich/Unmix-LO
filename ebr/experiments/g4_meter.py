@@ -16,7 +16,6 @@ from ..geometry.clouds import cloud_to_Dw
 from ..energy import functional as EN
 from ..transport import gw
 from . import substrate as S
-from . import g1_probe as G1
 
 
 def _self_coupling(pi, a):
@@ -52,7 +51,7 @@ def solver_floor_cycle(Ds, ws, members_A, members_B, eps=0.08, R=8):
 
 def build_clouds(models, r=3, T=1, n=110, seed=0):
     U = S.latent_traffic(max(T, 3), r, seed=seed)
-    inp = G1._warp_inputs(U[1], n)
+    inp = S.warp_inputs(U[1], n)
     Dws = [cloud_to_Dw(M(inp)) for M in models]
     return [d for d, _ in Dws], [w for _, w in Dws]
 

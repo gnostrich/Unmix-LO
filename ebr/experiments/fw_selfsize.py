@@ -8,7 +8,6 @@ import numpy as np
 from ..geometry.clouds import cloud_to_Dw
 from ..events import frankwolfe as FW
 from . import substrate as S
-from . import g1_probe as G1
 
 
 def snapshot(K, r, n=100, W=25, seed=0):
@@ -17,7 +16,7 @@ def snapshot(K, r, n=100, W=25, seed=0):
     models = S.make_diverse_models(K, seed0=200)
     accD = [np.zeros((n, n)) for _ in range(K)]
     for t in range(5, 5 + W):
-        inp = G1._warp_inputs(U[t], n)
+        inp = S.warp_inputs(U[t], n)
         for i, M in enumerate(models):
             accD[i] += cloud_to_Dw(M(inp))[0]
     return [D / W for D in accD], [np.full(n, 1.0 / n) for _ in range(K)]

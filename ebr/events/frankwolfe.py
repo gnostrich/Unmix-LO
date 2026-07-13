@@ -23,14 +23,14 @@ discovered structure. Do not claim spawn/merge are "one move" in code until they
 import numpy as np
 from ..transport import gw
 from ..energy import functional as EN
-from ..hankel import residual as H
+from ..geometry import gram as GR
 
 
 def _residual_direction(D, w, pi):
     """Dominant UNEXPLAINED direction at a port: top eigenvector of the anchor-deflated Gram, as a
     nonnegative distribution over the port's n points (the FW candidate's coupling column)."""
-    G = H.gram_from_D(D)
-    Ghat = H.deflate(G, pi)
+    G = GR.gram_from_D(D)
+    Ghat = GR.deflate(G, pi)
     ev, V = np.linalg.eigh((Ghat + Ghat.T) / 2)
     d = V[:, -1] ** 2                      # squared top eigvec -> nonneg, emphasizes dominant direction
     s = d.sum()
