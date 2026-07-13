@@ -2,6 +2,21 @@
 
 Status tags: [proven] · [proven-negative] (closed, do not re-litigate) · [candidate] · [open] · [partial].
 
+## Corrections (the wall was information — write it, don't absorb it silently)
+- [proven-negative, original form] **Candidate-original element (a): "anchor count = McMillan degree of
+  traffic."** The build separated two quantities this claim conflated: **atom count** = spatial complexity of
+  the shared per-prompt geometry (F/FW mechanism), and **pole count** = temporal McMillan degree of the
+  traffic across prompts (pole instrument, P5). Corrected form: "(a1) atom count self-sizes to the shared
+  geometry's spatial complexity, K-invariant [validated 3,3,3]; (a2) the pole instrument reports the traffic's
+  temporal McMillan degree via multiplicative closure [P5 proven]." The v1 single-number claim is retired.
+
+## Gate decision (mid-July go/no-go — recorded, not drifted)
+- **EBR is the NeurReps instance.** Both load-bearing candidate-original elements are empirically legged:
+  F-driven self-sizing with clean K-invariance (3,3,3) and the holonomy meter at 20.4× separation; plus one
+  derived law (P5) and one exact theorem (P1). The aggregator is repositioned as the **decentralized-training
+  application** of the same validated core (E_B + self-sizing + gauge-invariant interface), not a competing
+  instance. The corrected-G1 2×2 (below) is the submission spine — pre-registered, runs next.
+
 ## Instrument / theory
 - [proven] **P1 sym-power law (deterministic/Koopman regime).** Invariant (relational, ≥quadratic)
   observable's McMillan degree = symmetric-power degree of the latent, EXACT integers: linear r={2,3,4},
