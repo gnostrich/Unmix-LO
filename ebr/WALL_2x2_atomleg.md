@@ -41,6 +41,25 @@ re-scoring is not validated: FW atom count tracks neither content diversity NOR 
 these clouds; flat-at-~3 is the honest reading (the distance distribution of r equidistant clusters is bimodal
 for any r, so GW self-sizing sees ~constant structure). The atom criterion stays a documented null.
 
+## RESOLUTION: the readout was wrong, not the mechanism (parallel control sweep)
+Three independent synthetic-cloud controls (`experiments/atom_geom_controls.py`, `atom_operating_point.py`,
+`atom_observable_search.py`) settle the atom question:
+- **The discrete atom COUNT tracks no geometric parameter** — flat/anti-tracking across continuous rank,
+  cluster multiplicity, and hierarchical distance-scale depth (Spearman −0.80 vs planted rank); it is set by
+  the (ε, rel_tol, max_atoms, n) operating point (op-point range dominates the geometry gap, and the gap is
+  even *negative* — higher rank buys fewer atoms because continuous spread over-grows at low rank then pins).
+- **The rate–distortion knee** (the fork-memo candidate: GW cost vs anchor budget, elbow = complexity) **also
+  FAILS** — floor-pinned at m=3 for every rank (Spearman 0). Wall-option "RD knee" is dead.
+- **But an F-derived readout DOES track planted rank, cleanly: the equilibrated anchor's D_e effective rank at
+  fixed budget** (participation ratio of D_e's singular values, m=12) — **Spearman +1.00** (4.67→6.04 as
+  r=2→8), matching the pure-geometry Gram effective rank (sanity: the complexity is present and recoverable).
+
+**Conclusion.** Spatial complexity is an INSTRUMENT read off the equilibrated anchor geometry (D_e effective
+rank), NOT the discrete self-sizing atom count — which is a floor-dominated mechanism artifact. This fits the
+mechanism/instrument split exactly: the atom count self-quenches (mechanism, F-driven) but does not meter
+complexity; the D_e spectrum meters it (instrument). The 2×2's spatial leg should be re-specified on the
+D_e-effective-rank readout, and "atom count = spatial complexity" is formally retired.
+
 ## Consequence for the 2×2
 The submission-spine 2×2 as designed has a clean TEMPORAL leg (pole closure, P5 [proven]) but its SPATIAL
 (mechanism/atom) leg is not instantiated. Options (manager's call — a genuine design fork, not something to
