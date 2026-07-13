@@ -102,7 +102,31 @@ class CLIPPort(Port):
         return self.m.text_projection(pooled).numpy()
 
 
+class SigLIPPort(Port):
+    """Channel-native second vision<->text dual-encoder bridge (independently trained from CLIP).
+    modality='both'; encode routes by `channel` (0=vision tower, 1=text tower). Mirrors CLIPPort exactly so
+    it drops into the same member roster; the point is a SECOND, independently-trained cross-modal overlap."""
+    def __init__(self):
+        super().__init__("siglip", "both", ["vision-tower", "text-tower"])
+        from transformers import AutoModel, AutoProcessor
+        self.m = AutoModel.from_pretrained("google/siglip-base-patch16-224").eval()
+        self.proc = AutoProcessor.from_pretrained("google/siglip-base-patch16-224")
+
+    @staticmethod
+    def _feat(out):
+        # transformers 5.x get_*_features returns a pooled-output object; older returns a tensor.
+        return (out.pooler_output if hasattr(out, "pooler_output") else out).numpy()
+
+    @torch.no_grad()
+    def encode(self, inputs, channel=0):
+        if channel == 0:                                   # vision tower
+            px = self.proc(images=[im.convert("RGB") for im in inputs], return_tensors="pt")["pixel_values"]
+            return self._feat(self.m.get_image_features(pixel_values=px))
+        e = self.proc(text=list(inputs), return_tensors="pt", padding="max_length", truncation=True)  # text
+        return self._feat(self.m.get_text_features(input_ids=e["input_ids"]))
+
+
 @functools.lru_cache(maxsize=1)
 def load_ports():
     """All frozen ports, loaded once. Returns dict name -> Port."""
-    return {p.name: p for p in [ViTPort(), MobileNetPort(), MiniLMPort(), CLIPPort()]}
+    return {p.name: p for p in [ViTPort(), MobileNetPort(), MiniLMPort(), CLIPPort(), SigLIPPort()]}
