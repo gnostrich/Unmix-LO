@@ -1,72 +1,41 @@
 """
-demo/readout.py — R5 readouts from an equilibrated anchor: consensus, per-model panels (what EACH model
-says, silent ones included, in its own vocabulary), and the disagreement meter.
-
-Per-model panel = barycentric pushforward: anchor mass a pushed back through port v's (B-weighted) coupling
-onto v's own library support, r_v = normalize(Σ_c B_v[c]·(π_v^c a)). The top-mass library rows are the
-exemplars v surfaces. A SILENT port's coupling was equilibrated to the shared anchor (shaped by the ACTIVE
-ports), so its pushforward highlights its exemplars aligned with the cross-modal consensus.
+demo/readout.py — R5 readout via the MATCHED-PROBE tied coupling (the principled gauge-fixing). What each
+model says, silent ones included, in its own vocabulary — cross-modally and stably, because the tie pins the
+GW orbit that relational geometry alone cannot select. Only (D, w) crosses; the tie is input identity, not a
+frame (R3 preserved — see --scramble).
 """
 import numpy as np
 
 
-def pushforward(res, port):
-    B = res["B"][port]
-    r = sum(B[c] * (pi @ res["a"]) for c, pi in enumerate(res["pis"][port]))
-    s = r.sum()
-    return r / s if s > 0 else r
-
-
-def consensus(res, park_frac=0.1):
-    a = res["a"]
-    active = int((a > a.max() * park_frac).sum())
-    return {"atoms": len(a), "active": active, "parked": len(a) - active,
-            "F": res["F_trace"][-1] if res["F_trace"] else float("nan"),
-            "converged": res["converged"], "monotone": res["monotone"]}
-
-
-def clip_bridge(clouds, manifest, m=14, n_outer=30, restarts=6):
-    """Attempt to route cross-modal transfer through CLIP's two towers (its jointly-trained shared space is
-    the most favourable case). Equilibrate ONLY the two CLIP towers and pushforward to each; entropic GW is
-    nonconvex, so we take `restarts` random inits and keep the LOWEST-F equilibrium (F is the arbiter). This is
-    FRAGILE, NOT a working solution: the F-optimal coupling is not the semantically-faithful one — at the
-    default m=14 it yields "deer" for a dog image even though CLIP itself reads dog. It transfers correctly at
-    some (m, init) and not others. Kept for honesty and shown labelled FRAGILE; heterogeneous non-CLIP models
-    do not transfer at all. See WALL_crossmodal.md."""
+def tied_transfer(clouds, meta, manifest, m=12, n_outer=30):
+    """All members share the probe index (image_i and caption_i are the same world-event), so one shared
+    coupling ties every member's assignment of event i to atoms — this pins the GW orbit and makes cross-modal
+    transfer STABLE (a dog image -> silent text reads 'a photo of a dog' across inits, no fragility).
+    Event-relevance r is the geometric-mean reweighting of the ACTIVE members; every member then reads its OWN
+    side of the input-relevant events (events reweighted through the tied anchor: re = pi @ a)."""
     from . import engine as E
-    sub = {k: clouds[k] for k in ("clip_vision", "clip_text") if k in clouds}
-    if len(sub) < 2:
+    active = [p for p in meta if meta[p]["active"]]
+    if not active:
         return None
+    n = len(clouds[active[0]][0][1])
+    logr = np.zeros(n)
+    for p in active:
+        logr += np.log(clouds[p][0][1] + 1e-12)
+    r = np.exp(logr - logr.max()); r /= r.sum()
+    rng = np.random.default_rng(0)
+    De = rng.random((m, m)); De = (De + De.T) / 2; np.fill_diagonal(De, 0)
+    De /= np.median(De[np.triu_indices(m, 1)])
     a0 = np.full(m, 1.0 / m)
-    Bbar = {p: np.full(len(sub[p]), 1.0 / len(sub[p])) for p in sub}
-    best = None
-    for s in range(restarts):
-        rng = np.random.default_rng(s)
-        De = rng.random((m, m)); De = (De + De.T) / 2; np.fill_diagonal(De, 0)
-        De /= np.median(De[np.triu_indices(m, 1)])
-        res = E.equilibrate(sub, De, a0, a0.copy(), Bbar, n_outer=n_outer)
-        Ff = res["F_trace"][-1] if res["F_trace"] else float("inf")
-        if best is None or Ff < best[0]:
-            best = (Ff, res)
-    res = best[1]
-    out = {"converged": res["converged"], "F": best[0]}
-    for port in sub:
-        r = sum(res["B"][port][c] * (pi @ res["a"]) for c, pi in enumerate(res["pis"][port]))
-        idx = np.argsort(-r)[:3]
-        labels = manifest["vision_labels"] if port == "clip_vision" else manifest["texts"]
-        out[port] = [str(labels[i])[:40] for i in idx]
-    return out
-
-
-def panels(res, meta, manifest, topk=3):
-    """port -> (active?, modality, [top-k exemplar strings])."""
-    out = {}
-    for port in res["pis"]:
-        r = pushforward(res, port)
-        idx = np.argsort(-r)[:topk]
+    Bbar = {p: np.full(len(clouds[p]), 1.0 / len(clouds[p])) for p in clouds}
+    res = E.equilibrate_tied(clouds, r, De, a0, a0.copy(), Bbar, n_outer=n_outer)
+    re = res["pi"] @ res["a"]
+    idx = np.argsort(-re)[:3]
+    a = res["a"]
+    panels = {}
+    for port in clouds:
         mod = meta[port]["modality"]
         labels = manifest["vision_labels"] if mod == "vision" else manifest["texts"]
-        ex = [str(labels[i])[:46] for i in idx]
-        out[port] = {"active": meta[port]["active"], "modality": mod, "exemplars": ex,
-                     "top_mass": float(r[idx[0]])}
-    return out
+        panels[port] = {"active": meta[port]["active"], "modality": mod, "B": res["B"][port],
+                        "exemplars": [str(labels[i])[:44] for i in idx]}
+    return {"panels": panels, "atoms": len(a), "active_atoms": int((a > a.max() * 0.1).sum()),
+            "F": res["F_trace"][-1], "converged": res["converged"], "monotone": res["monotone"]}

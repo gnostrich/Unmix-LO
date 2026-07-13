@@ -61,17 +61,20 @@ Also runs: the **disagreement meter** (`ebr/demo/meter.py`, cycle cost vs solver
 CPU settings) and **FW self-sizing over a session** (`python -m ebr.demo --session` or `-m ebr.demo.session`).
 
 **Honest acceptance-test status (4 criteria):**
-- **`--scramble` → every number identical: PASS** (gauge exact, |ΔF| ≈ 1e-16).
-- **dog photo → panels coherent: PARTIAL** — within-modality YES (three vision families all say `dog`);
-  cross-MODAL to silent text is a **wall** (`WALL_crossmodal.md`): relational-only GW discards the cross-modal
-  correspondence, and even the CLIP-tower bridge is fragile (F-optimal coupling ≠ semantic — a dog image can
-  push it to "deer" though CLIP itself reads dog). Flagged `[cross-modal: LIMITED/FRAGILE]`, not dressed up.
+- **dog photo → panels coherent (cross-modal): PASS** — via **matched-probe tied couplings** a dog image makes
+  the SILENT text models (minilm, clip_text) read `a photo of a dog`, **stable across inits**. The tie pins the
+  GW orbit (the semantically-correct alignment relational geometry alone cannot select). Theorem + resolution
+  in `WALL_crossmodal.md`.
+- **`--scramble` → every number identical: PASS** — |ΔF_tied| ≈ 4e-15. The tie references input identity, not
+  the representation frame, so R3 holds even with the pairing.
 - **ambiguous image → meter above floor: NOT cleanly met** — conflicting input reads higher but stays below
-  the solver-noise floor at CPU settings; the calibrated separation rests on offline `g4_meter` (20.4×).
+  the solver-noise floor at CPU settings; the calibrated 20× separation rests on offline `g4_meter`.
 - **20 prompts → atom count moves and stabilizes: NOT cleanly met** — FW is F-driven and self-quenching, but
-  on this collapsed geometry the fresh-per-prompt count is flat (~3, operating-point-invariant, per
-  `WALL_2x2_atomleg.md`) and warm-start growth is cap-bounded accretion with no parking. Reported as measured.
+  the count is operating-point-invariant (~3): it tracks neither content diversity nor even planted geometric
+  rank (control: rank 2/4/6 → atoms 3,3,3), per `WALL_2x2_atomleg.md`. Reported as measured, not faked.
 
-The router genuinely works WITHIN a modality (heterogeneous alignment) with an exact gauge guarantee; the
-cross-modal, meter-sensitivity, and atom-content-tracking criteria are documented walls, not faked passes.
-Probe provenance: `uoft-cs/cifar10` test[:256] + class-anchored captions.
+**Headline (theorem-shaped, out of the wall not around it):** *invariance alone provably cannot route
+semantics; behavioral pairing (matched probes) is the minimal intrinsic gauge-fixing that can* — and it
+preserves the gauge guarantee. The router now transfers cross-modally AND stays gauge-exact; the meter is
+scale-limited (indicative) and the atom self-sizing is a documented geometric null. Probe provenance:
+`uoft-cs/cifar10` test[:256] + class-anchored captions (matched image/caption pairs).

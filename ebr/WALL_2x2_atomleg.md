@@ -32,6 +32,15 @@ complexity* is **UNSUPPORTED**. Corrected ledger status:
 - [open / not demonstrated] atom count meaningfully tracks geometric complexity. The wall above is the
   evidence against the strong reading.
 
+## Update: the proposed geometric re-scoring ALSO does not hold (planted-rank control)
+A later proposal was that atom count is fine as a *spatial-complexity* meter — it should respond to GEOMETRIC
+manipulation even if not to content — with a control: planted rank 2 vs 6 → atoms ~2 vs ~6. Ran it (discrete
+rank-r clusters, K=3 members): **r = 2,4,6 → atoms 3,3,3** (rel_tol 0.02) / **3,2,2** (rel_tol 0.05). Atom
+count does NOT track planted geometric rank either — it is robustly ~3, operating-point-dominated. So the
+re-scoring is not validated: FW atom count tracks neither content diversity NOR planted geometric rank on
+these clouds; flat-at-~3 is the honest reading (the distance distribution of r equidistant clusters is bimodal
+for any r, so GW self-sizing sees ~constant structure). The atom criterion stays a documented null.
+
 ## Consequence for the 2×2
 The submission-spine 2×2 as designed has a clean TEMPORAL leg (pole closure, P5 [proven]) but its SPATIAL
 (mechanism/atom) leg is not instantiated. Options (manager's call — a genuine design fork, not something to
