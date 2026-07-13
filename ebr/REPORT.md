@@ -53,6 +53,49 @@ interface**, diagnosed as interface collapse with a pre-registered fix (pre-logi
 verdict, rather than tuning until the diversity leg looks monotone, is the spec's discipline (§12: "sized to
 kill cheaply"; §13: "rank is a lower bound").
 
+## Stage-0b — pre-registered retests (predictions in `PREREG_stage0b.md`, committed first)
+
+**P1 — sym-power theorem: PASS, exactly.** For a degree-r linear latent, the invariant (relational,
+≥ quadratic) observable's McMillan degree equals the **symmetric-power degree**, not the latent degree:
+measured Hankel ranks are **linear {2,3,4} = r**, **quadratic {3,6,10} = r(r+1)/2**, **lin+quad {5,9,14} =
+r(r+3)/2**, matching the exact distinct-Koopman-mode counts. The manager's theorem-shaped correction is
+confirmed to the integer. Decoder: r = (−1+√(1+8·rank))/2. (`experiments/sympower.py`.)
+
+**Key finding — the theorem is a DETERMINISTIC/Koopman result and does NOT transfer to the stochastic
+detector.** P1 uses a *data* Hankel on an autonomous trajectory. The EBR instrument reads *stochastic*
+prompt-time traffic via a *covariance* (stochastic-realization) Hankel. Bridge test — a stochastic degree-r
+latent with a purely quadratic observable, no model — gives covariance-Hankel rank **non-monotone, even
+decreasing** (r=2,3,4 → 5,3,3 at T=6000), NOT r(r+1)/2. So in the stochastic-realization setting the
+invariant-rank ↔ diversity map is **neither r nor the deterministic sym-power degree** — it is currently
+unresolved. This is a *sharper* correction than under-resolution: it is a realization-theory distinction, not
+a data-budget one.
+
+**P2 — corrected diversity leg: FAIL, and now diagnosed deeper.** Single model, no anchor, pre-logits linear
+tap (§12), T=1200: invariant rank [2,0,2] — not monotone. Neither the tap nor 2× T fixes it, consistent with
+the bridge finding above (the failure is stochastic-realization, not resolution or interface-collapse alone).
+Registry: [proven-negative] "raw invariant rank = latent degree" stays closed; [candidate] "invariant rank =
+deterministic sym-power degree" is **confirmed for deterministic traffic (P1) but refuted for the stochastic
+covariance detector (bridge)** — a new open question is filed: the stochastic invariant-rank ↔ diversity map.
+
+**P3 — K-invariance with HETEROGENEOUS models: PARTIAL.** Diverse architectures (tanh / deep-ReLU / quadratic
+/ Fourier / linear), r=3: residual rank **1, 3, 3** across K=2,3,5. It **saturates** (flat for K≥3 — vastly
+better than the bare detector's unbounded 2.2→3.2 growth) but shows a low-K transient and does not meet the
+pre-registered flat-spread-≤1 criterion. Honest read: pooling genuinely diverse models is harder than pooling
+near-clones; the anchor removes most but not all K-dependence.
+
+**P4 / G4 — meter validity: PASS.** Cycle-cost holonomy separates clones from disjoint members decisively:
+clone 0.056 < floor (clone + 3σ solver) 0.320 < disjoint 1.141 — a **20.4× separation**. The disagreement
+meter is valid on the two-edge topology. (`experiments/g4_meter.py`.)
+
+### Amendments this queues for spec v1.1
+1. **Sym-power decoder** — report latent degree via r = (−1+√(1+8·rank))/2, but ONLY in the deterministic
+   regime; the stochastic regime needs its own (currently unknown) map. Restate the headline as "active rank =
+   McMillan degree of the invariant-observable series," with the deterministic decoder and the stochastic map
+   flagged open.
+2. **Lyapunov guards normative** — the raw mirror/barycenter steps overshoot; the backtracking guard (67% →
+   100% monotone) is part of the definition of the block updates, not an implementation detail.
+3. **Frozen-anchor sweep rule** — anchor capacity identical and frozen across diversity cells.
+
 ## Reproduce
 
 ```

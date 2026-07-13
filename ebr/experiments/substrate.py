@@ -34,9 +34,48 @@ class FrozenModel:
     def __call__(self, Z):
         return np.tanh(Z @ self.W1 + self.b1) @ self.W2
 
+    def tap(self, Z):
+        """Pre-logits LINEAR tap (§12 fix): features before the nonlinearity. The invariant moments are then
+        ~quadratic in the latent -> observable degree r(r+1)/2 (resolvable), not a high sym-power."""
+        return Z @ self.W1 + self.b1
+
 
 def make_models(K, d_lat=6, d_out=12, seed0=100):
     return [FrozenModel(d_lat, d_out, seed=seed0 + i) for i in range(K)]
+
+
+class DiverseModel:
+    """A heterogeneous frozen black box — one of several distinct architectures, so 'flat rank in K' means
+    the anchor found shared structure ACROSS real representational differences, not across near-clones."""
+    def __init__(self, kind, d_lat, d_out, seed):
+        rng = np.random.default_rng(seed)
+        self.kind = kind
+        self.W1 = rng.normal(size=(d_lat, 40)) / np.sqrt(d_lat)
+        self.b1 = rng.normal(size=40) * 0.1
+        self.W2 = rng.normal(size=(40, d_out)) / np.sqrt(40)
+        self.Wd = rng.normal(size=(d_out, d_out)) / np.sqrt(d_out)
+        self.freq = rng.normal(size=(d_lat, 40)) * 1.5
+
+    def __call__(self, Z):
+        if self.kind == "relu_deep":
+            h = np.maximum(Z @ self.W1 + self.b1, 0) @ self.W2
+            return np.maximum(h @ self.Wd, 0)
+        if self.kind == "quadratic":
+            h = Z @ self.W1
+            return (h * h) @ self.W2
+        if self.kind == "fourier":
+            return np.sin(Z @ self.freq) @ self.W2
+        if self.kind == "tanh":
+            return np.tanh(Z @ self.W1 + self.b1) @ self.W2
+        return (Z @ self.W1 + self.b1) @ self.W2          # linear
+
+
+DIVERSE_KINDS = ["tanh", "relu_deep", "quadratic", "fourier", "linear"]
+
+
+def make_diverse_models(K, d_lat=6, d_out=12, seed0=200):
+    """K genuinely different architectures (cycled from DIVERSE_KINDS)."""
+    return [DiverseModel(DIVERSE_KINDS[i % len(DIVERSE_KINDS)], d_lat, d_out, seed=seed0 + i) for i in range(K)]
 
 
 def prompt_clouds(models, u_row, n=256, jitter=0.15, seed=0):

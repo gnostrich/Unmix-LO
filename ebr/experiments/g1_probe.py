@@ -20,11 +20,11 @@ def _warp_inputs(u_row, n, warp=0.3):
     return PROBE @ M
 
 
-def residual_series(K, r, T=200, n=120, m0=4, eps=0.08, seed=0, warmup=40):
+def residual_series(K, r, T=200, n=120, m0=4, eps=0.08, seed=0, warmup=40, diverse=False):
     """Run the real per-prompt shared-anchor equilibration (warm-started, coupling continuity) and return
-    (residual_moment_series, mean_Lyapunov_monotone_fraction)."""
+    (residual_moment_series, mean_Lyapunov_monotone_fraction). diverse=True uses heterogeneous architectures."""
     U = S.latent_traffic(T, r, seed=seed)
-    models = S.make_models(K, seed0=100)
+    models = S.make_diverse_models(K, seed0=200) if diverse else S.make_models(K, seed0=100)
     De = np.random.default_rng(1).random((m0, m0)); De = (De + De.T) / 2; np.fill_diagonal(De, 0)
     De /= np.median(De[np.triu_indices(m0, 1)]) if m0 > 1 else 1.0
     a = np.full(m0, 1.0 / m0); abar = a.copy()
@@ -42,8 +42,8 @@ def residual_series(K, r, T=200, n=120, m0=4, eps=0.08, seed=0, warmup=40):
     return np.array(series), float(np.mean(fmono))
 
 
-def run(K, r, T=200, n=120, m0=4, eps=0.08, seed=0, warmup=40):
-    series, mono = residual_series(K, r, T=T, n=n, m0=m0, eps=eps, seed=seed, warmup=warmup)
+def run(K, r, T=200, n=120, m0=4, eps=0.08, seed=0, warmup=40, diverse=False):
+    series, mono = residual_series(K, r, T=T, n=n, m0=m0, eps=eps, seed=seed, warmup=warmup, diverse=diverse)
     rank = int((H.hankel_spectrum(series) > _floor(series)).sum())
     return rank, mono
 
