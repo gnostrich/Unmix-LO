@@ -79,6 +79,27 @@ Status tags: [proven] · [proven-negative] (closed, do not re-litigate) · [cand
   patched: a G-invariant pole-count readout, if pursued, is a genuine design fork needing a FRESH
   pre-registration before any re-run — not a post-hoc order bump.
 
+## Untied cross-modal routing (the dictionary-free thesis) — two pre-registered negatives, one boundary law
+- [partial — honest negative with real signal] **Overlap routing (PREREG_overlap_routing.md, run at 316f648).**
+  Untied collective F over 10 member-channels (3 modalities; CLIP + SigLIP + physics micro-world as
+  independent bridges), NO pairing dictionary. Forward render→text: shape .476 and motion .465 rise well above
+  chance BECAUSE of the added overlap (Δ +.198/+.146; motion can only ride the world's dynamics axis — the
+  overlap thesis measurably works for these), but color stays near chance (.351, Δ+.052 < the .15 bar) and
+  reverse (text→vision) transfers nothing. Registered verdict: the tied dictionary stays load-bearing.
+  Gauge survives untied routing (|ΔF| = 1.2e-14).
+- [diagnosed + fix falsified] **Color-symmetry cycle (PREREG_color_symmetry.md, both legs run).** D-leg
+  CONFIRMED the under-encoding mechanism: ρ_color < ρ_shape on ALL pixel-vision members (ViT 1.16 vs 1.72,
+  CLIP 1.22 vs 1.29, SigLIP 1.25 vs 1.44) — color barely structures pixel-vision relational geometry; the
+  exchangeability mechanism was NOT confirmed (3/10). F-leg (world v2: color covaries with speed) FAILED its
+  registered bars: color 0.319 (Δ −0.032), and the covariance skewed the motion-word distribution enough to
+  degrade motion (.465→.337). Registered branch: **covariance-insufficient — deeper wall.**
+- **Boundary law (the two negatives made quantitative):** untied relational routing transfers the attributes
+  that STRUCTURE members' intrinsic geometries (shape, motion); an attribute relationally under-encoded at the
+  members (color in pixel-vision) cannot ride the shared anchor even when handed a covariance route — the tie
+  (matched probes) remains the mechanism for exactly those attributes. Candidate next move if ever pursued
+  (needs its own prereg): R2 channel-blocking to expose a color-dominant feature-group channel, raising
+  ρ_color at the member — attacking the diagnosed under-encoding directly, with spec machinery, not a shim.
+
 ## Spec v1.1 amendment queue (five)
 1. Sym-power decoder — tag **deterministic-regime-only**.
 2. Lyapunov backtracking guards — **normative** (67%→100% monotone is the evidence).
