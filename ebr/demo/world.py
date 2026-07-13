@@ -26,19 +26,29 @@ REST = 0.82        # restitution on bounce
 T = 16             # trajectory length
 
 
-def sample_scene(seed):
-    """Sample a scene: 1-2 objects, each with shape/color/position/velocity. Deterministic in seed."""
+def sample_scene(seed, color_physics=None):
+    """Sample a scene: 1-2 objects, each with shape/color/position/velocity. Deterministic in seed.
+
+    color_physics: optional {color_name: speed multiplier} applied to the initial velocity draw — "world v2"
+    (PREREG_color_symmetry.md): colors acquire physics, breaking the sampler's color-exchangeability.
+    None (default) is world v1: colors carry no physics. The multiplier is applied AFTER the draws, so the
+    RNG stream — and hence every color/shape/position — is identical to v1; only velocities are scaled."""
     rng = np.random.default_rng(seed)
     n = int(rng.integers(1, 3))
     objs = []
     for _ in range(n):
-        objs.append({
+        o = {
             "shape": SHAPES[int(rng.integers(len(SHAPES)))],
             "color": COLOR_NAMES[int(rng.integers(len(COLOR_NAMES)))],
             "x": float(rng.uniform(14, GRID - 14)), "y": float(rng.uniform(10, GRID - 24)),
             "vx": float(rng.uniform(-3.2, 3.2)), "vy": float(rng.uniform(-1.5, 1.5)),
             "r": float(rng.uniform(5, 8)),
-        })
+        }
+        if color_physics is not None:
+            mult = float(color_physics[o["color"]])
+            o["vx"] *= mult
+            o["vy"] *= mult
+        objs.append(o)
     return objs
 
 
@@ -118,9 +128,10 @@ def dynamics_signature(pos, vel):
     return out
 
 
-def event(seed):
-    """One ground-truth world EVENT: the three paired modalities from a single scene."""
-    objs = sample_scene(seed)
+def event(seed, color_physics=None):
+    """One ground-truth world EVENT: the three paired modalities from a single scene.
+    color_physics: forwarded to sample_scene (None = world v1; a {color: multiplier} dict = world v2)."""
+    objs = sample_scene(seed, color_physics=color_physics)
     pos, vel = simulate(objs)
     mid = len(pos) // 2
     return {
