@@ -31,3 +31,24 @@ G4 disagreement meter (20.4×), P5 pole closure. Open: the demo (R2/R4/R5 readou
 ```
 python -m pytest ebr/tests -q     # invariants
 ```
+
+## Demo — run the router on real frozen models (step 2: skeleton)
+
+Real ports: **vit** + **mobilenet** (two vision families), **minilm** (text), **clip** (channel-native: vision
+tower + text tower). Cross-modal by construction. Probe libraries (each model's behavioral support) are built
+once and cached: **CIFAR-10** test[:256] (natural images) for vision, **COCO captions** train[:256] for text —
+both from the HF mirror, committed provenance below.
+
+```
+pip install torch torchvision transformers datasets pillow numpy
+python -m ebr.demo --text "a dog sitting on the grass"     # text ports active, vision silent
+python -m ebr.demo --image dog.png                          # vision ports active, text silent
+python -m ebr.demo --image dog.png --text "a dog" --to vit,minilm   # send input to a subset (R5)
+python -m ebr.demo --text "a cat" --scramble mobilenet      # R3 gauge guarantee, user-visible
+```
+
+Step 2 loads the models, materializes each port's cloud for the input (its library reweighted toward the
+input; silent models stay uniform), and prints the gauge invariants + each model's top library exemplar. On a
+dog image the three vision families all surface `dog`; `--scramble` shows max |ΔD| ≈ 1e-14 (gauge holds).
+The F-loop, per-prompt channel adaptation (B), FW self-sizing, and the full consensus/per-model/disagreement
+readout arrive in steps 3–4. Probe provenance: `uoft-cs/cifar10` test[:256], `sentence-transformers/coco-captions` train[:256].
