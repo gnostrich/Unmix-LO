@@ -87,6 +87,24 @@ near-clones; the anchor removes most but not all K-dependence.
 clone 0.056 < floor (clone + 3σ solver) 0.320 < disjoint 1.141 — a **20.4× separation**. The disagreement
 meter is valid on the two-edge topology. (`experiments/g4_meter.py`.)
 
+## Stage-0c — the stochastic law is derivable (Wick), and it PASSES
+
+**P5 — multiplicative closure: PASS** (pre-registered in `PREREG_P5.md`). The bridge negative was not the
+absence of a law but the *resolvability shadow* of one. Isserlis/Wick: for a linear-Gaussian degree-r latent
+with poles {λ_i}, the quadratic observable's covariance modes are the **pairwise products {λ_iλ_j}**. Read
+POLES (Ho-Kalman/ERA on the covariance Hankel), not rank:
+- **Closure** — estimated poles lie on {λ_iλ_j} up to the resolvable order (orders 2–3: max nearest-product
+  error **0.017**; order 4+ injects spurious poles = the resolvability limit).
+- **Resolvability order** — the top-|·| products {0.722, 0.553·e^{±iπ/4}} resolve first; resolved count grows
+  monotonically with T (0 → 3 → 3). This *explains* the earlier [5,3,3] rank shadow: modes are products, so
+  they decay faster and only the largest-|·| clear the floor, and the count depends on pole geometry, not r.
+- **Generator recovery** — latent poles recovered as multiplicative square-roots: λ1 ≈ 0.855 (true 0.85),
+  |λ2| ≈ 0.652 (true 0.65).
+
+Consequence: the stochastic invariant-rank ↔ diversity question is **closed** — the readout is the pole set
+with a floor-aware predicted-resolvable subset; rank is demoted to a summary statistic. The diversity leg is
+now rebuildable on pole closure (next session). (`experiments/pole_closure.py`.)
+
 ### Amendments this queues for spec v1.1
 1. **Sym-power decoder** — report latent degree via r = (−1+√(1+8·rank))/2, but ONLY in the deterministic
    regime; the stochastic regime needs its own (currently unknown) map. Restate the headline as "active rank =
