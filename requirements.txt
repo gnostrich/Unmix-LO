@@ -1,0 +1,15 @@
+# EBR cross-modal router — runtime dependencies.
+# Verified with the versions pinned as lower bounds below (CPU wheels); newer usually fine.
+#
+#   pip install -r requirements.txt
+#
+# torch/torchvision: on a CPU-only box, install the CPU wheels first, e.g.
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+torch>=2.12
+torchvision>=0.19
+transformers>=4.40
+numpy>=1.24
+pillow>=10.0
+sentencepiece>=0.2      # SigLIP tokenizer
+protobuf>=4.0           # SigLIP tokenizer
+datasets>=2.18          # CIFAR-10 probe library + --session prompts

@@ -41,12 +41,23 @@ index-paired **class-anchored captions** ("a photo of a {class}") for text — f
 COCO captions were tried and break cross-modal alignment — see `WALL_crossmodal.md`.)
 
 ```
-pip install torch torchvision transformers datasets pillow numpy
+pip install -r requirements.txt          # (CPU torch: add --index-url https://download.pytorch.org/whl/cpu)
 python -m ebr.demo --text "a dog sitting on the grass"     # text ports active, vision silent
 python -m ebr.demo --image dog.png                          # vision ports active, text silent
 python -m ebr.demo --image dog.png --text "a dog" --to vit,minilm   # send input to a subset (R5)
 python -m ebr.demo --text "a cat" --scramble mobilenet      # R3 gauge guarantee, user-visible
 ```
+
+**Browser UX** — same pipeline, held warm behind a local server so you type instead of re-running:
+
+```
+python -m ebr.demo.serve                 # then open http://127.0.0.1:8765
+```
+
+Loads the models once, then serves a page with a text box (+ optional image upload), model-subset
+toggles, a **Route it** button that draws the live panel (what each model reads, silent ones included),
+a **Gauge check** button (R3 scramble → |ΔF| must stay ~0), the disagreement meter, and an
+out-of-vocabulary warning banner. Stdlib `http.server` only; no dependency beyond the CLI's.
 
 The demo loads the models, materializes each port's cloud (its library reweighted toward the input; silent
 models uniform), equilibrates a shared anchor (F-loop, Lyapunov-monotone; per-prompt channel-gain routing B =
