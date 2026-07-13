@@ -20,10 +20,14 @@ Status tags: [proven] · [proven-negative] (closed, do not re-litigate) · [cand
   pole closure (next).
 
 ## Architecture / mechanism (both load-bearing candidate-original elements now have empirical legs)
-- [partial] **Self-sizing via K-invariant pooling.** Homogeneous members: residual rank flat at 1 across K
-  (bare detector inflates 2.2→3.2). Heterogeneous members (P3): rank 1,3,3 over K=2,3,5 — **saturates** for
-  K≥3 but low-K transient; misses flat-≤1. Saturation ≠ flatness logged as a real nuance. (Hypothesis to test
-  under the pole readout: the low-K transient is a resolvability artifact, not a pooling failure.)
+- [proven] **Self-sizing via F-driven Frank–Wolfe growth (v1.1 #1).** Structural events re-derived as a
+  conditional-gradient step on the anchor measure — one authority (F), no second statistic. Self-quenching
+  (each accepted atom strictly lowers F, then stops); Hankel never consulted by the mechanism. **K-invariant
+  self-sizing: 3,3,3 atoms across K=2,3,5** with heterogeneous members (cleaner than the Hankel readout's
+  1,3,3). Anchor count = spatial complexity of the shared geometry (K-invariant), cleanly SEPARATED from the
+  traffic's temporal McMillan degree (the pole instrument, P5). `events/frankwolfe.py`.
+- [superseded] The earlier residual-rank self-sizing (1,3,3 partial) — the atom-count-as-temporal-degree
+  reading was a category error; resolved by #1's mechanism/instrument split.
 - [passed] **Cycle-cost holonomy meter (G4).** Clone 0.056 < floor (clone+3σ) 0.320 < disjoint 1.141,
   **20.4× separation** with a real solver floor. The disagreement meter is validated as an instrument.
 
