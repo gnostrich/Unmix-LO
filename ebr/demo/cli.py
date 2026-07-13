@@ -20,8 +20,20 @@ def main(argv=None):
     ap.add_argument("--text")
     ap.add_argument("--to", help="comma-separated model subset that RECEIVES the input (others go silent)")
     ap.add_argument("--scramble", help="scramble this model's internal features; every number must be identical (R3)")
-    ap.add_argument("--atoms", type=int, default=8, help="anchor size (FW self-sizing in --session)")
+    ap.add_argument("--atoms", type=int, default=14, help="anchor size (FW self-sizing in --session)")
+    ap.add_argument("--session", action="store_true",
+                    help="run FW self-sizing over a session of diverse prompts (R1); prints atom dynamics")
     a = ap.parse_args(argv)
+    if a.session:
+        from . import session as SS
+        import datasets, warnings
+        warnings.filterwarnings("ignore")
+        ds = datasets.load_dataset("uoft-cs/cifar10", split="test[256:268]")
+        inputs = [{"image": r["img"], "text": None} for r in ds]
+        inputs += [{"image": None, "text": t} for t in
+                   ["a photo of a dog", "a photo of a truck", "a photo of a ship"]]
+        SS.run_session(inputs)
+        return
     if not a.image and not a.text:
         ap.error("give --image and/or --text")
 
@@ -65,9 +77,24 @@ def main(argv=None):
         if not p["active"]:
             tag = "  [cross-modal: LIMITED — see WALL_crossmodal.md]" if p["modality"] not in in_mods else "  [silent, same-modality]"
         print(f"  {mark} {port:12} [{p['modality']:6}] B=[{Bstr}]  ->  {' | '.join(p['exemplars'])}{tag}")
-    print("\nNOTE: heterogeneous models AGREE within a modality (a dog image -> vit/mobilenet/clip_vision all"
-          " say 'dog') — the router aligning different embedding geometries via gauge-invariant coupling."
-          "\n      Cross-MODAL transfer to silent text models is a documented wall (WALL_crossmodal.md).")
+    # cross-modal via CLIP's aligned towers — ATTEMPTED but FRAGILE (kept for honesty, not claimed as working)
+    bridge = R.clip_bridge(clouds, manifest)
+    if bridge:
+        silent_tower = "clip_text" if not meta.get("clip_text", {}).get("active") else "clip_vision"
+        if silent_tower in bridge:
+            print(f"\nCROSS-MODAL (CLIP bridge, FRAGILE): silent {silent_tower} -> "
+                  f"{' | '.join(bridge[silent_tower])}   [unreliable: GW-nonconvex, F-optimal ≠ semantic;"
+                  f" see WALL_crossmodal.md]")
+    print("\nNOTE: WITHIN a modality the router genuinely works — a dog image makes vit/mobilenet/clip_vision"
+          " all say 'dog', aligning different embedding geometries via gauge-invariant coupling."
+          "\n      CROSS-modal transfer is a WALL (WALL_crossmodal.md): relational-only GW discards the"
+          " cross-modal alignment, and even the CLIP bridge is fragile (F-optimal coupling ≠ semantic).")
+
+    # disagreement meter (R5.3) — an INSTRUMENT: cycle cost net of the solver-restart floor
+    from . import meter as MT
+    dm = MT.disagreement(clouds, meta)
+    print(f"\nDISAGREEMENT METER: cycle cost {dm['cycle_cost']:.4f}  vs floor {dm['floor']:.4f}  ->  "
+          f"{dm['verdict']}  (floor = solver-noise null; indicative at CPU settings — see meter.py)")
 
     if a.scramble:
         _scramble_check(a.scramble, libs, clouds, meta, manifest, De0, a0, Bbar, E, R)

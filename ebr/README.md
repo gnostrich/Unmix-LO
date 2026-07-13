@@ -57,8 +57,21 @@ vision architectures, each with its own embedding geometry, aligned through the 
 gauge-invariant relational coupling. `--scramble` shows |ΔF| ≈ 1e-16 (R3 gauge guarantee, user-visible).
 Channel routing B adapts per prompt.
 
-**Documented wall (`WALL_crossmodal.md`):** cross-MODAL transfer to silent *text* models does NOT work —
-relational-only GW (R3) discards the cross-modal correspondence, so a dog image cannot reliably make a silent
-text model surface dog captions across heterogeneous embedding spaces. Silent cross-modal panels are flagged
-`[cross-modal: LIMITED]`; the panel is honest, not dressed up. Options (CLIP-bridge / tied paired couplings /
-one-axis scope) are in the wall doc. Probe provenance: `uoft-cs/cifar10` test[:256] + class-anchored captions.
+Also runs: the **disagreement meter** (`ebr/demo/meter.py`, cycle cost vs solver-noise floor — indicative at
+CPU settings) and **FW self-sizing over a session** (`python -m ebr.demo --session` or `-m ebr.demo.session`).
+
+**Honest acceptance-test status (4 criteria):**
+- **`--scramble` → every number identical: PASS** (gauge exact, |ΔF| ≈ 1e-16).
+- **dog photo → panels coherent: PARTIAL** — within-modality YES (three vision families all say `dog`);
+  cross-MODAL to silent text is a **wall** (`WALL_crossmodal.md`): relational-only GW discards the cross-modal
+  correspondence, and even the CLIP-tower bridge is fragile (F-optimal coupling ≠ semantic — a dog image can
+  push it to "deer" though CLIP itself reads dog). Flagged `[cross-modal: LIMITED/FRAGILE]`, not dressed up.
+- **ambiguous image → meter above floor: NOT cleanly met** — conflicting input reads higher but stays below
+  the solver-noise floor at CPU settings; the calibrated separation rests on offline `g4_meter` (20.4×).
+- **20 prompts → atom count moves and stabilizes: NOT cleanly met** — FW is F-driven and self-quenching, but
+  on this collapsed geometry the fresh-per-prompt count is flat (~3, operating-point-invariant, per
+  `WALL_2x2_atomleg.md`) and warm-start growth is cap-bounded accretion with no parking. Reported as measured.
+
+The router genuinely works WITHIN a modality (heterogeneous alignment) with an exact gauge guarantee; the
+cross-modal, meter-sensitivity, and atom-content-tracking criteria are documented walls, not faked passes.
+Probe provenance: `uoft-cs/cifar10` test[:256] + class-anchored captions.

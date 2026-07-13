@@ -34,9 +34,14 @@ This is the same tension the earlier multimodal thread hit (it needed CCA on a s
 the cross-modal alignment that gauge-invariance forbids here).
 
 ## Re-derivation options (manager's call — a claim/design fork, not a patch)
-1. **CLIP as the declared cross-modal bridge.** Route cross-modal traffic through CLIP's aligned towers (the
-   channel-native model), other models consensus within-modality. Faithful (CLIP is R2's ideal channel pair),
-   and it demonstrably transfers — but the cross-modal claim then scopes to CLIP, not "any heterogeneous pair."
+1. **CLIP as the declared cross-modal bridge — ATTEMPTED, found FRAGILE.** Routing cross-modal traffic
+   through CLIP's aligned towers transfers at SOME anchor sizes/inits (m=12,16 → dog) but not others (m=14,
+   restart-lowest-F → "deer"). Root cause, verified: CLIP's DIRECT zero-shot reads this image as dog (0.252
+   top; 6/8 CIFAR-dog accuracy), but the relational anchor pushforward degrades it to a class not even in
+   CLIP's top-5 — i.e. **the F-optimal GW coupling is not the semantically-faithful one.** So even the CLIP
+   bridge does not reliably transfer through the relational anchor; the only reliable cross-modal signal is
+   CLIP's direct image·text similarity, which is coordinates (R3 forbids it). Implemented as
+   `readout.clip_bridge` and shown in the demo labelled FRAGILE — not claimed as working.
 2. **Tied couplings for shared-support (paired) measures.** When ports share a probe index, one coupling to
    the anchor (concept→atom) instead of independent per-port couplings — forces cross-port consistency. This
    is a real mechanism addition (R3 for paired n-measures), needs derivation + a Lyapunov proof.

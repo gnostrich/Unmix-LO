@@ -25,6 +25,39 @@ def consensus(res, park_frac=0.1):
             "converged": res["converged"], "monotone": res["monotone"]}
 
 
+def clip_bridge(clouds, manifest, m=14, n_outer=30, restarts=6):
+    """Attempt to route cross-modal transfer through CLIP's two towers (its jointly-trained shared space is
+    the most favourable case). Equilibrate ONLY the two CLIP towers and pushforward to each; entropic GW is
+    nonconvex, so we take `restarts` random inits and keep the LOWEST-F equilibrium (F is the arbiter). This is
+    FRAGILE, NOT a working solution: the F-optimal coupling is not the semantically-faithful one — at the
+    default m=14 it yields "deer" for a dog image even though CLIP itself reads dog. It transfers correctly at
+    some (m, init) and not others. Kept for honesty and shown labelled FRAGILE; heterogeneous non-CLIP models
+    do not transfer at all. See WALL_crossmodal.md."""
+    from . import engine as E
+    sub = {k: clouds[k] for k in ("clip_vision", "clip_text") if k in clouds}
+    if len(sub) < 2:
+        return None
+    a0 = np.full(m, 1.0 / m)
+    Bbar = {p: np.full(len(sub[p]), 1.0 / len(sub[p])) for p in sub}
+    best = None
+    for s in range(restarts):
+        rng = np.random.default_rng(s)
+        De = rng.random((m, m)); De = (De + De.T) / 2; np.fill_diagonal(De, 0)
+        De /= np.median(De[np.triu_indices(m, 1)])
+        res = E.equilibrate(sub, De, a0, a0.copy(), Bbar, n_outer=n_outer)
+        Ff = res["F_trace"][-1] if res["F_trace"] else float("inf")
+        if best is None or Ff < best[0]:
+            best = (Ff, res)
+    res = best[1]
+    out = {"converged": res["converged"], "F": best[0]}
+    for port in sub:
+        r = sum(res["B"][port][c] * (pi @ res["a"]) for c, pi in enumerate(res["pis"][port]))
+        idx = np.argsort(-r)[:3]
+        labels = manifest["vision_labels"] if port == "clip_vision" else manifest["texts"]
+        out[port] = [str(labels[i])[:40] for i in idx]
+    return out
+
+
 def panels(res, meta, manifest, topk=3):
     """port -> (active?, modality, [top-k exemplar strings])."""
     out = {}
