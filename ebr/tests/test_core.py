@@ -61,6 +61,26 @@ def test_coupling_continuity():
     assert f_warm <= f_cold + 1e-9, "warm-start regressed"
 
 
+def test_zscored_pipeline_scramble_invariant():
+    """FIX-4 (instrument hygiene): z-scoring of moment channels is a fixed INSTRUMENT choice; the full
+    z-scored Hankel pipeline must remain scramble-invariant. Scramble one member's clouds every prompt;
+    the invariant-moment series and its Hankel spectrum must be identical to numerical precision."""
+    from ebr.hankel import residual as H
+    rng = np.random.default_rng(0)
+    T, n = 40, 30
+    base = [_cloud(n=n, r=3, seed=100 + t) for t in range(T)]
+    s_plain, s_scram = [], []
+    for t, X in enumerate(base):
+        D0, _ = cloud_to_Dw(X)
+        D1, _ = cloud_to_Dw(scramble(X, seed=t))
+        z = np.zeros((n, 1))
+        s_plain.append(H.residual_moments(H.gram_from_D(D0), z))
+        s_scram.append(H.residual_moments(H.gram_from_D(D1), z))
+    sp = H.hankel_spectrum(np.array(s_plain))          # z-scores channels internally
+    ss = H.hankel_spectrum(np.array(s_scram))
+    assert np.abs(sp - ss).max() < 1e-6, "z-scored pipeline leaks the frame under scramble"
+
+
 def test_invariant_interface_no_coordinates():
     # geometry.cloud_to_Dw must return only (D, w); D symmetric, zero diagonal, median-normalized.
     D, w = cloud_to_Dw(_cloud(seed=7))

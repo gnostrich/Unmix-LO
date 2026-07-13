@@ -1,9 +1,13 @@
 # ebr — Equilibrium Barycentric Router (stage-0)
 
-Implementation of EBR-v1 (`ebr-spec-v1`). One variational principle: a single functional `F` over transport
-couplings, a shared anchor's geometry/masses, and channel gains; block-coordinate I-projections minimize it;
-`F` is the Lyapunov function. The falsifiable headline is *self-sizing*: the active anchor count should equal
-the McMillan degree of the traffic, read as the above-noise-floor rank of a residual block-Hankel spectrum.
+Implementation of EBR (authoritative spec: **`ebr-spec-v1.1.md`**). Single-authority principle: ONE functional
+`F` decides everything; all else is instrument (reports/gates claims), oracle (proposes/warm-starts;
+acceptance is strict F-descent), or experimental control. Optimization is block-coordinate **mirror descent on
+F with a backtracking line search** guaranteeing monotone descent — the blocks are NOT exact I-projections
+(FIX-3). Structural growth is **Frank–Wolfe support adaptation** on the anchor measure, driven by F alone; the
+Hankel/poles are instrument, never mechanism. The corrected headline is a mechanism/instrument split: atom
+count = spatial complexity of the shared geometry (K-invariant); the pole set = temporal McMillan degree of
+traffic (multiplicative closure). See `ebr-spec-v1.1.md` and `LEDGER.md`.
 
 **Hard rule (invariant interface, §0):** nothing downstream of `geometry/` consumes coordinates — only
 normalized cost matrices `(D, w)` cross any boundary. This is what makes every logged quantity gauge-invariant
@@ -15,8 +19,8 @@ ebr/
   transport/  square-loss entropic semi-relaxed GW; monotone proximal steps.
   energy/     F assembly + shared-anchor block-coordinate loop (Lyapunov-guarded).
   hankel/     residual block-Hankel (§6); reuses io_trace/stream_trace.
-  events/     growth pressure / park / revive / spawn / merge (scaffold).
-  router/     DeepSets amortizer + implicit diff (scaffold).
+  events/     Frank–Wolfe support adaptation (atoms: grow/park/revive — F-driven, validated).
+  router/     DeepSets warm-starter (oracle; no term in F) — scaffold.
   registry/   append-only ledger + preflight (frozen constants, §10).
   experiments/ substrate (known-degree traffic) + stage-0 harness + G1 probe.
   tests/      5 CI invariants (gauge, Lyapunov, coupling-continuity, interface).

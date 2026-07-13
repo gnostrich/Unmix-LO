@@ -69,6 +69,10 @@ class DiverseModel:
             return np.tanh(Z @ self.W1 + self.b1) @ self.W2
         return (Z @ self.W1 + self.b1) @ self.W2          # linear
 
+    def tap(self, Z):
+        """Pre-logits linear tap (§12 fix): observable ~quadratic in the latent."""
+        return Z @ self.W1 + self.b1
+
 
 DIVERSE_KINDS = ["tanh", "relu_deep", "quadratic", "fourier", "linear"]
 

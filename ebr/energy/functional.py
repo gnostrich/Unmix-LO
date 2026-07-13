@@ -4,11 +4,14 @@ the F value it minimizes. This is where K-invariance is supposed to come from: t
 ONE anchor by GW coupling, so shared structure is represented once; the residual measured AFTER deflating
 that anchor should not inflate with K.
 
-Blocks (each monotone on F; block-coordinate I-projections, §1):
-  pi-block : semi-relaxed entropic GW of each member D_v to the shared anchor D_e (transport/gw).
-  De-block : square-loss GW barycenter update of the anchor cost D_e (Peyré closed form).
-  a-block  : anchor masses toward the induced marginals (slow), realizing self-sizing/parking.
-F = Σ_v [GW(D_v,D_e;pi_v) + ε KL(pi_v‖w_v⊗a)] + τ KL(a‖ā).  Reported per prompt for the Lyapunov log.
+HONEST STATEMENT (FIX-3): the blocks are NOT exact I-projections. This is block-coordinate MIRROR DESCENT on
+F, with a backtracking line search on every block guaranteeing monotone descent. The v1 "everything is one
+I-projection" claim is aspirational; empirically the raw mirror/barycenter steps overshoot (67% monotone
+without the guard → 100% with it). Only monotone descent is guaranteed, not exactness.
+  pi-block : semi-relaxed entropic GW mirror step of each member D_v to the shared anchor D_e (backtracked).
+  De-block : square-loss GW barycenter candidate, blended by backtracking so F does not increase.
+  a-block  : anchor masses toward induced marginals (slow), backtracked; realizes self-sizing/parking.
+F = Σ_v [GW(D_v,D_e;pi_v) + ε KL(pi_v‖w_v⊗a)] + τ KL(a‖ā).  Reported per prompt for the monotone-descent log.
 """
 import numpy as np
 from ..transport import gw

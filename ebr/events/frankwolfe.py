@@ -3,16 +3,22 @@ events/frankwolfe.py — structural events re-derived from F (spec v1.1 #1). NO 
 anchor is a free-support unbalanced measure and every structural move (grow / park / revive / merge) is a
 conditional-gradient (Frank–Wolfe) step on that measure under the SAME functional F that runs everything.
 
-grow(): propose one atom = the linearized-F steepest-descent direction on support space (the dominant
-UNEXPLAINED residual direction, barycentrically projected — what §3's "dominant residual direction" gestured
-at), then accept iff re-equilibrated F strictly decreases net of the τ mass-creation cost already in F.
-Self-quenching is intrinsic: once the anchor explains the traffic, no proposed atom lowers F, and growth
-stops — without ever consulting the Hankel. The Hankel/poles are the INSTRUMENT (they gate claims), never the
-mechanism.
+grow(): the OSCILLATOR is F, not the Hankel. Proposal is an ORACLE: the dominant UNEXPLAINED residual
+direction, barycentrically projected (any heuristic is admissible because acceptance is strict F-descent).
+Accept iff re-equilibrated F strictly decreases net of the τ mass-creation cost already in F. Self-quenching
+is intrinsic: once the anchor explains the traffic, no proposed atom lowers F, and growth stops — the Hankel
+is never consulted by the mechanism. The Hankel/poles are INSTRUMENT (they gate claims), never mechanism.
 
 park(): an atom whose F-optimal mass falls to ~0 is dropped by the same descent (unbalanced a-block); the
 grow/park timescale asymmetry is the creation-vs-annihilation cost asymmetry in the unbalanced term, one
 constant, not a separate clock.
+
+SCOPE (FIX-2, honest): ATOM-level FW (grow / park / revive) is implemented and validated here. HYPEREDGE
+spawn / merge are DERIVED as the same move on a level-2 measure over port-subsets (oracle = residual
+co-clustering proposes a subset U; accept iff instantiating its sub-anchor Z_U with the γ gluing term
+strictly decreases F net of Z_U's creation cost) — design sound, no wall found — but NOT yet implemented or
+validated. The two-edge topology used in experiments/g4_meter.py is a LABELED experimental fixture, not a
+discovered structure. Do not claim spawn/merge are "one move" in code until they are built.
 """
 import numpy as np
 from ..transport import gw
