@@ -41,11 +41,13 @@ Status tags: [proven] · [proven-negative] (closed, do not re-litigate) · [cand
   `events/frankwolfe.py`.
 - [holds] **Atom count is K-invariant** — flat across K=2,3,5, does not inflate with members (the bare
   detector did, 2.2→3.2). A real pooling property.
-- [OPEN / not demonstrated — corrects an earlier over-claim] **Atom count tracks the shared geometry's spatial
+- [resolved-by-substitution — corrects an earlier over-claim] **Atom count tracks the shared geometry's spatial
   complexity.** WALL_2x2_atomleg.md: across 4 geometric knobs × 3 ε × discrete+continuous readouts, atom count
   is operating-point-dominated (~3–4), does not track any geometric-richness knob. The earlier "3,3,3 = clean
   geometric self-sizing" reading is retracted; the value ~3 is the operating-point floor. K-invariance stands;
-  geometric-sizing does not. Blocks the 2×2 SPATIAL leg (temporal/pole leg P5 is clean and could stand alone).
+  geometric-sizing does not. **Resolved not by rescuing atom count but by substituting the instrument:** the
+  equilibrated anchor's **D_e effective rank** IS the spatial-complexity meter (next entry). Atom count stays a
+  K-invariant pooling property only.
 - [superseded] The earlier residual-rank self-sizing (1,3,3 partial) — the atom-count-as-temporal-degree
   reading was a category error; resolved by #1's mechanism/instrument split.
 - [derived — unimplemented] **Hyperedge spawn/merge as level-2 FW.** Same conditional-gradient move on a
@@ -55,6 +57,27 @@ Status tags: [proven] · [proven-negative] (closed, do not re-litigate) · [cand
   "one move" claim becomes true at both levels. Sequenced AFTER the single-edge 2×2.
 - [passed] **Cycle-cost holonomy meter (G4).** Clone 0.056 < floor (clone+3σ) 0.320 < disjoint 1.141,
   **20.4× separation** with a real solver floor. The disagreement meter is validated as an instrument.
+- [validated — full trust battery] **D_e effective rank is the SPATIAL-complexity instrument.** Participation
+  ratio exp(H) of the equilibrated anchor cost's singular values at fixed budget m=12. Survived a
+  pre-registered three-leg battery (PREREG_derank_battery.md; `experiments/derank_battery_b{1,2,3}.py`): B1
+  scramble gauge-invariant to <3.6e-15; B2 null-floor — monotone in planted rank (Spearman +1.00), structureless
+  matched-moment clouds read high (6.36 > rank-2's 4.67), baseline offset O=4.65 explains the 4.67-at-r=2
+  reading; B3 operating-point — Spearman(eff-rank, r) = +1.00 at every ε×n cell (the exact sweep that killed the
+  atom count). **Honest caveat (recorded, not airbrushed):** the realized dynamic band is COMPRESSED to
+  ~[4.65, 6.4], not near m — the usable signal is the ORDER/margin, not the absolute value.
+- [partial — one-axis dissociation, HONEST negative] **The 2×2 spatial/temporal dissociation.** Pre-registered
+  to the digit (PREREG_2x2_dissociation.md, amended before running); `experiments/twobytwo_dissociation.py`.
+  Unified substrate: G independent whitened AR(1) coords carrying D distinct pole values (spatial knob G,
+  temporal knob D, both independent). **SPATIAL leg PASS** — D_e eff-rank tracks ONLY geometry: Spearman(D_e,G)
+  = +1.00, exact digits land (4.66/5.49/5.82 vs 4.7/5.3/5.9), flat in D (range 0.14) and K (range 0.04). The
+  spatial meter is validated end-to-end as a dissociable instrument. **TEMPORAL leg FAIL (as pre-registered,
+  reported straight)** — the ERA/P5 pole COUNT is not invariant to spatial multiplicity: at G>D the duplicated
+  dominant pole (0.9→product 0.81) saturates the top-order ERA singular subspace, crowding out sub-dominant
+  products (0.63, 0.49), so poles(D=2)=1 not 3 and range_G(poles)=2.0 (need ≤1). The prereg's risk section
+  anticipated only the D=3 smallest-product under-resolving, not this G>D crowding — an honest, recorded miss.
+  **Outcome:** a clean ONE-AXIS dissociation (spatial validated; temporal not). Per covenant, recorded not
+  patched: a G-invariant pole-count readout, if pursued, is a genuine design fork needing a FRESH
+  pre-registration before any re-run — not a post-hoc order bump.
 
 ## Spec v1.1 amendment queue (five)
 1. Sym-power decoder — tag **deterministic-regime-only**.
