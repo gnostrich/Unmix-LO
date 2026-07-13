@@ -48,7 +48,7 @@ def propose_atom(Ds, ws, pis, a, delta=0.08):
     return pis2, a2
 
 
-def grow(Ds, ws, De, a, abar, eps=0.08, tau=1.0, max_atoms=12, n_outer=15, verbose=False):
+def grow(Ds, ws, De, a, abar, eps=0.08, tau=1.0, max_atoms=12, n_outer=15, rel_tol=0.02, verbose=False):
     """Frank–Wolfe growth: keep proposing atoms and accept only F-decreasing ones. Self-quenches.
     Returns (De, a, pis, F_trace, n_atoms, accepted_flags) — driven by F ALONE."""
     De = np.array(De, dtype=float)
@@ -68,7 +68,9 @@ def grow(Ds, ws, De, a, abar, eps=0.08, tau=1.0, max_atoms=12, n_outer=15, verbo
         pis2, De2, a2, ftr2, _c2 = EN.equilibrate(Ds, ws, De2, a2, abar2, eps=eps, tau=tau,
                                                   pis0=pis2, n_outer=n_outer)
         Fnew = ftr2[-1]
-        if Fnew < F - 1e-6:                                          # strict F-decrease net of τ (in F)
+        if Fnew < F * (1 - rel_tol):                                 # strict F-decrease beyond a pre-registered
+            #                                                          relative floor (accept only atoms that pay
+            #                                                          for themselves past solver noise), net of τ
             De, a, pis, abar, F = De2, a2, pis2, abar2, Fnew
             Fs.append(F); accepts.append(True)
             if verbose:

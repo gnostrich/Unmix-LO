@@ -35,14 +35,24 @@ Status tags: [proven] · [proven-negative] (closed, do not re-litigate) · [cand
   pole closure (next).
 
 ## Architecture / mechanism (both load-bearing candidate-original elements now have empirical legs)
-- [proven] **Self-sizing via F-driven Frank–Wolfe growth (v1.1 #1).** Structural events re-derived as a
-  conditional-gradient step on the anchor measure — one authority (F), no second statistic. Self-quenching
-  (each accepted atom strictly lowers F, then stops); Hankel never consulted by the mechanism. **K-invariant
-  self-sizing: 3,3,3 atoms across K=2,3,5** with heterogeneous members (cleaner than the Hankel readout's
-  1,3,3). Anchor count = spatial complexity of the shared geometry (K-invariant), cleanly SEPARATED from the
-  traffic's temporal McMillan degree (the pole instrument, P5). `events/frankwolfe.py`.
+- [proven] **F-driven Frank–Wolfe growth is a single-authority self-quenching mechanism (v1.1 #1).**
+  Structural events re-derived as a conditional-gradient step on the anchor measure — one authority (F), no
+  second statistic. Self-quenching (each accepted atom strictly lowers F, then stops); Hankel never consulted.
+  `events/frankwolfe.py`.
+- [holds] **Atom count is K-invariant** — flat across K=2,3,5, does not inflate with members (the bare
+  detector did, 2.2→3.2). A real pooling property.
+- [OPEN / not demonstrated — corrects an earlier over-claim] **Atom count tracks the shared geometry's spatial
+  complexity.** WALL_2x2_atomleg.md: across 4 geometric knobs × 3 ε × discrete+continuous readouts, atom count
+  is operating-point-dominated (~3–4), does not track any geometric-richness knob. The earlier "3,3,3 = clean
+  geometric self-sizing" reading is retracted; the value ~3 is the operating-point floor. K-invariance stands;
+  geometric-sizing does not. Blocks the 2×2 SPATIAL leg (temporal/pole leg P5 is clean and could stand alone).
 - [superseded] The earlier residual-rank self-sizing (1,3,3 partial) — the atom-count-as-temporal-degree
   reading was a category error; resolved by #1's mechanism/instrument split.
+- [derived — unimplemented] **Hyperedge spawn/merge as level-2 FW.** Same conditional-gradient move on a
+  measure over port-subsets: oracle (residual co-clustering) proposes a subset U; accept iff instantiating its
+  sub-anchor Z_U with the γ gluing term strictly decreases F net of Z_U's creation cost. No wall found;
+  requires multi-edge F + gluing (single-edge today). The cleanest open mechanism thread — once built, the
+  "one move" claim becomes true at both levels. Sequenced AFTER the single-edge 2×2.
 - [passed] **Cycle-cost holonomy meter (G4).** Clone 0.056 < floor (clone+3σ) 0.320 < disjoint 1.141,
   **20.4× separation** with a real solver floor. The disagreement meter is validated as an instrument.
 
