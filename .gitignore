@@ -7,3 +7,4 @@ gate/
 grads/
 grads-qwen/
 _overlap_cache/
+probes/*.log
