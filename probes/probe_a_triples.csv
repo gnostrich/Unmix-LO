@@ -1,0 +1,11 @@
+i,j,k,n_i,rel_cocycle_minus_I
+vit,mobilenet,minilm,128,0.9960860774732577
+vit,mobilenet,clip_vision,128,0.9960860795398225
+vit,mobilenet,clip_text,128,0.9960860131674221
+vit,minilm,clip_vision,128,0.9960860733944733
+vit,minilm,clip_text,128,0.9960859088754932
+vit,clip_vision,clip_text,128,0.9960859977381289
+mobilenet,minilm,clip_vision,128,0.996084263421567
+mobilenet,minilm,clip_text,128,0.996068864435973
+mobilenet,clip_vision,clip_text,128,0.9960757271140881
+minilm,clip_vision,clip_text,128,0.9966454861160663
